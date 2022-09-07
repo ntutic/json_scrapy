@@ -9,11 +9,11 @@ import attr
 from itemadapter import ItemAdapter
 from twisted.trial import unittest
 
-from scrapy.http import Request, Response
-from scrapy.item import Field, Item
-from scrapy.pipelines.images import ImagesPipeline
-from scrapy.settings import Settings
-from scrapy.utils.python import to_bytes
+from jscrapy.http import Request, Response
+from jscrapy.item import Field, Item
+from jscrapy.pipelines.images import ImagesPipeline
+from jscrapy.settings import Settings
+from jscrapy.utils.python import to_bytes
 
 
 try:

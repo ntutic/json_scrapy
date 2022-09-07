@@ -3,7 +3,7 @@ from pkg_resources import parse_version
 from setuptools import setup, find_packages, __version__ as setuptools_version
 
 
-with open(join(dirname(__file__), 'scrapy/VERSION'), 'rb') as f:
+with open(join(dirname(__file__), 'jscrapy/VERSION'), 'rb') as f:
     version = f.read().decode('ascii').strip()
 
 
@@ -51,11 +51,11 @@ else:
 setup(
     name='Scrapy',
     version=version,
-    url='https://scrapy.org',
+    url='https://jscrapy.org',
     project_urls={
-        'Documentation': 'https://docs.scrapy.org/',
-        'Source': 'https://github.com/scrapy/scrapy',
-        'Tracker': 'https://github.com/scrapy/scrapy/issues',
+        'Documentation': 'https://docs.jscrapy.org/',
+        'Source': 'https://github.com/jscrapy/jscrapy',
+        'Tracker': 'https://github.com/jscrapy/jscrapy/issues',
     },
     description='A high-level Web Crawling and Web Scraping framework',
     long_description=open('README.rst').read(),
@@ -67,7 +67,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     entry_points={
-        'console_scripts': ['scrapy = scrapy.cmdline:execute']
+        'console_scripts': ['jscrapy = jscrapy.cmdline:execute']
     },
     classifiers=[
         'Framework :: Scrapy',

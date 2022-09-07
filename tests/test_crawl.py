@@ -12,13 +12,13 @@ from twisted.internet.ssl import Certificate
 from twisted.python.failure import Failure
 from twisted.trial.unittest import TestCase
 
-from scrapy import signals
-from scrapy.crawler import CrawlerRunner
-from scrapy.exceptions import StopDownload
-from scrapy.http import Request
-from scrapy.http.response import Response
-from scrapy.utils.python import to_unicode
-from scrapy.utils.test import get_crawler
+from jscrapy import signals
+from jscrapy.crawler import CrawlerRunner
+from jscrapy.exceptions import StopDownload
+from jscrapy.http import Request
+from jscrapy.http.response import Response
+from jscrapy.utils.python import to_unicode
+from jscrapy.utils.test import get_crawler
 from tests import NON_EXISTING_RESOLVABLE
 from tests.mockserver import MockServer
 from tests.spiders import (
@@ -153,7 +153,7 @@ class CrawlTestCase(TestCase):
 
     @defer.inlineCallbacks
     def test_start_requests_bug_before_yield(self):
-        with LogCapture('scrapy', level=logging.ERROR) as log:
+        with LogCapture('jscrapy', level=logging.ERROR) as log:
             crawler = get_crawler(BrokenStartRequestsSpider)
             yield crawler.crawl(fail_before_yield=1, mockserver=self.mockserver)
 
@@ -164,7 +164,7 @@ class CrawlTestCase(TestCase):
 
     @defer.inlineCallbacks
     def test_start_requests_bug_yielding(self):
-        with LogCapture('scrapy', level=logging.ERROR) as log:
+        with LogCapture('jscrapy', level=logging.ERROR) as log:
             crawler = get_crawler(BrokenStartRequestsSpider)
             yield crawler.crawl(fail_yielding=1, mockserver=self.mockserver)
 
@@ -269,7 +269,7 @@ with multiples lines
 
     @defer.inlineCallbacks
     def test_engine_status(self):
-        from scrapy.utils.engine import get_engine_status
+        from jscrapy.utils.engine import get_engine_status
         est = []
 
         def cb(response):
@@ -284,7 +284,7 @@ with multiples lines
 
     @defer.inlineCallbacks
     def test_format_engine_status(self):
-        from scrapy.utils.engine import format_engine_status
+        from jscrapy.utils.engine import format_engine_status
         est = []
 
         def cb(response):

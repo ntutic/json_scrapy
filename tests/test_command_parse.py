@@ -3,11 +3,11 @@ import argparse
 from os.path import join, abspath, isfile, exists
 
 from twisted.internet import defer
-from scrapy.commands import parse
-from scrapy.settings import Settings
-from scrapy.utils.testsite import SiteTest
-from scrapy.utils.testproc import ProcessTest
-from scrapy.utils.python import to_unicode
+from jscrapy.commands import parse
+from jscrapy.settings import Settings
+from jscrapy.utils.testsite import SiteTest
+from jscrapy.utils.testproc import ProcessTest
+from jscrapy.utils.python import to_unicode
 from tests.test_commands import CommandTest
 
 
@@ -26,18 +26,18 @@ class ParseCommandTest(ProcessTest, SiteTest, CommandTest):
         fname = abspath(join(self.proj_mod_path, 'spiders', 'myspider.py'))
         with open(fname, 'w') as f:
             f.write(f"""
-import scrapy
-from scrapy.linkextractors import LinkExtractor
-from scrapy.spiders import CrawlSpider, Rule
+import jscrapy
+from jscrapy.linkextractors import LinkExtractor
+from jscrapy.spiders import CrawlSpider, Rule
 
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = '{self.spider_name}'
 
     def parse(self, response):
         if getattr(self, 'test_arg', None):
             self.logger.debug('It Works!')
-        return [scrapy.Item(), dict(foo='bar')]
+        return [jscrapy.Item(), dict(foo='bar')]
 
     def parse_request_with_meta(self, response):
         foo = response.meta.get('foo', 'bar')
@@ -70,10 +70,10 @@ class MyGoodCrawlSpider(CrawlSpider):
     )
 
     def parse_item(self, response):
-        return [scrapy.Item(), dict(foo='bar')]
+        return [jscrapy.Item(), dict(foo='bar')]
 
     def parse(self, response):
-        return [scrapy.Item(), dict(nomatch='default')]
+        return [jscrapy.Item(), dict(nomatch='default')]
 
 
 class MyBadCrawlSpider(CrawlSpider):
@@ -85,7 +85,7 @@ class MyBadCrawlSpider(CrawlSpider):
     )
 
     def parse(self, response):
-        return [scrapy.Item(), dict(foo='bar')]
+        return [jscrapy.Item(), dict(foo='bar')]
 """)
 
         fname = abspath(join(self.proj_mod_path, 'pipelines.py'))
@@ -253,7 +253,7 @@ ITEM_PIPELINES = {{'{self.project_name}.pipelines.MyPipeline': 1}}
         command = parse.Command()
         command.settings = Settings()
         parser = argparse.ArgumentParser(
-            prog='scrapy', formatter_class=argparse.HelpFormatter,
+            prog='jscrapy', formatter_class=argparse.HelpFormatter,
             conflict_handler='resolve', prefix_chars='-'
         )
         command.add_options(parser)

@@ -1,8 +1,8 @@
-import scrapy
-from scrapy.crawler import CrawlerProcess
+import jscrapy
+from jscrapy.crawler import CrawlerProcess
 
 
-class PollReactorSpider(scrapy.Spider):
+class PollReactorSpider(jscrapy.Spider):
     name = 'poll_reactor'
 
 

@@ -1,6 +1,6 @@
 from twisted.internet import defer
 from twisted.trial.unittest import TestCase
-from scrapy.utils.test import get_crawler
+from jscrapy.utils.test import get_crawler
 from tests.spiders import FollowAllSpider, ItemSpider, ErrorSpider
 from tests.mockserver import MockServer
 

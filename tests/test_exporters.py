@@ -12,10 +12,10 @@ from warnings import catch_warnings, filterwarnings
 import lxml.etree
 from itemadapter import ItemAdapter
 
-from scrapy.item import Item, Field
-from scrapy.utils.python import to_unicode
-from scrapy.exceptions import ScrapyDeprecationWarning
-from scrapy.exporters import (
+from jscrapy.item import Item, Field
+from jscrapy.utils.python import to_unicode
+from jscrapy.exceptions import ScrapyDeprecationWarning
+from jscrapy.exporters import (
     BaseItemExporter, PprintItemExporter, PickleItemExporter, CsvItemExporter,
     XmlItemExporter, JsonLinesItemExporter, JsonItemExporter,
     PythonItemExporter, MarshalItemExporter

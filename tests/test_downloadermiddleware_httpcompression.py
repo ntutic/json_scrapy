@@ -4,13 +4,13 @@ from os.path import join
 from unittest import TestCase, SkipTest
 from warnings import catch_warnings
 
-from scrapy.spiders import Spider
-from scrapy.http import Response, Request, HtmlResponse
-from scrapy.downloadermiddlewares.httpcompression import HttpCompressionMiddleware, ACCEPTED_ENCODINGS
-from scrapy.exceptions import NotConfigured, ScrapyDeprecationWarning
-from scrapy.responsetypes import responsetypes
-from scrapy.utils.gz import gunzip
-from scrapy.utils.test import get_crawler
+from jscrapy.spiders import Spider
+from jscrapy.http import Response, Request, HtmlResponse
+from jscrapy.downloadermiddlewares.httpcompression import HttpCompressionMiddleware, ACCEPTED_ENCODINGS
+from jscrapy.exceptions import NotConfigured, ScrapyDeprecationWarning
+from jscrapy.responsetypes import responsetypes
+from jscrapy.utils.gz import gunzip
+from jscrapy.utils.test import get_crawler
 from tests import tests_datadir
 from w3lib.encoding import resolve_encoding
 
@@ -36,7 +36,7 @@ class HttpCompressionTest(TestCase):
 
     def setUp(self):
         self.crawler = get_crawler(Spider)
-        self.spider = self.crawler._create_spider('scrapytest.org')
+        self.spider = self.crawler._create_spider('jscrapytest.org')
         self.mw = HttpCompressionMiddleware.from_crawler(self.crawler)
         self.crawler.stats.open_spider(self.spider)
 
@@ -57,8 +57,8 @@ class HttpCompressionTest(TestCase):
             'Content-Encoding': contentencoding,
         }
 
-        response = Response('http://scrapytest.org/', body=body, headers=headers)
-        response.request = Request('http://scrapytest.org', headers={'Accept-Encoding': 'gzip, deflate'})
+        response = Response('http://jscrapytest.org/', body=body, headers=headers)
+        response.request = Request('http://jscrapytest.org', headers={'Accept-Encoding': 'gzip, deflate'})
         return response
 
     def assertStatsEqual(self, key, value):
@@ -90,7 +90,7 @@ class HttpCompressionTest(TestCase):
         )
 
     def test_process_request(self):
-        request = Request('http://scrapytest.org')
+        request = Request('http://jscrapytest.org')
         assert 'Accept-Encoding' not in request.headers
         self.mw.process_request(request, self.spider)
         self.assertEqual(request.headers.get('Accept-Encoding'),
@@ -181,8 +181,8 @@ class HttpCompressionTest(TestCase):
         self.assertStatsEqual('httpcompression/response_bytes', 74840)
 
     def test_process_response_plain(self):
-        response = Response('http://scrapytest.org', body=b'<!DOCTYPE...')
-        request = Request('http://scrapytest.org')
+        response = Response('http://jscrapytest.org', body=b'<!DOCTYPE...')
+        request = Request('http://jscrapytest.org')
 
         assert not response.headers.get('Content-Encoding')
         newresponse = self.mw.process_response(request, response, self.spider)

@@ -1,5 +1,5 @@
-#compdef scrapy
-_scrapy() {
+#compdef jscrapy
+_jscrapy() {
     local context state state_descr line
     local ret=1
     typeset -A opt_args
@@ -10,21 +10,21 @@ _scrapy() {
 
     case $state in
 	command)
-	    _scrapy_cmds
+	    _jscrapy_cmds
 	    ;;
 	args)
 	    case $words[1] in
 		(bench)
-		    _scrapy_glb_opts
+		    _jscrapy_glb_opts
 		    ;;
 		(fetch)
 		    local options=(
 			'--headers[print response HTTP headers instead of body]'
 			'--no-redirect[do not handle HTTP 3xx status codes and print response as-is]'
-			'--spider=[use this spider]:spider:_scrapy_spiders'
+			'--spider=[use this spider]:spider:_jscrapy_spiders'
 			'1::URL:_httpie_urls'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(genspider)
 		    local options=(
@@ -36,7 +36,7 @@ _scrapy() {
 			'1:name:(NAME)'
 			'2:domain:_httpie_urls'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(runspider)
 		    local options=(
@@ -45,7 +45,7 @@ _scrapy() {
 			'*-a[set spider argument (may be repeated)]:value pair:(NAME=VALUE)'
 			'1:spider file:_files -g \*.py'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(settings)
 		    local options=(
@@ -55,69 +55,69 @@ _scrapy() {
 			'--getfloat=[print setting value, interpreted as a float]:option:(SETTING)'
 			'--getlist=[print setting value, interpreted as a list]:option:(SETTING)'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(shell)
 		    local options=(
 			'-c[evaluate the code in the shell, print the result and exit]:code:(CODE)'
 			'--no-redirect[do not handle HTTP 3xx status codes and print response as-is]'
-			'--spider=[use this spider]:spider:_scrapy_spiders'
+			'--spider=[use this spider]:spider:_jscrapy_spiders'
 			'::file:_files -g \*.html'
 			'::URL:_httpie_urls'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(startproject)
 		    local options=(
 			'1:name:(NAME)'
 			'2:dir:_dir_list'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(version)
 		    local options=(
 			{'(--verbose)-v','(-v)--verbose'}'[also display twisted/python/platform info (useful for bug reports)]'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(view)
 		    local options=(
 			'--no-redirect[do not handle HTTP 3xx status codes and print response as-is]'
-			'--spider=[use this spider]:spider:_scrapy_spiders'
+			'--spider=[use this spider]:spider:_jscrapy_spiders'
 			'1:URL:_httpie_urls'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(check)
 		    local options=(
 			{'(--list)-l','(-l)--list'}'[only list contracts, without checking them]'
 			{'(--verbose)-v','(-v)--verbose'}'[print contract tests for all spiders]'
-			'1:spider:_scrapy_spiders'
+			'1:spider:_jscrapy_spiders'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(crawl)
 		    local options=(
 			{'(--output)-o','(-o)--output='}'[dump scraped items into FILE (use - for stdout)]:file:_files'
 			{'(--output-format)-t','(-t)--output-format='}'[format to use for dumping items with -o]:format:(FORMAT)'
 			'*-a[set spider argument (may be repeated)]:value pair:(NAME=VALUE)'
-			'1:spider:_scrapy_spiders'
+			'1:spider:_jscrapy_spiders'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(edit)
 		    local options=(
-		      '1:spider:_scrapy_spiders'
+		      '1:spider:_jscrapy_spiders'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 		(list)
-		    _scrapy_glb_opts
+		    _jscrapy_glb_opts
 		    ;;
 		(parse)
 		    local options=(
 			'*-a[set spider argument (may be repeated)]:value pair:(NAME=VALUE)'
-			'--spider=[use this spider without looking for one]:spider:_scrapy_spiders'
+			'--spider=[use this spider without looking for one]:spider:_jscrapy_spiders'
 			'--pipelines[process items through pipelines]'
 			"--nolinks[don't show links to follow (extracted requests)]"
 			"--noitems[don't show scraped items]"
@@ -130,7 +130,7 @@ _scrapy() {
 			{'(--verbose)-v','(-v)--verbose'}'[print each depth level one by one]'
 			'1:URL:_httpie_urls'
 		    )
-		    _scrapy_glb_opts $options
+		    _jscrapy_glb_opts $options
 		    ;;
 	    esac
 	    ;;
@@ -139,7 +139,7 @@ _scrapy() {
     return ret
 }
 
-_scrapy_cmds() {
+_jscrapy_cmds() {
     local -a commands project_commands
     commands=(
         'bench:Run quick benchmark test'
@@ -159,13 +159,13 @@ _scrapy_cmds() {
         'list:List available spiders'
         'parse:Parse URL (using its spider) and print the results'
     )
-    if [[ $(scrapy -h | grep -s "no active project") == "" ]]; then
+    if [[ $(jscrapy -h | grep -s "no active project") == "" ]]; then
 	commands=(${commands[@]} ${project_commands[@]})
     fi
     _describe -t common-commands 'common commands' commands && ret=0
 }
 
-_scrapy_glb_opts() {
+_jscrapy_glb_opts() {
     local -a options
     options=(
 	'(- *)'{-h,--help}'[show this help message and exit]'
@@ -197,12 +197,12 @@ _httpie_urls() {
 
 }
 
-_scrapy_spiders() {
+_jscrapy_spiders() {
 
   local ret=1
 
-  if [[ $(scrapy -h | grep -s "no active project") == "" ]]; then
-      compadd -S '' $(scrapy list) && ret=0
+  if [[ $(jscrapy -h | grep -s "no active project") == "" ]]; then
+      compadd -S '' $(jscrapy list) && ret=0
   else
       compadd -S '' SPIDER && ret=0
   fi
@@ -210,4 +210,4 @@ _scrapy_spiders() {
   return $ret
 }
 
-_scrapy $@
+_jscrapy $@

@@ -2,9 +2,9 @@ import asyncio
 import sys
 from typing import Optional
 
-from scrapy import Spider
-from scrapy.crawler import CrawlerProcess
-from scrapy.utils.defer import deferred_from_coro
+from jscrapy import Spider
+from jscrapy.crawler import CrawlerProcess
+from jscrapy.utils.defer import deferred_from_coro
 from twisted.internet.defer import Deferred
 
 

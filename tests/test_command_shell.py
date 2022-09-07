@@ -3,8 +3,8 @@ from os.path import join
 from twisted.trial import unittest
 from twisted.internet import defer
 
-from scrapy.utils.testsite import SiteTest
-from scrapy.utils.testproc import ProcessTest
+from jscrapy.utils.testsite import SiteTest
+from jscrapy.utils.testproc import ProcessTest
 
 from tests import tests_datadir, NON_EXISTING_RESOLVABLE
 
@@ -88,9 +88,9 @@ class ShellTest(ProcessTest, SiteTest, unittest.TestCase):
         self.assertEqual(errcode, 0, out)
 
     @defer.inlineCallbacks
-    def test_scrapy_import(self):
+    def test_jscrapy_import(self):
         url = self.url('/text')
-        code = f"fetch(scrapy.Request('{url}'))"
+        code = f"fetch(jscrapy.Request('{url}'))"
         errcode, out, _ = yield self.execute(['-c', code])
         self.assertEqual(errcode, 0, out)
 

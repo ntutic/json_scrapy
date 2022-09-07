@@ -7,11 +7,11 @@ from unittest import mock
 from testfixtures import LogCapture
 from twisted.trial import unittest
 
-from scrapy import signals
-from scrapy.settings import Settings
-from scrapy.http import Request, Response, TextResponse, XmlResponse, HtmlResponse
-from scrapy.spiders.init import InitSpider
-from scrapy.spiders import (
+from jscrapy import signals
+from jscrapy.settings import Settings
+from jscrapy.http import Request, Response, TextResponse, XmlResponse, HtmlResponse
+from jscrapy.spiders.init import InitSpider
+from jscrapy.spiders import (
     CSVFeedSpider,
     CrawlSpider,
     Rule,
@@ -19,8 +19,8 @@ from scrapy.spiders import (
     Spider,
     XMLFeedSpider,
 )
-from scrapy.linkextractors import LinkExtractor
-from scrapy.utils.test import get_crawler
+from jscrapy.linkextractors import LinkExtractor
+from jscrapy.utils.test import get_crawler
 from tests import get_testdata
 
 
@@ -108,7 +108,7 @@ class SpiderTest(unittest.TestCase):
 
     def test_log(self):
         spider = self.spider_class('example.com')
-        with mock.patch('scrapy.spiders.Spider.logger') as mock_logger:
+        with mock.patch('jscrapy.spiders.Spider.logger') as mock_logger:
             spider.log('test log msg', 'INFO')
         mock_logger.log.assert_called_once_with('INFO', 'test log msg')
 

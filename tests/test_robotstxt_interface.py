@@ -116,7 +116,7 @@ class BaseRobotParserTest:
 
 class PythonRobotParserTest(BaseRobotParserTest, unittest.TestCase):
     def setUp(self):
-        from scrapy.robotstxt import PythonRobotParser
+        from jscrapy.robotstxt import PythonRobotParser
         super()._setUp(PythonRobotParser)
 
     def test_length_based_precedence(self):
@@ -131,7 +131,7 @@ class ReppyRobotParserTest(BaseRobotParserTest, unittest.TestCase):
         skip = "Reppy parser is not installed"
 
     def setUp(self):
-        from scrapy.robotstxt import ReppyRobotParser
+        from jscrapy.robotstxt import ReppyRobotParser
         super()._setUp(ReppyRobotParser)
 
     def test_order_based_precedence(self):
@@ -143,7 +143,7 @@ class RerpRobotParserTest(BaseRobotParserTest, unittest.TestCase):
         skip = "Rerp parser is not installed"
 
     def setUp(self):
-        from scrapy.robotstxt import RerpRobotParser
+        from jscrapy.robotstxt import RerpRobotParser
         super()._setUp(RerpRobotParser)
 
     def test_length_based_precedence(self):
@@ -155,7 +155,7 @@ class ProtegoRobotParserTest(BaseRobotParserTest, unittest.TestCase):
         skip = "Protego parser is not installed"
 
     def setUp(self):
-        from scrapy.robotstxt import ProtegoRobotParser
+        from jscrapy.robotstxt import ProtegoRobotParser
         super()._setUp(ProtegoRobotParser)
 
     def test_order_based_precedence(self):

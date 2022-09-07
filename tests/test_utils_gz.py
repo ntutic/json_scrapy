@@ -3,8 +3,8 @@ from os.path import join
 
 from w3lib.encoding import html_to_unicode
 
-from scrapy.utils.gz import gunzip, gzip_magic_number
-from scrapy.http import Response
+from jscrapy.utils.gz import gunzip, gzip_magic_number
+from jscrapy.http import Response
 from tests import tests_datadir
 
 

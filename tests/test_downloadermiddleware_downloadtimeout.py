@@ -1,9 +1,9 @@
 import unittest
 
-from scrapy.downloadermiddlewares.downloadtimeout import DownloadTimeoutMiddleware
-from scrapy.spiders import Spider
-from scrapy.http import Request
-from scrapy.utils.test import get_crawler
+from jscrapy.downloadermiddlewares.downloadtimeout import DownloadTimeoutMiddleware
+from jscrapy.spiders import Spider
+from jscrapy.http import Request
+from jscrapy.utils.test import get_crawler
 
 
 class DownloadTimeoutMiddlewareTest(unittest.TestCase):
@@ -11,7 +11,7 @@ class DownloadTimeoutMiddlewareTest(unittest.TestCase):
     def get_request_spider_mw(self, settings=None):
         crawler = get_crawler(Spider, settings)
         spider = crawler._create_spider('foo')
-        request = Request('http://scrapytest.org/')
+        request = Request('http://jscrapytest.org/')
         return request, spider, DownloadTimeoutMiddleware.from_crawler(crawler)
 
     def test_default_download_timeout(self):

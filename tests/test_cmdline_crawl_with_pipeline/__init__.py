@@ -7,7 +7,7 @@ from subprocess import Popen, PIPE
 class CmdlineCrawlPipelineTest(unittest.TestCase):
 
     def _execute(self, spname):
-        args = (sys.executable, '-m', 'scrapy.cmdline', 'crawl', spname)
+        args = (sys.executable, '-m', 'jscrapy.cmdline', 'crawl', spname)
         cwd = os.path.dirname(os.path.abspath(__file__))
         proc = Popen(args, stdout=PIPE, stderr=PIPE, cwd=cwd)
         proc.communicate()

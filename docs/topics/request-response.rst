@@ -4,7 +4,7 @@
 Requests and Responses
 ======================
 
-.. module:: scrapy.http
+.. module:: jscrapy.http
    :synopsis: Request and Response classes
 
 Scrapy uses :class:`Request` and :class:`Response` objects for crawling web
@@ -35,7 +35,7 @@ Request objects
        request (once it's downloaded) as its first parameter. For more information
        see :ref:`topics-request-response-ref-request-callback-arguments` below.
        If a Request doesn't specify a callback, the spider's
-       :meth:`~scrapy.Spider.parse` method will be used.
+       :meth:`~jscrapy.Spider.parse` method will be used.
        Note that if exceptions are raised during processing, errback is called instead.
 
     :type callback: collections.abc.Callable
@@ -60,7 +60,7 @@ Request objects
 
         .. caution:: Cookies set via the ``Cookie`` header are not considered by the
             :ref:`cookies-mw`. If you need to set cookies for a request, use the
-            :class:`Request.cookies <scrapy.Request>` parameter. This is a known
+            :class:`Request.cookies <jscrapy.Request>` parameter. This is a known
             current limitation that is being worked on.
 
     :type headers: dict
@@ -92,7 +92,7 @@ Request objects
 
         To create a request that does not send stored cookies and does not
         store received cookies, set the ``dont_merge_cookies`` key to ``True``
-        in :attr:`request.meta <scrapy.Request.meta>`.
+        in :attr:`request.meta <jscrapy.Request.meta>`.
 
         Example of a request that sends manually-defined cookies and ignores
         cookie storage::
@@ -107,7 +107,7 @@ Request objects
 
         .. caution:: Cookies set via the ``Cookie`` header are not considered by the
             :ref:`cookies-mw`. If you need to set cookies for a request, use the
-            :class:`Request.cookies <scrapy.Request>` parameter. This is a known
+            :class:`Request.cookies <jscrapy.Request>` parameter. This is a known
             current limitation that is being worked on.
 
         .. versionadded:: 2.6.0
@@ -228,7 +228,7 @@ Request objects
 Other functions related to requests
 -----------------------------------
 
-.. autofunction:: scrapy.utils.request.request_from_dict
+.. autofunction:: jscrapy.utils.request.request_from_dict
 
 
 .. _topics-request-response-ref-request-callback-arguments:
@@ -243,7 +243,7 @@ downloaded :class:`Response` object as its first argument.
 Example::
 
     def parse_page1(self, response):
-        return scrapy.Request("http://www.example.com/some_page.html",
+        return jscrapy.Request("http://www.example.com/some_page.html",
                               callback=self.parse_page2)
 
     def parse_page2(self, response):
@@ -258,7 +258,7 @@ The following example shows how to achieve this by using the
 ::
 
     def parse(self, response):
-        request = scrapy.Request('http://www.example.com/index.html',
+        request = jscrapy.Request('http://www.example.com/index.html',
                                  callback=self.parse_page2,
                                  cb_kwargs=dict(main_url=response.url))
         request.cb_kwargs['foo'] = 'bar'  # add more arguments for the callback
@@ -291,13 +291,13 @@ be used to track connection establishment timeouts, DNS errors etc.
 Here's an example spider logging all errors and catching some specific
 errors if needed::
 
-    import scrapy
+    import jscrapy
 
-    from scrapy.spidermiddlewares.httperror import HttpError
+    from jscrapy.spidermiddlewares.httperror import HttpError
     from twisted.internet.error import DNSLookupError
     from twisted.internet.error import TimeoutError, TCPTimedOutError
 
-    class ErrbackSpider(scrapy.Spider):
+    class ErrbackSpider(jscrapy.Spider):
         name = "errback_example"
         start_urls = [
             "http://www.httpbin.org/",              # HTTP 200 expected
@@ -309,7 +309,7 @@ errors if needed::
 
         def start_requests(self):
             for u in self.start_urls:
-                yield scrapy.Request(u, callback=self.parse_httpbin,
+                yield jscrapy.Request(u, callback=self.parse_httpbin,
                                         errback=self.errback_httpbin,
                                         dont_filter=True)
 
@@ -351,7 +351,7 @@ based on the arguments in the errback. The following example shows how to
 achieve this by using ``Failure.request.cb_kwargs``::
 
     def parse(self, response):
-        request = scrapy.Request('http://www.example.com/index.html',
+        request = jscrapy.Request('http://www.example.com/index.html',
                                  callback=self.parse_page2,
                                  errback=self.errback_page2,
                                  cb_kwargs=dict(main_url=response.url))
@@ -374,7 +374,7 @@ Request fingerprints
 There are some aspects of scraping, such as filtering out duplicate requests
 (see :setting:`DUPEFILTER_CLASS`) or caching responses (see
 :setting:`HTTPCACHE_POLICY`), where you need the ability to generate a short,
-unique identifier from a :class:`~scrapy.http.Request` object: a request
+unique identifier from a :class:`~jscrapy.http.Request` object: a request
 fingerprint.
 
 You often do not need to worry about request fingerprints, the default request
@@ -396,12 +396,12 @@ REQUEST_FINGERPRINTER_CLASS
 
 .. versionadded:: VERSION
 
-Default: :class:`scrapy.utils.request.RequestFingerprinter`
+Default: :class:`jscrapy.utils.request.RequestFingerprinter`
 
 A :ref:`request fingerprinter class <custom-request-fingerprinter>` or its
 import path.
 
-.. autoclass:: scrapy.utils.request.RequestFingerprinter
+.. autoclass:: jscrapy.utils.request.RequestFingerprinter
 
 
 .. setting:: REQUEST_FINGERPRINTER_IMPLEMENTATION
@@ -445,7 +445,7 @@ class).
 
 Scenarios where changing the request fingerprinting algorithm may cause
 undesired results include, for example, using the HTTP cache middleware (see
-:class:`~scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware`).
+:class:`~jscrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware`).
 Changing the request fingerprinting algorithm would invalidade the current
 cache, requiring you to redownload all requests again.
 
@@ -471,14 +471,14 @@ A request fingerprinter is a class that must implement the following method:
    See also :ref:`request-fingerprint-restrictions`.
 
    :param request: request to fingerprint
-   :type request: scrapy.http.Request
+   :type request: jscrapy.http.Request
 
 Additionally, it may also implement the following methods:
 
 .. classmethod:: from_crawler(cls, crawler)
 
    If present, this class method is called to create a request fingerprinter
-   instance from a :class:`~scrapy.crawler.Crawler` object. It must return a
+   instance from a :class:`~jscrapy.crawler.Crawler` object. It must return a
    new instance of the request fingerprinter.
 
    *crawler* provides access to all Scrapy core components like settings and
@@ -486,22 +486,22 @@ Additionally, it may also implement the following methods:
    its functionality into Scrapy.
 
    :param crawler: crawler that uses this request fingerprinter
-   :type crawler: :class:`~scrapy.crawler.Crawler` object
+   :type crawler: :class:`~jscrapy.crawler.Crawler` object
 
 .. classmethod:: from_settings(cls, settings)
 
    If present, and ``from_crawler`` is not defined, this class method is called
    to create a request fingerprinter instance from a
-   :class:`~scrapy.settings.Settings` object. It must return a new instance of
+   :class:`~jscrapy.settings.Settings` object. It must return a new instance of
    the request fingerprinter.
 
 The ``fingerprint`` method of the default request fingerprinter,
-:class:`scrapy.utils.request.RequestFingerprinter`, uses
-:func:`scrapy.utils.request.fingerprint` with its default parameters. For some
-common use cases you can use :func:`~scrapy.utils.request.fingerprint` as well
+:class:`jscrapy.utils.request.RequestFingerprinter`, uses
+:func:`jscrapy.utils.request.fingerprint` with its default parameters. For some
+common use cases you can use :func:`~jscrapy.utils.request.fingerprint` as well
 in your ``fingerprint`` method implementation:
 
-.. autofunction:: scrapy.utils.request.fingerprint
+.. autofunction:: jscrapy.utils.request.fingerprint
 
 For example, to take the value of a request header named ``X-ID`` into
 account::
@@ -510,7 +510,7 @@ account::
     REQUEST_FINGERPRINTER_CLASS = 'my_project.utils.RequestFingerprinter'
 
     # my_project/utils.py
-    from scrapy.utils.request import fingerprint
+    from jscrapy.utils.request import fingerprint
 
     class RequestFingerprinter:
 
@@ -519,7 +519,7 @@ account::
 
 You can also write your own fingerprinting logic from scratch.
 
-However, if you do not use :func:`~scrapy.utils.request.fingerprint`, make sure
+However, if you do not use :func:`~jscrapy.utils.request.fingerprint`, make sure
 you use :class:`~weakref.WeakKeyDictionary` to cache request fingerprints:
 
 -   Caching saves CPU by ensuring that fingerprints are calculated only once
@@ -536,7 +536,7 @@ URL canonicalization or taking the request method or body into account::
     from hashlib import sha1
     from weakref import WeakKeyDictionary
 
-    from scrapy.utils.python import to_bytes
+    from jscrapy.utils.python import to_bytes
 
     class RequestFingerprinter:
 
@@ -551,11 +551,11 @@ URL canonicalization or taking the request method or body into account::
 
 If you need to be able to override the request fingerprinting for arbitrary
 requests from your spider callbacks, you may implement a request fingerprinter
-that reads fingerprints from :attr:`request.meta <scrapy.http.Request.meta>`
+that reads fingerprints from :attr:`request.meta <jscrapy.http.Request.meta>`
 when available, and then falls back to
-:func:`~scrapy.utils.request.fingerprint`. For example::
+:func:`~jscrapy.utils.request.fingerprint`. For example::
 
-    from scrapy.utils.request import fingerprint
+    from jscrapy.utils.request import fingerprint
 
     class RequestFingerprinter:
 
@@ -572,7 +572,7 @@ request fingerprinter::
     from hashlib import sha1
     from weakref import WeakKeyDictionary
 
-    from scrapy.utils.python import to_bytes
+    from jscrapy.utils.python import to_bytes
     from w3lib.url import canonicalize_url
 
     class RequestFingerprinter:
@@ -600,7 +600,7 @@ fingerprinter <custom-request-fingerprinter>` generates.
 
 The following built-in Scrapy components have such restrictions:
 
--   :class:`scrapy.extensions.httpcache.FilesystemCacheStorage` (default
+-   :class:`jscrapy.extensions.httpcache.FilesystemCacheStorage` (default
     value of :setting:`HTTPCACHE_STORAGE`)
 
     Request fingerprints must be at least 1 byte long.
@@ -609,7 +609,7 @@ The following built-in Scrapy components have such restrictions:
     :setting:`HTTPCACHE_DIR` also apply. Inside :setting:`HTTPCACHE_DIR`,
     the following directory structure is created:
 
-    -   :attr:`Spider.name <scrapy.spiders.Spider.name>`
+    -   :attr:`Spider.name <jscrapy.spiders.Spider.name>`
 
         -   first byte of a request fingerprint as hexadecimal
 
@@ -618,13 +618,13 @@ The following built-in Scrapy components have such restrictions:
                 -   filenames up to 16 characters long
 
     For example, if a request fingerprint is made of 20 bytes (default),
-    :setting:`HTTPCACHE_DIR` is ``'/home/user/project/.scrapy/httpcache'``,
+    :setting:`HTTPCACHE_DIR` is ``'/home/user/project/.jscrapy/httpcache'``,
     and the name of your spider is ``'my_spider'`` your file system must
     support a file path like::
 
-        /home/user/project/.scrapy/httpcache/my_spider/01/0123456789abcdef0123456789abcdef01234567/response_headers
+        /home/user/project/.jscrapy/httpcache/my_spider/01/0123456789abcdef0123456789abcdef01234567/response_headers
 
--   :class:`scrapy.extensions.httpcache.DbmCacheStorage`
+-   :class:`jscrapy.extensions.httpcache.DbmCacheStorage`
 
     The underlying DBM implementation must support keys as long as twice
     the number of bytes of a request fingerprint, plus 5. For example,
@@ -711,21 +711,21 @@ The meta key is used set retry times per request. When initialized, the
 Stopping the download of a Response
 ===================================
 
-Raising a :exc:`~scrapy.exceptions.StopDownload` exception from a handler for the
-:class:`~scrapy.signals.bytes_received` or :class:`~scrapy.signals.headers_received`
+Raising a :exc:`~jscrapy.exceptions.StopDownload` exception from a handler for the
+:class:`~jscrapy.signals.bytes_received` or :class:`~jscrapy.signals.headers_received`
 signals will stop the download of a given response. See the following example::
 
-    import scrapy
+    import jscrapy
 
 
-    class StopSpider(scrapy.Spider):
+    class StopSpider(jscrapy.Spider):
         name = "stop"
-        start_urls = ["https://docs.scrapy.org/en/latest/"]
+        start_urls = ["https://docs.jscrapy.org/en/latest/"]
 
         @classmethod
         def from_crawler(cls, crawler):
             spider = super().from_crawler(crawler)
-            crawler.signals.connect(spider.on_bytes_received, signal=scrapy.signals.bytes_received)
+            crawler.signals.connect(spider.on_bytes_received, signal=jscrapy.signals.bytes_received)
             return spider
 
         def parse(self, response):
@@ -733,21 +733,21 @@ signals will stop the download of a given response. See the following example::
             yield {"len": len(response.text), "last_chars": response.text[-40:]}
 
         def on_bytes_received(self, data, request, spider):
-            raise scrapy.exceptions.StopDownload(fail=False)
+            raise jscrapy.exceptions.StopDownload(fail=False)
 
 which produces the following output::
 
-    2020-05-19 17:26:12 [scrapy.core.engine] INFO: Spider opened
-    2020-05-19 17:26:12 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
-    2020-05-19 17:26:13 [scrapy.core.downloader.handlers.http11] DEBUG: Download stopped for <GET https://docs.scrapy.org/en/latest/> from signal handler StopSpider.on_bytes_received
-    2020-05-19 17:26:13 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://docs.scrapy.org/en/latest/> (referer: None) ['download_stopped']
-    2020-05-19 17:26:13 [scrapy.core.scraper] DEBUG: Scraped from <200 https://docs.scrapy.org/en/latest/>
+    2020-05-19 17:26:12 [jscrapy.core.engine] INFO: Spider opened
+    2020-05-19 17:26:12 [jscrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+    2020-05-19 17:26:13 [jscrapy.core.downloader.handlers.http11] DEBUG: Download stopped for <GET https://docs.jscrapy.org/en/latest/> from signal handler StopSpider.on_bytes_received
+    2020-05-19 17:26:13 [jscrapy.core.engine] DEBUG: Crawled (200) <GET https://docs.jscrapy.org/en/latest/> (referer: None) ['download_stopped']
+    2020-05-19 17:26:13 [jscrapy.core.scraper] DEBUG: Scraped from <200 https://docs.jscrapy.org/en/latest/>
     {'len': 279, 'last_chars': 'dth, initial-scale=1.0">\n  \n  <title>Scr'}
-    2020-05-19 17:26:13 [scrapy.core.engine] INFO: Closing spider (finished)
+    2020-05-19 17:26:13 [jscrapy.core.engine] INFO: Closing spider (finished)
 
 By default, resulting responses are handled by their corresponding errbacks. To
 call their callback instead, like in this example, pass ``fail=False`` to the
-:exc:`~scrapy.exceptions.StopDownload` exception.
+:exc:`~jscrapy.exceptions.StopDownload` exception.
 
 
 .. _topics-request-response-ref-request-subclasses:
@@ -767,9 +767,9 @@ fields with form data from :class:`Response` objects.
 
 .. _lxml.html forms: https://lxml.de/lxmlhtml.html#forms
 
-.. class:: scrapy.http.request.form.FormRequest
-.. class:: scrapy.http.FormRequest
-.. class:: scrapy.FormRequest(url, [formdata, ...])
+.. class:: jscrapy.http.request.form.FormRequest
+.. class:: jscrapy.http.FormRequest
+.. class:: jscrapy.FormRequest(url, [formdata, ...])
 
     The :class:`FormRequest` class adds a new keyword parameter to the ``__init__`` method. The
     remaining arguments are the same as for the :class:`Request` class and are
@@ -873,19 +873,19 @@ user name and password. You can use the :meth:`FormRequest.from_response`
 method for this job. Here's an example spider which uses it::
 
 
-    import scrapy
+    import jscrapy
 
     def authentication_failed(response):
         # TODO: Check the contents of the response and return True if it failed
         # or False if it succeeded.
         pass
 
-    class LoginSpider(scrapy.Spider):
+    class LoginSpider(jscrapy.Spider):
         name = 'example.com'
         start_urls = ['http://www.example.com/users/login.php']
 
         def parse(self, response):
-            return scrapy.FormRequest.from_response(
+            return jscrapy.FormRequest.from_response(
                 response,
                 formdata={'username': 'john', 'password': 'secret'},
                 callback=self.after_login
@@ -965,7 +965,7 @@ Response objects
 
     :param request: the initial value of the :attr:`Response.request` attribute.
         This represents the :class:`Request` that generated this response.
-    :type request: scrapy.Request
+    :type request: jscrapy.Request
 
     :param certificate: an object representing the server's SSL certificate.
     :type certificate: twisted.internet.ssl.Certificate
@@ -1193,7 +1193,7 @@ TextResponse objects
 
     .. attribute:: TextResponse.selector
 
-        A :class:`~scrapy.Selector` instance using the response as
+        A :class:`~jscrapy.Selector` instance using the response as
         target. The selector is lazily instantiated on first access.
 
     .. autoattribute:: TextResponse.attributes

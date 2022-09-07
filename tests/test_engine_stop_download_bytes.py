@@ -1,7 +1,7 @@
 from testfixtures import LogCapture
 from twisted.internet import defer
 
-from scrapy.exceptions import StopDownload
+from jscrapy.exceptions import StopDownload
 
 from tests.test_engine import (
     AttrsItemsSpider,
@@ -26,15 +26,15 @@ class BytesReceivedEngineTest(EngineTest):
             run = BytesReceivedCrawlerRun(spider)
             with LogCapture() as log:
                 yield run.run()
-                log.check_present(("scrapy.core.downloader.handlers.http11",
+                log.check_present(("jscrapy.core.downloader.handlers.http11",
                                    "DEBUG",
                                    f"Download stopped for <GET http://localhost:{run.portno}/redirected> "
                                    "from signal handler BytesReceivedCrawlerRun.bytes_received"))
-                log.check_present(("scrapy.core.downloader.handlers.http11",
+                log.check_present(("jscrapy.core.downloader.handlers.http11",
                                    "DEBUG",
                                    f"Download stopped for <GET http://localhost:{run.portno}/> "
                                    "from signal handler BytesReceivedCrawlerRun.bytes_received"))
-                log.check_present(("scrapy.core.downloader.handlers.http11",
+                log.check_present(("jscrapy.core.downloader.handlers.http11",
                                    "DEBUG",
                                    f"Download stopped for <GET http://localhost:{run.portno}/numbers> "
                                    "from signal handler BytesReceivedCrawlerRun.bytes_received"))

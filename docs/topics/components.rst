@@ -5,7 +5,7 @@ Components
 ==========
 
 A Scrapy component is any class whose objects are created using
-:func:`scrapy.utils.misc.create_instance`.
+:func:`jscrapy.utils.misc.create_instance`.
 
 That includes the classes that you may assign to the following settings:
 
@@ -58,7 +58,7 @@ In the case of :ref:`downloader middlewares <topics-downloader-middleware>`,
 :ref:`extensions <topics-extensions>`, :ref:`item pipelines
 <topics-item-pipeline>`, and :ref:`spider middlewares
 <topics-spider-middleware>`, you should raise
-:exc:`scrapy.exceptions.NotConfigured`, passing a description of the issue as a
+:exc:`jscrapy.exceptions.NotConfigured`, passing a description of the issue as a
 parameter to the exception so that it is printed in the logs, for the user to
 see. For other components, feel free to raise whatever other exception feels
 right to you; for example, :exc:`RuntimeError` would make sense for a Scrapy
@@ -66,16 +66,16 @@ version mismatch, while :exc:`ValueError` may be better if the issue is the
 value of a setting.
 
 If your requirement is a minimum Scrapy version, you may use
-:attr:`scrapy.__version__` to enforce your requirement. For example::
+:attr:`jscrapy.__version__` to enforce your requirement. For example::
 
     from pkg_resources import parse_version
 
-    import scrapy
+    import jscrapy
 
     class MyComponent:
 
         def __init__(self):
-            if parse_version(scrapy.__version__) < parse_version('VERSION'):
+            if parse_version(jscrapy.__version__) < parse_version('VERSION'):
                 raise RuntimeError(
                     f"{MyComponent.__qualname__} requires Scrapy VERSION or "
                     f"later, which allow defining the process_spider_output "

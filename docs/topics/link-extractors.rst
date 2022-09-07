@@ -7,17 +7,17 @@ Link Extractors
 A link extractor is an object that extracts links from responses.
 
 The ``__init__`` method of
-:class:`~scrapy.linkextractors.lxmlhtml.LxmlLinkExtractor` takes settings that
+:class:`~jscrapy.linkextractors.lxmlhtml.LxmlLinkExtractor` takes settings that
 determine which links may be extracted. :class:`LxmlLinkExtractor.extract_links
-<scrapy.linkextractors.lxmlhtml.LxmlLinkExtractor.extract_links>` returns a
-list of matching :class:`~scrapy.link.Link` objects from a
-:class:`~scrapy.http.Response` object.
+<jscrapy.linkextractors.lxmlhtml.LxmlLinkExtractor.extract_links>` returns a
+list of matching :class:`~jscrapy.link.Link` objects from a
+:class:`~jscrapy.http.Response` object.
 
-Link extractors are used in :class:`~scrapy.spiders.CrawlSpider` spiders
-through a set of :class:`~scrapy.spiders.Rule` objects.
+Link extractors are used in :class:`~jscrapy.spiders.CrawlSpider` spiders
+through a set of :class:`~jscrapy.spiders.Rule` objects.
 
 You can also use link extractors in regular spiders. For example, you can instantiate
-:class:`LinkExtractor <scrapy.linkextractors.lxmlhtml.LxmlLinkExtractor>` into a class
+:class:`LinkExtractor <jscrapy.linkextractors.lxmlhtml.LxmlLinkExtractor>` into a class
 variable in your spider, and use it from your spider callbacks::
 
     def parse(self, response):
@@ -29,19 +29,19 @@ variable in your spider, and use it from your spider callbacks::
 Link extractor reference
 ========================
 
-.. module:: scrapy.linkextractors
+.. module:: jscrapy.linkextractors
    :synopsis: Link extractors classes
 
 The link extractor class is
-:class:`scrapy.linkextractors.lxmlhtml.LxmlLinkExtractor`. For convenience it
-can also be imported as ``scrapy.linkextractors.LinkExtractor``::
+:class:`jscrapy.linkextractors.lxmlhtml.LxmlLinkExtractor`. For convenience it
+can also be imported as ``jscrapy.linkextractors.LinkExtractor``::
 
-    from scrapy.linkextractors import LinkExtractor
+    from jscrapy.linkextractors import LinkExtractor
 
 LxmlLinkExtractor
 -----------------
 
-.. module:: scrapy.linkextractors.lxmlhtml
+.. module:: jscrapy.linkextractors.lxmlhtml
    :synopsis: lxml's HTMLParser-based link extractors
 
 
@@ -72,10 +72,10 @@ LxmlLinkExtractor
     :param deny_extensions: a single value or list of strings containing
         extensions that should be ignored when extracting links.
         If not given, it will default to
-        :data:`scrapy.linkextractors.IGNORED_EXTENSIONS`.
+        :data:`jscrapy.linkextractors.IGNORED_EXTENSIONS`.
 
         .. versionchanged:: 2.0
-           :data:`~scrapy.linkextractors.IGNORED_EXTENSIONS` now includes
+           :data:`~jscrapy.linkextractors.IGNORED_EXTENSIONS` now includes
            ``7z``, ``7zip``, ``apk``, ``bz2``, ``cdr``, ``dmg``, ``ico``,
            ``iso``, ``tar``, ``tar.gz``, ``webm``, and ``xz``.
     :type deny_extensions: list
@@ -155,9 +155,9 @@ LxmlLinkExtractor
 Link
 ----
 
-.. module:: scrapy.link
+.. module:: jscrapy.link
    :synopsis: Link from link extractors
 
 .. autoclass:: Link
 
-.. _scrapy.linkextractors: https://github.com/scrapy/scrapy/blob/master/scrapy/linkextractors/__init__.py
+.. _jscrapy.linkextractors: https://github.com/jscrapy/jscrapy/blob/master/jscrapy/linkextractors/__init__.py

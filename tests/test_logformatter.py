@@ -5,12 +5,12 @@ from twisted.internet import defer
 from twisted.python.failure import Failure
 from twisted.trial.unittest import TestCase as TwistedTestCase
 
-from scrapy.exceptions import DropItem
-from scrapy.utils.test import get_crawler
-from scrapy.http import Request, Response
-from scrapy.item import Item, Field
-from scrapy.logformatter import LogFormatter
-from scrapy.spiders import Spider
+from jscrapy.exceptions import DropItem
+from jscrapy.utils.test import get_crawler
+from jscrapy.http import Request, Response
+from jscrapy.item import Item, Field
+from jscrapy.logformatter import LogFormatter
+from jscrapy.spiders import Spider
 from tests.mockserver import MockServer
 from tests.spiders import ItemSpider
 

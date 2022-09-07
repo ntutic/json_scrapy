@@ -3,8 +3,8 @@ from twisted.conch.telnet import ITelnetProtocol
 from twisted.cred import credentials
 from twisted.internet import defer
 
-from scrapy.extensions.telnet import TelnetConsole
-from scrapy.utils.test import get_crawler
+from jscrapy.extensions.telnet import TelnetConsole
+from jscrapy.utils.test import get_crawler
 
 
 class TelnetExtensionTest(unittest.TestCase):

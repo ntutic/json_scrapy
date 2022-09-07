@@ -5,12 +5,12 @@ from testfixtures import LogCapture
 from twisted.trial.unittest import TestCase as TrialTestCase
 from twisted.internet import defer
 
-from scrapy.utils.test import get_crawler
+from jscrapy.utils.test import get_crawler
 from tests.mockserver import MockServer
-from scrapy.http import Response, Request
-from scrapy.spiders import Spider
-from scrapy.spidermiddlewares.httperror import HttpErrorMiddleware, HttpError
-from scrapy.settings import Settings
+from jscrapy.http import Response, Request
+from jscrapy.spiders import Spider
+from jscrapy.spidermiddlewares.httperror import HttpErrorMiddleware, HttpError
+from jscrapy.settings import Settings
 from tests.spiders import MockServerSpider
 
 
@@ -64,7 +64,7 @@ class TestHttpErrorMiddleware(TestCase):
         crawler = get_crawler(Spider)
         self.spider = Spider.from_crawler(crawler, name='foo')
         self.mw = HttpErrorMiddleware(Settings({}))
-        self.req = Request('http://scrapytest.org')
+        self.req = Request('http://jscrapytest.org')
         self.res200, self.res404 = _responses(self.req, [200, 404])
 
     def test_process_spider_input(self):
@@ -79,7 +79,7 @@ class TestHttpErrorMiddleware(TestCase):
 
     def test_handle_httpstatus_list(self):
         res = self.res404.copy()
-        res.request = Request('http://scrapytest.org',
+        res.request = Request('http://jscrapytest.org',
                               meta={'handle_httpstatus_list': [404]})
         self.assertIsNone(self.mw.process_spider_input(res, self.spider))
 
@@ -93,7 +93,7 @@ class TestHttpErrorMiddlewareSettings(TestCase):
     def setUp(self):
         self.spider = Spider('foo')
         self.mw = HttpErrorMiddleware(Settings({'HTTPERROR_ALLOWED_CODES': (402,)}))
-        self.req = Request('http://scrapytest.org')
+        self.req = Request('http://jscrapytest.org')
         self.res200, self.res404, self.res402 = _responses(self.req, [200, 404, 402])
 
     def test_process_spider_input(self):
@@ -102,7 +102,7 @@ class TestHttpErrorMiddlewareSettings(TestCase):
         self.assertIsNone(self.mw.process_spider_input(self.res402, self.spider))
 
     def test_meta_overrides_settings(self):
-        request = Request('http://scrapytest.org', meta={'handle_httpstatus_list': [404]})
+        request = Request('http://jscrapytest.org', meta={'handle_httpstatus_list': [404]})
         res404 = self.res404.copy()
         res404.request = request
         res402 = self.res402.copy()
@@ -122,7 +122,7 @@ class TestHttpErrorMiddlewareHandleAll(TestCase):
     def setUp(self):
         self.spider = Spider('foo')
         self.mw = HttpErrorMiddleware(Settings({'HTTPERROR_ALLOW_ALL': True}))
-        self.req = Request('http://scrapytest.org')
+        self.req = Request('http://jscrapytest.org')
         self.res200, self.res404, self.res402 = _responses(self.req, [200, 404, 402])
 
     def test_process_spider_input(self):
@@ -130,7 +130,7 @@ class TestHttpErrorMiddlewareHandleAll(TestCase):
         self.assertIsNone(self.mw.process_spider_input(self.res404, self.spider))
 
     def test_meta_overrides_settings(self):
-        request = Request('http://scrapytest.org', meta={'handle_httpstatus_list': [404]})
+        request = Request('http://jscrapytest.org', meta={'handle_httpstatus_list': [404]})
         res404 = self.res404.copy()
         res404.request = request
         res402 = self.res402.copy()
@@ -142,8 +142,8 @@ class TestHttpErrorMiddlewareHandleAll(TestCase):
     def test_httperror_allow_all_false(self):
         crawler = get_crawler(_HttpErrorSpider)
         mw = HttpErrorMiddleware.from_crawler(crawler)
-        request_httpstatus_false = Request('http://scrapytest.org', meta={'handle_httpstatus_all': False})
-        request_httpstatus_true = Request('http://scrapytest.org', meta={'handle_httpstatus_all': True})
+        request_httpstatus_false = Request('http://jscrapytest.org', meta={'handle_httpstatus_all': False})
+        request_httpstatus_true = Request('http://jscrapytest.org', meta={'handle_httpstatus_all': True})
         res404 = self.res404.copy()
         res404.request = request_httpstatus_false
         res402 = self.res402.copy()

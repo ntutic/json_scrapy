@@ -19,9 +19,9 @@ from twisted.web.server import GzipEncoderFactory, NOT_DONE_YET, Site
 from twisted.web.static import File
 from twisted.web.util import redirectTo
 
-from scrapy.utils.python import to_bytes, to_unicode
-from scrapy.utils.ssl import SSL_OP_NO_TLSv1_3
-from scrapy.utils.test import get_testenv
+from jscrapy.utils.python import to_bytes, to_unicode
+from jscrapy.utils.ssl import SSL_OP_NO_TLSv1_3
+from jscrapy.utils.test import get_testenv
 
 
 def getarg(request, name, default=None, type=None):

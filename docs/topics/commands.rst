@@ -6,28 +6,28 @@
 Command line tool
 =================
 
-Scrapy is controlled through the ``scrapy`` command-line tool, to be referred
+Scrapy is controlled through the ``jscrapy`` command-line tool, to be referred
 here as the "Scrapy tool" to differentiate it from the sub-commands, which we
 just call "commands" or "Scrapy commands".
 
 The Scrapy tool provides several commands, for multiple purposes, and each one
 accepts a different set of arguments and options.
 
-(The ``scrapy deploy`` command has been removed in 1.0 in favor of the
-standalone ``scrapyd-deploy``. See `Deploying your project`_.)
+(The ``jscrapy deploy`` command has been removed in 1.0 in favor of the
+standalone ``jscrapyd-deploy``. See `Deploying your project`_.)
 
 .. _topics-config-settings:
 
 Configuration settings
 ======================
 
-Scrapy will look for configuration parameters in ini-style ``scrapy.cfg`` files
+Scrapy will look for configuration parameters in ini-style ``jscrapy.cfg`` files
 in standard locations:
 
-1. ``/etc/scrapy.cfg`` or ``c:\scrapy\scrapy.cfg`` (system-wide),
-2. ``~/.config/scrapy.cfg`` (``$XDG_CONFIG_HOME``) and ``~/.scrapy.cfg`` (``$HOME``)
+1. ``/etc/jscrapy.cfg`` or ``c:\jscrapy\jscrapy.cfg`` (system-wide),
+2. ``~/.config/jscrapy.cfg`` (``$XDG_CONFIG_HOME``) and ``~/.jscrapy.cfg`` (``$HOME``)
    for global (user-wide) settings, and
-3. ``scrapy.cfg`` inside a Scrapy project's root (see next section).
+3. ``jscrapy.cfg`` inside a Scrapy project's root (see next section).
 
 Settings from these files are merged in the listed order of preference:
 user-defined values have higher priority than system-wide defaults
@@ -51,7 +51,7 @@ understand the directory structure of a Scrapy project.
 Though it can be modified, all Scrapy projects have the same file
 structure by default, similar to this::
 
-   scrapy.cfg
+   jscrapy.cfg
    myproject/
        __init__.py
        items.py
@@ -64,7 +64,7 @@ structure by default, similar to this::
            spider2.py
            ...
 
-The directory where the ``scrapy.cfg`` file resides is known as the *project
+The directory where the ``jscrapy.cfg`` file resides is known as the *project
 root directory*. That file contains the name of the python module that defines
 the project settings. Here is an example:
 
@@ -78,11 +78,11 @@ the project settings. Here is an example:
 Sharing the root directory between projects
 ===========================================
 
-A project root directory, the one that contains the ``scrapy.cfg``, may be
+A project root directory, the one that contains the ``jscrapy.cfg``, may be
 shared by multiple Scrapy projects, each with its own settings module.
 
 In that case, you must define one or more aliases for those settings modules
-under ``[settings]`` in your ``scrapy.cfg`` file:
+under ``[settings]`` in your ``jscrapy.cfg`` file:
 
 .. code-block:: ini
 
@@ -91,18 +91,18 @@ under ``[settings]`` in your ``scrapy.cfg`` file:
     project1 = myproject1.settings
     project2 = myproject2.settings
 
-By default, the ``scrapy`` command-line tool will use the ``default`` settings.
+By default, the ``jscrapy`` command-line tool will use the ``default`` settings.
 Use the ``SCRAPY_PROJECT`` environment variable to specify a different project
-for ``scrapy`` to use::
+for ``jscrapy`` to use::
 
-    $ scrapy settings --get BOT_NAME
+    $ jscrapy settings --get BOT_NAME
     Project 1 Bot
     $ export SCRAPY_PROJECT=project2
-    $ scrapy settings --get BOT_NAME
+    $ jscrapy settings --get BOT_NAME
     Project 2 Bot
 
 
-Using the ``scrapy`` tool
+Using the ``jscrapy`` tool
 =========================
 
 You can start by running the Scrapy tool with no arguments and it will print
@@ -111,7 +111,7 @@ some usage help and the available commands::
     Scrapy X.Y - no active project
 
     Usage:
-      scrapy <command> [options] [args]
+      jscrapy <command> [options] [args]
 
     Available commands:
       crawl         Run a spider
@@ -125,17 +125,17 @@ a project it would have printed something like this::
     Scrapy X.Y - project: myproject
 
     Usage:
-      scrapy <command> [options] [args]
+      jscrapy <command> [options] [args]
 
     [...]
 
 Creating projects
 -----------------
 
-The first thing you typically do with the ``scrapy`` tool is create your Scrapy
+The first thing you typically do with the ``jscrapy`` tool is create your Scrapy
 project::
 
-    scrapy startproject myproject [project_dir]
+    jscrapy startproject myproject [project_dir]
 
 That will create a Scrapy project under the ``project_dir`` directory.
 If ``project_dir`` wasn't specified, ``project_dir`` will be the same as ``myproject``.
@@ -144,18 +144,18 @@ Next, you go inside the new project directory::
 
     cd project_dir
 
-And you're ready to use the ``scrapy`` command to manage and control your
+And you're ready to use the ``jscrapy`` command to manage and control your
 project from there.
 
 Controlling projects
 --------------------
 
-You use the ``scrapy`` tool from inside your projects to control and manage
+You use the ``jscrapy`` tool from inside your projects to control and manage
 them.
 
 For example, to create a new spider::
 
-    scrapy genspider mydomain mydomain.com
+    jscrapy genspider mydomain mydomain.com
 
 Some Scrapy commands (like :command:`crawl`) must be run from inside a Scrapy
 project. See the :ref:`commands reference <topics-commands-ref>` below for more
@@ -177,11 +177,11 @@ This section contains a list of the available built-in commands with a
 description and some usage examples. Remember, you can always get more info
 about each command by running::
 
-    scrapy <command> -h
+    jscrapy <command> -h
 
 And you can see all available commands with::
 
-    scrapy -h
+    jscrapy -h
 
 There are two kinds of commands, those that only work from inside a Scrapy
 project (Project-specific commands) and those that also work without an active
@@ -214,7 +214,7 @@ Project-only commands:
 startproject
 ------------
 
-* Syntax: ``scrapy startproject <project_name> [project_dir]``
+* Syntax: ``jscrapy startproject <project_name> [project_dir]``
 * Requires project: *no*
 
 Creates a new Scrapy project named ``project_name``, under the ``project_dir``
@@ -223,14 +223,14 @@ If ``project_dir`` wasn't specified, ``project_dir`` will be the same as ``proje
 
 Usage example::
 
-    $ scrapy startproject myproject
+    $ jscrapy startproject myproject
 
 .. command:: genspider
 
 genspider
 ---------
 
-* Syntax: ``scrapy genspider [-t template] <name> <domain or URL>``
+* Syntax: ``jscrapy genspider [-t template] <name> <domain or URL>``
 * Requires project: *no*
 
 .. versionadded:: 2.6.0
@@ -243,18 +243,18 @@ Create a new spider in the current folder or in the current project's ``spiders`
 
 Usage example::
 
-    $ scrapy genspider -l
+    $ jscrapy genspider -l
     Available templates:
       basic
       crawl
       csvfeed
       xmlfeed
 
-    $ scrapy genspider example example.com
+    $ jscrapy genspider example example.com
     Created spider 'example' using template 'basic'
 
-    $ scrapy genspider -t crawl scrapyorg scrapy.org
-    Created spider 'scrapyorg' using template 'crawl'
+    $ jscrapy genspider -t crawl jscrapyorg jscrapy.org
+    Created spider 'jscrapyorg' using template 'crawl'
 
 This is just a convenience shortcut command for creating spiders based on
 pre-defined templates, but certainly not the only way to create spiders. You
@@ -266,14 +266,14 @@ command.
 crawl
 -----
 
-* Syntax: ``scrapy crawl <spider>``
+* Syntax: ``jscrapy crawl <spider>``
 * Requires project: *yes*
 
 Start crawling using a spider.
 
 Usage examples::
 
-    $ scrapy crawl myspider
+    $ jscrapy crawl myspider
     [ ... myspider starts crawling ... ]
 
 
@@ -282,7 +282,7 @@ Usage examples::
 check
 -----
 
-* Syntax: ``scrapy check [-l] <spider>``
+* Syntax: ``jscrapy check [-l] <spider>``
 * Requires project: *yes*
 
 Run contract checks.
@@ -291,7 +291,7 @@ Run contract checks.
 
 Usage examples::
 
-    $ scrapy check -l
+    $ jscrapy check -l
     first_spider
       * parse
       * parse_item
@@ -299,7 +299,7 @@ Usage examples::
       * parse
       * parse_item
 
-    $ scrapy check
+    $ jscrapy check
     [FAILED] first_spider:parse_item
     >>> 'RetailPricex' field is missing
 
@@ -313,7 +313,7 @@ Usage examples::
 list
 ----
 
-* Syntax: ``scrapy list``
+* Syntax: ``jscrapy list``
 * Requires project: *yes*
 
 List all available spiders in the current project. The output is one spider per
@@ -321,7 +321,7 @@ line.
 
 Usage example::
 
-    $ scrapy list
+    $ jscrapy list
     spider1
     spider2
 
@@ -330,7 +330,7 @@ Usage example::
 edit
 ----
 
-* Syntax: ``scrapy edit <spider>``
+* Syntax: ``jscrapy edit <spider>``
 * Requires project: *yes*
 
 Edit the given spider using the editor defined in the ``EDITOR`` environment
@@ -342,14 +342,14 @@ debug spiders.
 
 Usage example::
 
-    $ scrapy edit spider1
+    $ jscrapy edit spider1
 
 .. command:: fetch
 
 fetch
 -----
 
-* Syntax: ``scrapy fetch <url>``
+* Syntax: ``jscrapy fetch <url>``
 * Requires project: *no*
 
 Downloads the given URL using the Scrapy downloader and writes the contents to
@@ -374,10 +374,10 @@ Supported options:
 
 Usage examples::
 
-    $ scrapy fetch --nolog http://www.example.com/some/page.html
+    $ jscrapy fetch --nolog http://www.example.com/some/page.html
     [ ... html content here ... ]
 
-    $ scrapy fetch --nolog --headers http://www.example.com/
+    $ jscrapy fetch --nolog --headers http://www.example.com/
     {'Accept-Ranges': ['bytes'],
      'Age': ['1263   '],
      'Connection': ['close     '],
@@ -393,7 +393,7 @@ Usage examples::
 view
 ----
 
-* Syntax: ``scrapy view <url>``
+* Syntax: ``jscrapy view <url>``
 * Requires project: *no*
 
 Opens the given URL in a browser, as your Scrapy spider would "see" it.
@@ -408,7 +408,7 @@ Supported options:
 
 Usage example::
 
-    $ scrapy view http://www.example.com/some/page.html
+    $ jscrapy view http://www.example.com/some/page.html
     [ ... browser starts ... ]
 
 .. command:: shell
@@ -416,7 +416,7 @@ Usage example::
 shell
 -----
 
-* Syntax: ``scrapy shell [url]``
+* Syntax: ``jscrapy shell [url]``
 * Requires project: *no*
 
 Starts the Scrapy shell for the given URL (if given) or empty if no URL is
@@ -436,19 +436,19 @@ Supported options:
 
 Usage example::
 
-    $ scrapy shell http://www.example.com/some/page.html
-    [ ... scrapy shell starts ... ]
+    $ jscrapy shell http://www.example.com/some/page.html
+    [ ... jscrapy shell starts ... ]
 
-    $ scrapy shell --nolog http://www.example.com/ -c '(response.status, response.url)'
+    $ jscrapy shell --nolog http://www.example.com/ -c '(response.status, response.url)'
     (200, 'http://www.example.com/')
 
     # shell follows HTTP redirects by default
-    $ scrapy shell --nolog http://httpbin.org/redirect-to?url=http%3A%2F%2Fexample.com%2F -c '(response.status, response.url)'
+    $ jscrapy shell --nolog http://httpbin.org/redirect-to?url=http%3A%2F%2Fexample.com%2F -c '(response.status, response.url)'
     (200, 'http://example.com/')
 
     # you can disable this with --no-redirect
     # (only for the URL passed as command line argument)
-    $ scrapy shell --no-redirect --nolog http://httpbin.org/redirect-to?url=http%3A%2F%2Fexample.com%2F -c '(response.status, response.url)'
+    $ jscrapy shell --no-redirect --nolog http://httpbin.org/redirect-to?url=http%3A%2F%2Fexample.com%2F -c '(response.status, response.url)'
     (302, 'http://httpbin.org/redirect-to?url=http%3A%2F%2Fexample.com%2F')
 
 
@@ -457,7 +457,7 @@ Usage example::
 parse
 -----
 
-* Syntax: ``scrapy parse <url> [options]``
+* Syntax: ``jscrapy parse <url> [options]``
 * Requires project: *yes*
 
 Fetches the given URL and parses it with the spider that handles it, using the
@@ -480,7 +480,7 @@ Supported options:
 
 * ``--pipelines``: process items through pipelines
 
-* ``--rules`` or ``-r``: use :class:`~scrapy.spiders.CrawlSpider`
+* ``--rules`` or ``-r``: use :class:`~jscrapy.spiders.CrawlSpider`
   rules to discover the callback (i.e. spider method) to use for parsing the
   response
 
@@ -503,8 +503,8 @@ Supported options:
 
 Usage example::
 
-    $ scrapy parse http://www.example.com/ -c parse_item
-    [ ... scrapy log lines crawling example.com spider ... ]
+    $ jscrapy parse http://www.example.com/ -c parse_item
+    [ ... jscrapy log lines crawling example.com spider ... ]
 
     >>> STATUS DEPTH LEVEL 1 <<<
     # Scraped Items  ------------------------------------------------------------
@@ -523,7 +523,7 @@ Usage example::
 settings
 --------
 
-* Syntax: ``scrapy settings [options]``
+* Syntax: ``jscrapy settings [options]``
 * Requires project: *no*
 
 Get the value of a Scrapy setting.
@@ -533,9 +533,9 @@ show the default Scrapy value for that setting.
 
 Example usage::
 
-    $ scrapy settings --get BOT_NAME
-    scrapybot
-    $ scrapy settings --get DOWNLOAD_DELAY
+    $ jscrapy settings --get BOT_NAME
+    jscrapybot
+    $ jscrapy settings --get DOWNLOAD_DELAY
     0
 
 .. command:: runspider
@@ -543,7 +543,7 @@ Example usage::
 runspider
 ---------
 
-* Syntax: ``scrapy runspider <spider_file.py>``
+* Syntax: ``jscrapy runspider <spider_file.py>``
 * Requires project: *no*
 
 Run a spider self-contained in a Python file, without having to create a
@@ -551,7 +551,7 @@ project.
 
 Example usage::
 
-    $ scrapy runspider myspider.py
+    $ jscrapy runspider myspider.py
     [ ... spider starts crawling ... ]
 
 .. command:: version
@@ -559,7 +559,7 @@ Example usage::
 version
 -------
 
-* Syntax: ``scrapy version [-v]``
+* Syntax: ``jscrapy version [-v]``
 * Requires project: *no*
 
 Prints the Scrapy version. If used with ``-v`` it also prints Python, Twisted
@@ -570,7 +570,7 @@ and Platform info, which is useful for bug reports.
 bench
 -----
 
-* Syntax: ``scrapy bench``
+* Syntax: ``jscrapy bench``
 * Requires project: *no*
 
 Run a quick benchmark test. :ref:`benchmarking`.
@@ -580,9 +580,9 @@ Custom project commands
 
 You can also add your custom project commands by using the
 :setting:`COMMANDS_MODULE` setting. See the Scrapy commands in
-`scrapy/commands`_ for examples on how to implement your commands.
+`jscrapy/commands`_ for examples on how to implement your commands.
 
-.. _scrapy/commands: https://github.com/scrapy/scrapy/tree/master/scrapy/commands
+.. _jscrapy/commands: https://github.com/jscrapy/jscrapy/tree/master/jscrapy/commands
 .. setting:: COMMANDS_MODULE
 
 COMMANDS_MODULE
@@ -599,13 +599,13 @@ Example:
 
     COMMANDS_MODULE = 'mybot.commands'
 
-.. _Deploying your project: https://scrapyd.readthedocs.io/en/latest/deploy.html
+.. _Deploying your project: https://jscrapyd.readthedocs.io/en/latest/deploy.html
 
 Register commands via setup.py entry points
 -------------------------------------------
 
 You can also add Scrapy commands from an external library by adding a
-``scrapy.commands`` section in the entry points of the library ``setup.py``
+``jscrapy.commands`` section in the entry points of the library ``setup.py``
 file.
 
 The following example adds ``my_command`` command:
@@ -616,10 +616,10 @@ The following example adds ``my_command`` command:
 
   from setuptools import setup, find_packages
 
-  setup(name='scrapy-mymodule',
+  setup(name='jscrapy-mymodule',
     entry_points={
-      'scrapy.commands': [
-        'my_command=my_scrapy_module.commands:MyCommand',
+      'jscrapy.commands': [
+        'my_command=my_jscrapy_module.commands:MyCommand',
       ],
     },
    )

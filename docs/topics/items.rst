@@ -4,7 +4,7 @@
 Items
 =====
 
-.. module:: scrapy.item
+.. module:: jscrapy.item
    :synopsis: Item and Field classes
 
 The main goal in scraping is to extract structured data from unstructured
@@ -25,7 +25,7 @@ Scrapy supports the following types of items, via the `itemadapter`_ library:
 :ref:`dictionaries <dict-items>`, :ref:`Item objects <item-objects>`,
 :ref:`dataclass objects <dataclass-items>`, and :ref:`attrs objects <attrs-items>`.
 
-.. _itemadapter: https://github.com/scrapy/itemadapter
+.. _itemadapter: https://github.com/jscrapy/itemadapter
 
 .. _dict-items:
 
@@ -42,8 +42,8 @@ Item objects
 :class:`Item` provides a :class:`dict`-like API plus additional features that
 make it the most feature-complete item type:
 
-.. class:: scrapy.item.Item([arg])
-.. class:: scrapy.Item([arg])
+.. class:: jscrapy.item.Item([arg])
+.. class:: jscrapy.Item([arg])
 
     :class:`Item` objects replicate the standard :class:`dict` API, including
     its ``__init__`` method.
@@ -78,7 +78,7 @@ make it the most feature-complete item type:
 
 Example::
 
-    from scrapy.item import Item, Field
+    from jscrapy.item import Item, Field
 
     class CustomItem(Item):
         one_field = Field()
@@ -154,14 +154,14 @@ Declaring Item subclasses
 Item subclasses are declared using a simple class definition syntax and
 :class:`Field` objects. Here is an example::
 
-    import scrapy
+    import jscrapy
 
-    class Product(scrapy.Item):
-        name = scrapy.Field()
-        price = scrapy.Field()
-        stock = scrapy.Field()
-        tags = scrapy.Field()
-        last_updated = scrapy.Field(serializer=str)
+    class Product(jscrapy.Item):
+        name = jscrapy.Field()
+        price = jscrapy.Field()
+        stock = jscrapy.Field()
+        tags = jscrapy.Field()
+        last_updated = jscrapy.Field(serializer=str)
 
 .. note:: Those familiar with `Django`_ will notice that Scrapy Items are
    declared similar to `Django Models`_, except that Scrapy Items are much
@@ -195,8 +195,8 @@ It's important to note that the :class:`Field` objects used to declare the item
 do not stay assigned as class attributes. Instead, they can be accessed through
 the :attr:`Item.fields` attribute.
 
-.. class:: scrapy.item.Field([arg])
-.. class:: scrapy.Field([arg])
+.. class:: jscrapy.item.Field([arg])
+.. class:: jscrapy.Field([arg])
 
     The :class:`Field` class is just an alias to the built-in :class:`dict` class and
     doesn't provide any extra functionality or attributes. In other words,
@@ -314,11 +314,11 @@ If that is not the desired behavior, use a deep copy instead.
 See :mod:`copy` for more information.
 
 To create a shallow copy of an item, you can either call
-:meth:`~scrapy.Item.copy` on an existing item
+:meth:`~jscrapy.Item.copy` on an existing item
 (``product2 = product.copy()``) or instantiate your item class from an existing
 item (``product2 = Product(product)``).
 
-To create a deep copy, call :meth:`~scrapy.Item.deepcopy` instead
+To create a deep copy, call :meth:`~jscrapy.Item.deepcopy` instead
 (``product2 = product.deepcopy()``).
 
 
@@ -350,14 +350,14 @@ fields) by declaring a subclass of your original Item.
 For example::
 
     class DiscountedProduct(Product):
-        discount_percent = scrapy.Field(serializer=str)
-        discount_expiration_date = scrapy.Field()
+        discount_percent = jscrapy.Field(serializer=str)
+        discount_expiration_date = jscrapy.Field()
 
 You can also extend field metadata by using the previous field metadata and
 appending more values, or changing existing values, like this::
 
     class SpecificProduct(Product):
-        name = scrapy.Field(Product.fields['name'], serializer=my_serializer)
+        name = jscrapy.Field(Product.fields['name'], serializer=my_serializer)
 
 That adds (or replaces) the ``serializer`` metadata key for the ``name`` field,
 keeping all the previously existing metadata values.

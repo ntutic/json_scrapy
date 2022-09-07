@@ -2,16 +2,16 @@ import pickle
 import sys
 
 from queuelib.tests import test_queue as t
-from scrapy.squeues import (
+from jscrapy.squeues import (
     _MarshalFifoSerializationDiskQueue,
     _MarshalLifoSerializationDiskQueue,
     _PickleFifoSerializationDiskQueue,
     _PickleLifoSerializationDiskQueue,
 )
-from scrapy.item import Item, Field
-from scrapy.http import Request
-from scrapy.loader import ItemLoader
-from scrapy.selector import Selector
+from jscrapy.item import Item, Field
+from jscrapy.http import Request
+from jscrapy.loader import ItemLoader
+from jscrapy.selector import Selector
 
 
 class TestItem(Item):

@@ -3,11 +3,11 @@ import unittest
 
 import queuelib
 
-from scrapy.http.request import Request
-from scrapy.pqueues import ScrapyPriorityQueue, DownloaderAwarePriorityQueue
-from scrapy.spiders import Spider
-from scrapy.squeues import FifoMemoryQueue
-from scrapy.utils.test import get_crawler
+from jscrapy.http.request import Request
+from jscrapy.pqueues import ScrapyPriorityQueue, DownloaderAwarePriorityQueue
+from jscrapy.spiders import Spider
+from jscrapy.squeues import FifoMemoryQueue
+from jscrapy.utils.test import get_crawler
 
 from tests.test_scheduler import MockDownloader, MockEngine
 

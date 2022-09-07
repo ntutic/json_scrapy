@@ -34,7 +34,7 @@ Each item pipeline component is a Python class that must implement the following
 
    :meth:`process_item` must either: return an :ref:`item object <item-types>`,
    return a :class:`~twisted.internet.defer.Deferred` or raise a
-   :exc:`~scrapy.exceptions.DropItem` exception.
+   :exc:`~jscrapy.exceptions.DropItem` exception.
 
    Dropped items are no longer processed by further pipeline components.
 
@@ -42,7 +42,7 @@ Each item pipeline component is a Python class that must implement the following
    :type item: :ref:`item object <item-types>`
 
    :param spider: the spider which scraped the item
-   :type spider: :class:`~scrapy.Spider` object
+   :type spider: :class:`~jscrapy.Spider` object
 
 Additionally, they may also implement the following methods:
 
@@ -51,25 +51,25 @@ Additionally, they may also implement the following methods:
    This method is called when the spider is opened.
 
    :param spider: the spider which was opened
-   :type spider: :class:`~scrapy.Spider` object
+   :type spider: :class:`~jscrapy.Spider` object
 
 .. method:: close_spider(self, spider)
 
    This method is called when the spider is closed.
 
    :param spider: the spider which was closed
-   :type spider: :class:`~scrapy.Spider` object
+   :type spider: :class:`~jscrapy.Spider` object
 
 .. classmethod:: from_crawler(cls, crawler)
 
    If present, this class method is called to create a pipeline instance
-   from a :class:`~scrapy.crawler.Crawler`. It must return a new instance
+   from a :class:`~jscrapy.crawler.Crawler`. It must return a new instance
    of the pipeline. Crawler object provides access to all Scrapy core
    components like settings and signals; it is a way for pipeline to
    access them and hook its functionality into Scrapy.
 
    :param crawler: crawler that uses this pipeline
-   :type crawler: :class:`~scrapy.crawler.Crawler` object
+   :type crawler: :class:`~jscrapy.crawler.Crawler` object
 
 
 Item pipeline example
@@ -84,7 +84,7 @@ Let's take a look at the following hypothetical pipeline that adjusts the
 contain a price::
 
     from itemadapter import ItemAdapter
-    from scrapy.exceptions import DropItem
+    from jscrapy.exceptions import DropItem
     class PricePipeline:
 
         vat_factor = 1.15
@@ -142,7 +142,7 @@ method and how to clean up the resources properly.::
 
     class MongoPipeline:
 
-        collection_name = 'scrapy_items'
+        collection_name = 'jscrapy_items'
 
         def __init__(self, mongo_uri, mongo_db):
             self.mongo_uri = mongo_uri
@@ -188,9 +188,9 @@ item.
     import hashlib
     from urllib.parse import quote
 
-    import scrapy
+    import jscrapy
     from itemadapter import ItemAdapter
-    from scrapy.utils.defer import maybe_deferred_to_future
+    from jscrapy.utils.defer import maybe_deferred_to_future
 
 
     class ScreenshotPipeline:
@@ -203,7 +203,7 @@ item.
             adapter = ItemAdapter(item)
             encoded_item_url = quote(adapter["url"])
             screenshot_url = self.SPLASH_URL.format(encoded_item_url)
-            request = scrapy.Request(screenshot_url)
+            request = jscrapy.Request(screenshot_url)
             response = await maybe_deferred_to_future(spider.crawler.engine.download(request, spider))
 
             if response.status != 200:
@@ -232,7 +232,7 @@ returns multiples items with the same id::
 
 
     from itemadapter import ItemAdapter
-    from scrapy.exceptions import DropItem
+    from jscrapy.exceptions import DropItem
 
     class DuplicatesPipeline:
 

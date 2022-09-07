@@ -1,9 +1,9 @@
 from twisted.internet import defer
 from twisted.trial.unittest import TestCase
 
-from scrapy import Request, signals
-from scrapy.http.response import Response
-from scrapy.utils.test import get_crawler
+from jscrapy import Request, signals
+from jscrapy.http.response import Response
+from jscrapy.utils.test import get_crawler
 
 from testfixtures import LogCapture
 
@@ -133,7 +133,7 @@ class CrawlTestCase(TestCase):
         self.assertEqual(signal_params["request"].url, OVERRIDEN_URL)
 
         log.check_present(
-            ("scrapy.core.engine", "DEBUG", f"Crawled (200) <GET {OVERRIDEN_URL}> (referer: None)"),
+            ("jscrapy.core.engine", "DEBUG", f"Crawled (200) <GET {OVERRIDEN_URL}> (referer: None)"),
         )
 
     @defer.inlineCallbacks

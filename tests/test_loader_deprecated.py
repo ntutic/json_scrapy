@@ -1,6 +1,6 @@
 """
 These tests are kept as references from the ones that were ported to a itemloaders library.
-Once we remove the references from scrapy, we can remove these tests.
+Once we remove the references from jscrapy, we can remove these tests.
 """
 
 import unittest
@@ -10,11 +10,11 @@ from functools import partial
 from itemloaders.processors import (Compose, Identity, Join,
                                     MapCompose, SelectJmes, TakeFirst)
 
-from scrapy.item import Item, Field
-from scrapy.loader import ItemLoader
-from scrapy.loader.common import wrap_loader_context
-from scrapy.utils.deprecate import ScrapyDeprecationWarning
-from scrapy.utils.misc import extract_regex
+from jscrapy.item import Item, Field
+from jscrapy.loader import ItemLoader
+from jscrapy.loader.common import wrap_loader_context
+from jscrapy.utils.deprecate import ScrapyDeprecationWarning
+from jscrapy.utils.misc import extract_regex
 
 
 # test items
@@ -187,7 +187,7 @@ class BasicItemLoaderTest(unittest.TestCase):
             return None if x == 'world' else x
 
         proc = MapCompose(filter_world, str.upper)
-        self.assertEqual(proc(['hello', 'world', 'this', 'is', 'scrapy']),
+        self.assertEqual(proc(['hello', 'world', 'this', 'is', 'jscrapy']),
                          ['HELLO', 'THIS', 'IS', 'SCRAPY'])
 
     def test_map_compose_filter_multil(self):
@@ -218,8 +218,8 @@ class BasicItemLoaderTest(unittest.TestCase):
             url_in = MapCompose(lambda v: v.lower())
 
         il = ChildItemLoader()
-        il.add_value('url', 'HTTP://scrapy.ORG')
-        self.assertEqual(il.get_output_value('url'), ['http://scrapy.org'])
+        il.add_value('url', 'HTTP://jscrapy.ORG')
+        self.assertEqual(il.get_output_value('url'), ['http://jscrapy.org'])
         il.add_value('name', 'marta')
         self.assertEqual(il.get_output_value('name'), ['Marta'])
 
@@ -228,7 +228,7 @@ class BasicItemLoaderTest(unittest.TestCase):
             summary_in = MapCompose(lambda v: v)
 
         il = ChildChildItemLoader()
-        il.add_value('url', 'http://scrapy.org')
+        il.add_value('url', 'http://jscrapy.org')
         self.assertEqual(il.get_output_value('url'), ['HTTP://SCRAPY.ORG'])
         il.add_value('name', 'marta')
         self.assertEqual(il.get_output_value('name'), ['Marta'])
@@ -626,7 +626,7 @@ class ProcessorsTest(unittest.TestCase):
         def filter_world(x):
             return None if x == 'world' else x
         proc = MapCompose(filter_world, str.upper)
-        self.assertEqual(proc(['hello', 'world', 'this', 'is', 'scrapy']),
+        self.assertEqual(proc(['hello', 'world', 'this', 'is', 'jscrapy']),
                          ['HELLO', 'THIS', 'IS', 'SCRAPY'])
         proc = MapCompose(filter_world, str.upper)
         self.assertEqual(proc(None), [])

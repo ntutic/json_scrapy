@@ -34,11 +34,11 @@ def get_setting_name_and_refid(node):
     return info.replace('; setting', ''), refid
 
 
-def collect_scrapy_settings_refs(app, doctree):
+def collect_jscrapy_settings_refs(app, doctree):
     env = app.builder.env
 
-    if not hasattr(env, 'scrapy_all_settings'):
-        env.scrapy_all_settings = []
+    if not hasattr(env, 'jscrapy_all_settings'):
+        env.jscrapy_all_settings = []
 
     for node in doctree.traverse(is_setting_index):
         targetnode = get_setting_target(node)
@@ -46,7 +46,7 @@ def collect_scrapy_settings_refs(app, doctree):
 
         setting_name, refid = get_setting_name_and_refid(node)
 
-        env.scrapy_all_settings.append({
+        env.jscrapy_all_settings.append({
             'docname': env.docname,
             'setting_name': setting_name,
             'refid': refid,
@@ -72,7 +72,7 @@ def replace_settingslist_nodes(app, doctree, fromdocname):
     for node in doctree.traverse(settingslist_node):
         settings_list = nodes.bullet_list()
         settings_list.extend([make_setting_element(d, app, fromdocname)
-                              for d in sorted(env.scrapy_all_settings,
+                              for d in sorted(env.jscrapy_all_settings,
                                               key=itemgetter('setting_name'))
                               if fromdocname != d['docname']])
         node.replace_self(settings_list)
@@ -107,33 +107,33 @@ def setup(app):
     app.add_node(settingslist_node)
     app.add_directive('settingslist', SettingsListDirective)
 
-    app.connect('doctree-read', collect_scrapy_settings_refs)
+    app.connect('doctree-read', collect_jscrapy_settings_refs)
     app.connect('doctree-resolved', replace_settingslist_nodes)
 
 
 def source_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
-    ref = 'https://github.com/scrapy/scrapy/blob/master/' + text
+    ref = 'https://github.com/jscrapy/jscrapy/blob/master/' + text
     set_classes(options)
     node = nodes.reference(rawtext, text, refuri=ref, **options)
     return [node], []
 
 
 def issue_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
-    ref = 'https://github.com/scrapy/scrapy/issues/' + text
+    ref = 'https://github.com/jscrapy/jscrapy/issues/' + text
     set_classes(options)
     node = nodes.reference(rawtext, 'issue ' + text, refuri=ref, **options)
     return [node], []
 
 
 def commit_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
-    ref = 'https://github.com/scrapy/scrapy/commit/' + text
+    ref = 'https://github.com/jscrapy/jscrapy/commit/' + text
     set_classes(options)
     node = nodes.reference(rawtext, 'commit ' + text, refuri=ref, **options)
     return [node], []
 
 
 def rev_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
-    ref = 'http://hg.scrapy.org/scrapy/changeset/' + text
+    ref = 'http://hg.jscrapy.org/jscrapy/changeset/' + text
     set_classes(options)
     node = nodes.reference(rawtext, 'r' + text, refuri=ref, **options)
     return [node], []

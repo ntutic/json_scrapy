@@ -2,11 +2,11 @@ from urllib.parse import urlparse
 from unittest import TestCase
 import warnings
 
-from scrapy.http import Response, Request
-from scrapy.settings import Settings
-from scrapy.spiders import Spider
-from scrapy.downloadermiddlewares.redirect import RedirectMiddleware
-from scrapy.spidermiddlewares.referer import (
+from jscrapy.http import Response, Request
+from jscrapy.settings import Settings
+from jscrapy.spiders import Spider
+from jscrapy.downloadermiddlewares.redirect import RedirectMiddleware
+from jscrapy.spidermiddlewares.referer import (
     DefaultReferrerPolicy,
     NoReferrerPolicy,
     NoReferrerWhenDowngradePolicy,
@@ -36,7 +36,7 @@ class TestRefererMiddleware(TestCase):
     resp_headers = {}
     settings = {}
     scenarii = [
-        ('http://scrapytest.org', 'http://scrapytest.org/', b'http://scrapytest.org'),
+        ('http://jscrapytest.org', 'http://jscrapytest.org/', b'http://jscrapytest.org'),
     ]
 
     def setUp(self):
@@ -66,31 +66,31 @@ class MixinDefault:
     with some additional filtering of s3://
     """
     scenarii = [
-        ('https://example.com/', 'https://scrapy.org/', b'https://example.com/'),
-        ('http://example.com/', 'http://scrapy.org/', b'http://example.com/'),
-        ('http://example.com/', 'https://scrapy.org/', b'http://example.com/'),
-        ('https://example.com/', 'http://scrapy.org/', None),
+        ('https://example.com/', 'https://jscrapy.org/', b'https://example.com/'),
+        ('http://example.com/', 'http://jscrapy.org/', b'http://example.com/'),
+        ('http://example.com/', 'https://jscrapy.org/', b'http://example.com/'),
+        ('https://example.com/', 'http://jscrapy.org/', None),
 
         # no credentials leak
-        ('http://user:password@example.com/', 'https://scrapy.org/', b'http://example.com/'),
+        ('http://user:password@example.com/', 'https://jscrapy.org/', b'http://example.com/'),
 
         # no referrer leak for local schemes
-        ('file:///home/path/to/somefile.html', 'https://scrapy.org/', None),
-        ('file:///home/path/to/somefile.html', 'http://scrapy.org/', None),
+        ('file:///home/path/to/somefile.html', 'https://jscrapy.org/', None),
+        ('file:///home/path/to/somefile.html', 'http://jscrapy.org/', None),
 
         # no referrer leak for s3 origins
-        ('s3://mybucket/path/to/data.csv', 'https://scrapy.org/', None),
-        ('s3://mybucket/path/to/data.csv', 'http://scrapy.org/', None),
+        ('s3://mybucket/path/to/data.csv', 'https://jscrapy.org/', None),
+        ('s3://mybucket/path/to/data.csv', 'http://jscrapy.org/', None),
     ]
 
 
 class MixinNoReferrer:
     scenarii = [
         ('https://example.com/page.html', 'https://example.com/', None),
-        ('http://www.example.com/', 'https://scrapy.org/', None),
-        ('http://www.example.com/', 'http://scrapy.org/', None),
-        ('https://www.example.com/', 'http://scrapy.org/', None),
-        ('file:///home/path/to/somefile.html', 'http://scrapy.org/', None),
+        ('http://www.example.com/', 'https://jscrapy.org/', None),
+        ('http://www.example.com/', 'http://jscrapy.org/', None),
+        ('https://www.example.com/', 'http://jscrapy.org/', None),
+        ('file:///home/path/to/somefile.html', 'http://jscrapy.org/', None),
     ]
 
 
@@ -98,25 +98,25 @@ class MixinNoReferrerWhenDowngrade:
     scenarii = [
         # TLS to TLS: send non-empty referrer
         ('https://example.com/page.html', 'https://not.example.com/', b'https://example.com/page.html'),
-        ('https://example.com/page.html', 'https://scrapy.org/', b'https://example.com/page.html'),
-        ('https://example.com:443/page.html', 'https://scrapy.org/', b'https://example.com/page.html'),
-        ('https://example.com:444/page.html', 'https://scrapy.org/', b'https://example.com:444/page.html'),
-        ('ftps://example.com/urls.zip', 'https://scrapy.org/', b'ftps://example.com/urls.zip'),
+        ('https://example.com/page.html', 'https://jscrapy.org/', b'https://example.com/page.html'),
+        ('https://example.com:443/page.html', 'https://jscrapy.org/', b'https://example.com/page.html'),
+        ('https://example.com:444/page.html', 'https://jscrapy.org/', b'https://example.com:444/page.html'),
+        ('ftps://example.com/urls.zip', 'https://jscrapy.org/', b'ftps://example.com/urls.zip'),
 
         # TLS to non-TLS: do not send referrer
         ('https://example.com/page.html', 'http://not.example.com/', None),
-        ('https://example.com/page.html', 'http://scrapy.org/', None),
-        ('ftps://example.com/urls.zip', 'http://scrapy.org/', None),
+        ('https://example.com/page.html', 'http://jscrapy.org/', None),
+        ('ftps://example.com/urls.zip', 'http://jscrapy.org/', None),
 
         # non-TLS to TLS or non-TLS: send referrer
         ('http://example.com/page.html', 'https://not.example.com/', b'http://example.com/page.html'),
-        ('http://example.com/page.html', 'https://scrapy.org/', b'http://example.com/page.html'),
-        ('http://example.com:8080/page.html', 'https://scrapy.org/', b'http://example.com:8080/page.html'),
+        ('http://example.com/page.html', 'https://jscrapy.org/', b'http://example.com/page.html'),
+        ('http://example.com:8080/page.html', 'https://jscrapy.org/', b'http://example.com:8080/page.html'),
         ('http://example.com:80/page.html', 'http://not.example.com/', b'http://example.com/page.html'),
-        ('http://example.com/page.html', 'http://scrapy.org/', b'http://example.com/page.html'),
-        ('http://example.com:443/page.html', 'http://scrapy.org/', b'http://example.com:443/page.html'),
-        ('ftp://example.com/urls.zip', 'http://scrapy.org/', b'ftp://example.com/urls.zip'),
-        ('ftp://example.com/urls.zip', 'https://scrapy.org/', b'ftp://example.com/urls.zip'),
+        ('http://example.com/page.html', 'http://jscrapy.org/', b'http://example.com/page.html'),
+        ('http://example.com:443/page.html', 'http://jscrapy.org/', b'http://example.com:443/page.html'),
+        ('ftp://example.com/urls.zip', 'http://jscrapy.org/', b'ftp://example.com/urls.zip'),
+        ('ftp://example.com/urls.zip', 'https://jscrapy.org/', b'ftp://example.com/urls.zip'),
 
         # test for user/password stripping
         ('http://user:password@example.com/page.html', 'https://not.example.com/', b'http://example.com/page.html'),
@@ -168,12 +168,12 @@ class MixinOrigin:
     scenarii = [
         # TLS or non-TLS to TLS or non-TLS: referrer origin is sent (yes, even for downgrades)
         ('https://example.com/page.html', 'https://example.com/not-page.html', b'https://example.com/'),
-        ('https://example.com/page.html', 'https://scrapy.org', b'https://example.com/'),
-        ('https://example.com/page.html', 'http://scrapy.org', b'https://example.com/'),
-        ('http://example.com/page.html', 'http://scrapy.org', b'http://example.com/'),
+        ('https://example.com/page.html', 'https://jscrapy.org', b'https://example.com/'),
+        ('https://example.com/page.html', 'http://jscrapy.org', b'https://example.com/'),
+        ('http://example.com/page.html', 'http://jscrapy.org', b'http://example.com/'),
 
         # test for user/password stripping
-        ('https://user:password@example.com/page.html', 'http://scrapy.org', b'https://example.com/'),
+        ('https://user:password@example.com/page.html', 'http://jscrapy.org', b'https://example.com/'),
     ]
 
 
@@ -181,18 +181,18 @@ class MixinStrictOrigin:
     scenarii = [
         # TLS or non-TLS to TLS or non-TLS: referrer origin is sent but not for downgrades
         ('https://example.com/page.html', 'https://example.com/not-page.html', b'https://example.com/'),
-        ('https://example.com/page.html', 'https://scrapy.org', b'https://example.com/'),
-        ('http://example.com/page.html', 'http://scrapy.org', b'http://example.com/'),
+        ('https://example.com/page.html', 'https://jscrapy.org', b'https://example.com/'),
+        ('http://example.com/page.html', 'http://jscrapy.org', b'http://example.com/'),
 
         # downgrade: send nothing
-        ('https://example.com/page.html', 'http://scrapy.org', None),
+        ('https://example.com/page.html', 'http://jscrapy.org', None),
 
         # upgrade: send origin
-        ('http://example.com/page.html', 'https://scrapy.org', b'http://example.com/'),
+        ('http://example.com/page.html', 'https://jscrapy.org', b'http://example.com/'),
 
         # test for user/password stripping
-        ('https://user:password@example.com/page.html', 'https://scrapy.org', b'https://example.com/'),
-        ('https://user:password@example.com/page.html', 'http://scrapy.org', None),
+        ('https://user:password@example.com/page.html', 'https://jscrapy.org', b'https://example.com/'),
+        ('https://user:password@example.com/page.html', 'http://jscrapy.org', None),
     ]
 
 
@@ -211,7 +211,7 @@ class MixinOriginWhenCrossOrigin:
         ),
 
         # Different host: send origin as referrer
-        ('https://example2.com/page.html', 'https://scrapy.org/otherpage.html', b'https://example2.com/'),
+        ('https://example2.com/page.html', 'https://jscrapy.org/otherpage.html', b'https://example2.com/'),
         ('https://example2.com/page.html', 'https://not.example2.com/otherpage.html', b'https://example2.com/'),
         ('http://example2.com/page.html', 'http://not.example2.com/otherpage.html', b'http://example2.com/'),
         # exact match required
@@ -258,7 +258,7 @@ class MixinStrictOriginWhenCrossOrigin:
         ),
 
         # Different host: send origin as referrer
-        ('https://example2.com/page.html', 'https://scrapy.org/otherpage.html', b'https://example2.com/'),
+        ('https://example2.com/page.html', 'https://jscrapy.org/otherpage.html', b'https://example2.com/'),
         ('https://example2.com/page.html', 'https://not.example2.com/otherpage.html', b'https://example2.com/'),
         ('http://example2.com/page.html', 'http://not.example2.com/otherpage.html', b'http://example2.com/'),
         # exact match required
@@ -300,25 +300,25 @@ class MixinUnsafeUrl:
         # TLS to TLS: send referrer
         ('https://example.com/sekrit.html', 'http://not.example.com/', b'https://example.com/sekrit.html'),
         ('https://example1.com/page.html', 'https://not.example1.com/', b'https://example1.com/page.html'),
-        ('https://example1.com/page.html', 'https://scrapy.org/', b'https://example1.com/page.html'),
-        ('https://example1.com:443/page.html', 'https://scrapy.org/', b'https://example1.com/page.html'),
-        ('https://example1.com:444/page.html', 'https://scrapy.org/', b'https://example1.com:444/page.html'),
-        ('ftps://example1.com/urls.zip', 'https://scrapy.org/', b'ftps://example1.com/urls.zip'),
+        ('https://example1.com/page.html', 'https://jscrapy.org/', b'https://example1.com/page.html'),
+        ('https://example1.com:443/page.html', 'https://jscrapy.org/', b'https://example1.com/page.html'),
+        ('https://example1.com:444/page.html', 'https://jscrapy.org/', b'https://example1.com:444/page.html'),
+        ('ftps://example1.com/urls.zip', 'https://jscrapy.org/', b'ftps://example1.com/urls.zip'),
 
         # TLS to non-TLS: send referrer (yes, it's unsafe)
         ('https://example2.com/page.html', 'http://not.example2.com/', b'https://example2.com/page.html'),
-        ('https://example2.com/page.html', 'http://scrapy.org/', b'https://example2.com/page.html'),
-        ('ftps://example2.com/urls.zip', 'http://scrapy.org/', b'ftps://example2.com/urls.zip'),
+        ('https://example2.com/page.html', 'http://jscrapy.org/', b'https://example2.com/page.html'),
+        ('ftps://example2.com/urls.zip', 'http://jscrapy.org/', b'ftps://example2.com/urls.zip'),
 
         # non-TLS to TLS or non-TLS: send referrer (yes, it's unsafe)
         ('http://example3.com/page.html', 'https://not.example3.com/', b'http://example3.com/page.html'),
-        ('http://example3.com/page.html', 'https://scrapy.org/', b'http://example3.com/page.html'),
-        ('http://example3.com:8080/page.html', 'https://scrapy.org/', b'http://example3.com:8080/page.html'),
+        ('http://example3.com/page.html', 'https://jscrapy.org/', b'http://example3.com/page.html'),
+        ('http://example3.com:8080/page.html', 'https://jscrapy.org/', b'http://example3.com:8080/page.html'),
         ('http://example3.com:80/page.html', 'http://not.example3.com/', b'http://example3.com/page.html'),
-        ('http://example3.com/page.html', 'http://scrapy.org/', b'http://example3.com/page.html'),
-        ('http://example3.com:443/page.html', 'http://scrapy.org/', b'http://example3.com:443/page.html'),
-        ('ftp://example3.com/urls.zip', 'http://scrapy.org/', b'ftp://example3.com/urls.zip'),
-        ('ftp://example3.com/urls.zip', 'https://scrapy.org/', b'ftp://example3.com/urls.zip'),
+        ('http://example3.com/page.html', 'http://jscrapy.org/', b'http://example3.com/page.html'),
+        ('http://example3.com:443/page.html', 'http://jscrapy.org/', b'http://example3.com:443/page.html'),
+        ('ftp://example3.com/urls.zip', 'http://jscrapy.org/', b'ftp://example3.com/urls.zip'),
+        ('ftp://example3.com/urls.zip', 'https://jscrapy.org/', b'ftp://example3.com/urls.zip'),
 
         # test for user/password stripping
         (
@@ -328,7 +328,7 @@ class MixinUnsafeUrl:
         ),
         (
             'https://user:password@example4.com/page.html',
-            'http://scrapy.org/',
+            'http://jscrapy.org/',
             b'https://example4.com/page.html',
         ),
     ]
@@ -340,35 +340,35 @@ class TestRefererMiddlewareDefault(MixinDefault, TestRefererMiddleware):
 
 # --- Tests using settings to set policy using class path
 class TestSettingsNoReferrer(MixinNoReferrer, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.NoReferrerPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.NoReferrerPolicy'}
 
 
 class TestSettingsNoReferrerWhenDowngrade(MixinNoReferrerWhenDowngrade, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.NoReferrerWhenDowngradePolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.NoReferrerWhenDowngradePolicy'}
 
 
 class TestSettingsSameOrigin(MixinSameOrigin, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.SameOriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.SameOriginPolicy'}
 
 
 class TestSettingsOrigin(MixinOrigin, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.OriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.OriginPolicy'}
 
 
 class TestSettingsStrictOrigin(MixinStrictOrigin, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.StrictOriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.StrictOriginPolicy'}
 
 
 class TestSettingsOriginWhenCrossOrigin(MixinOriginWhenCrossOrigin, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'}
 
 
 class TestSettingsStrictOriginWhenCrossOrigin(MixinStrictOriginWhenCrossOrigin, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.StrictOriginWhenCrossOriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.StrictOriginWhenCrossOriginPolicy'}
 
 
 class TestSettingsUnsafeUrl(MixinUnsafeUrl, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.UnsafeUrlPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.UnsafeUrlPolicy'}
 
 
 class CustomPythonOrgPolicy(ReferrerPolicy):
@@ -387,12 +387,12 @@ class CustomPythonOrgPolicy(ReferrerPolicy):
 class TestSettingsCustomPolicy(TestRefererMiddleware):
     settings = {'REFERRER_POLICY': CustomPythonOrgPolicy}
     scenarii = [
-        ('https://example.com/', 'https://scrapy.org/', b'https://python.org/'),
-        ('http://example.com/', 'http://scrapy.org/', b'http://python.org/'),
-        ('http://example.com/', 'https://scrapy.org/', b'https://python.org/'),
-        ('https://example.com/', 'http://scrapy.org/', b'http://python.org/'),
-        ('file:///home/path/to/somefile.html', 'https://scrapy.org/', b'https://python.org/'),
-        ('file:///home/path/to/somefile.html', 'http://scrapy.org/', b'http://python.org/'),
+        ('https://example.com/', 'https://jscrapy.org/', b'https://python.org/'),
+        ('http://example.com/', 'http://jscrapy.org/', b'http://python.org/'),
+        ('http://example.com/', 'https://jscrapy.org/', b'https://python.org/'),
+        ('https://example.com/', 'http://jscrapy.org/', b'http://python.org/'),
+        ('file:///home/path/to/somefile.html', 'https://jscrapy.org/', b'https://python.org/'),
+        ('file:///home/path/to/somefile.html', 'http://jscrapy.org/', b'http://python.org/'),
 
     ]
 
@@ -435,17 +435,17 @@ class TestRequestMetaUnsafeUrl(MixinUnsafeUrl, TestRefererMiddleware):
 
 
 class TestRequestMetaPredecence001(MixinUnsafeUrl, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.SameOriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.SameOriginPolicy'}
     req_meta = {'referrer_policy': POLICY_UNSAFE_URL}
 
 
 class TestRequestMetaPredecence002(MixinNoReferrer, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.NoReferrerWhenDowngradePolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.NoReferrerWhenDowngradePolicy'}
     req_meta = {'referrer_policy': POLICY_NO_REFERRER}
 
 
 class TestRequestMetaPredecence003(MixinUnsafeUrl, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'}
     req_meta = {'referrer_policy': POLICY_UNSAFE_URL}
 
 
@@ -456,9 +456,9 @@ class TestRequestMetaSettingFallback(TestCase):
             # When an unknown policy is referenced in Request.meta
             # (here, a typo error),
             # the policy defined in settings takes precedence
-            {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'},
+            {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'},
             {},
-            {'referrer_policy': 'ssscrapy-default'},
+            {'referrer_policy': 'ssjscrapy-default'},
             OriginWhenCrossOriginPolicy,
             True
         ),
@@ -466,7 +466,7 @@ class TestRequestMetaSettingFallback(TestCase):
             # same as above but with string value for settings policy
             {'REFERRER_POLICY': 'origin-when-cross-origin'},
             {},
-            {'referrer_policy': 'ssscrapy-default'},
+            {'referrer_policy': 'ssjscrapy-default'},
             OriginWhenCrossOriginPolicy,
             True
         ),
@@ -476,7 +476,7 @@ class TestRequestMetaSettingFallback(TestCase):
             # and the settings' policy is applied
             {'REFERRER_POLICY': 'origin-when-cross-origin'},
             {'Referrer-Policy': 'unsafe-url'},
-            {'referrer_policy': 'ssscrapy-default'},
+            {'referrer_policy': 'ssjscrapy-default'},
             OriginWhenCrossOriginPolicy,
             True
         ),
@@ -503,7 +503,7 @@ class TestRequestMetaSettingFallback(TestCase):
 
     def test(self):
 
-        origin = 'http://www.scrapy.org'
+        origin = 'http://www.jscrapy.org'
         target = 'http://www.example.com'
 
         for settings, response_headers, request_meta, policy_class, check_warning in self.params[3:]:
@@ -562,17 +562,17 @@ class TestSettingsPolicyByName(TestCase):
 
 
 class TestPolicyHeaderPredecence001(MixinUnsafeUrl, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.SameOriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.SameOriginPolicy'}
     resp_headers = {'Referrer-Policy': POLICY_UNSAFE_URL.upper()}
 
 
 class TestPolicyHeaderPredecence002(MixinNoReferrer, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.NoReferrerWhenDowngradePolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.NoReferrerWhenDowngradePolicy'}
     resp_headers = {'Referrer-Policy': POLICY_NO_REFERRER.swapcase()}
 
 
 class TestPolicyHeaderPredecence003(MixinNoReferrerWhenDowngrade, TestRefererMiddleware):
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'}
     resp_headers = {'Referrer-Policy': POLICY_NO_REFERRER_WHEN_DOWNGRADE.title()}
 
 
@@ -580,44 +580,44 @@ class TestPolicyHeaderPredecence004(MixinNoReferrerWhenDowngrade, TestRefererMid
     """
     The empty string means "no-referrer-when-downgrade"
     """
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.OriginWhenCrossOriginPolicy'}
     resp_headers = {'Referrer-Policy': ''}
 
 
 class TestReferrerOnRedirect(TestRefererMiddleware):
 
-    settings = {'REFERRER_POLICY': 'scrapy.spidermiddlewares.referer.UnsafeUrlPolicy'}
+    settings = {'REFERRER_POLICY': 'jscrapy.spidermiddlewares.referer.UnsafeUrlPolicy'}
     scenarii = [
         (
-            'http://scrapytest.org/1',      # parent
-            'http://scrapytest.org/2',      # target
+            'http://jscrapytest.org/1',      # parent
+            'http://jscrapytest.org/2',      # target
             (
                 # redirections: code, URL
-                (301, 'http://scrapytest.org/3'),
-                (301, 'http://scrapytest.org/4'),
+                (301, 'http://jscrapytest.org/3'),
+                (301, 'http://jscrapytest.org/4'),
             ),
-            b'http://scrapytest.org/1',  # expected initial referer
-            b'http://scrapytest.org/1',  # expected referer for the redirection request
+            b'http://jscrapytest.org/1',  # expected initial referer
+            b'http://jscrapytest.org/1',  # expected referer for the redirection request
         ),
         (
-            'https://scrapytest.org/1',
-            'https://scrapytest.org/2',
+            'https://jscrapytest.org/1',
+            'https://jscrapytest.org/2',
             (
                 # redirecting to non-secure URL
-                (301, 'http://scrapytest.org/3'),
+                (301, 'http://jscrapytest.org/3'),
             ),
-            b'https://scrapytest.org/1',
-            b'https://scrapytest.org/1',
+            b'https://jscrapytest.org/1',
+            b'https://jscrapytest.org/1',
         ),
         (
-            'https://scrapytest.org/1',
-            'https://scrapytest.com/2',
+            'https://jscrapytest.org/1',
+            'https://jscrapytest.com/2',
             (
                 # redirecting to non-secure URL: different origin
-                (301, 'http://scrapytest.com/3'),
+                (301, 'http://jscrapytest.com/3'),
             ),
-            b'https://scrapytest.org/1',
-            b'https://scrapytest.org/1',
+            b'https://jscrapytest.org/1',
+            b'https://jscrapytest.org/1',
         ),
     ]
 
@@ -653,30 +653,30 @@ class TestReferrerOnRedirectNoReferrer(TestReferrerOnRedirect):
     settings = {'REFERRER_POLICY': 'no-referrer'}
     scenarii = [
         (
-            'http://scrapytest.org/1',      # parent
-            'http://scrapytest.org/2',      # target
+            'http://jscrapytest.org/1',      # parent
+            'http://jscrapytest.org/2',      # target
             (
                 # redirections: code, URL
-                (301, 'http://scrapytest.org/3'),
-                (301, 'http://scrapytest.org/4'),
+                (301, 'http://jscrapytest.org/3'),
+                (301, 'http://jscrapytest.org/4'),
             ),
             None,  # expected initial "Referer"
             None,  # expected "Referer" for the redirection request
         ),
         (
-            'https://scrapytest.org/1',
-            'https://scrapytest.org/2',
+            'https://jscrapytest.org/1',
+            'https://jscrapytest.org/2',
             (
-                (301, 'http://scrapytest.org/3'),
+                (301, 'http://jscrapytest.org/3'),
             ),
             None,
             None,
         ),
         (
-            'https://scrapytest.org/1',
+            'https://jscrapytest.org/1',
             'https://example.com/2',    # different origin
             (
-                (301, 'http://scrapytest.com/3'),
+                (301, 'http://jscrapytest.com/3'),
             ),
             None,
             None,
@@ -695,34 +695,34 @@ class TestReferrerOnRedirectSameOrigin(TestReferrerOnRedirect):
     settings = {'REFERRER_POLICY': 'same-origin'}
     scenarii = [
         (
-            'http://scrapytest.org/101',      # origin
-            'http://scrapytest.org/102',      # target
+            'http://jscrapytest.org/101',      # origin
+            'http://jscrapytest.org/102',      # target
             (
                 # redirections: code, URL
-                (301, 'http://scrapytest.org/103'),
-                (301, 'http://scrapytest.org/104'),
+                (301, 'http://jscrapytest.org/103'),
+                (301, 'http://jscrapytest.org/104'),
             ),
-            b'http://scrapytest.org/101',  # expected initial "Referer"
-            b'http://scrapytest.org/101',  # expected referer for the redirection request
+            b'http://jscrapytest.org/101',  # expected initial "Referer"
+            b'http://jscrapytest.org/101',  # expected referer for the redirection request
         ),
         (
-            'https://scrapytest.org/201',
-            'https://scrapytest.org/202',
+            'https://jscrapytest.org/201',
+            'https://jscrapytest.org/202',
             (
                 # redirecting from secure to non-secure URL == different origin
-                (301, 'http://scrapytest.org/203'),
+                (301, 'http://jscrapytest.org/203'),
             ),
-            b'https://scrapytest.org/201',
+            b'https://jscrapytest.org/201',
             None,
         ),
         (
-            'https://scrapytest.org/301',
-            'https://scrapytest.org/302',
+            'https://jscrapytest.org/301',
+            'https://jscrapytest.org/302',
             (
                 # different domain == different origin
                 (301, 'http://example.com/303'),
             ),
-            b'https://scrapytest.org/301',
+            b'https://jscrapytest.org/301',
             None,
         ),
     ]
@@ -740,60 +740,60 @@ class TestReferrerOnRedirectStrictOrigin(TestReferrerOnRedirect):
     settings = {'REFERRER_POLICY': POLICY_STRICT_ORIGIN}
     scenarii = [
         (
-            'http://scrapytest.org/101',
-            'http://scrapytest.org/102',
+            'http://jscrapytest.org/101',
+            'http://jscrapytest.org/102',
             (
-                (301, 'http://scrapytest.org/103'),
-                (301, 'http://scrapytest.org/104'),
+                (301, 'http://jscrapytest.org/103'),
+                (301, 'http://jscrapytest.org/104'),
             ),
-            b'http://scrapytest.org/',  # send origin
-            b'http://scrapytest.org/',  # redirects to same origin: send origin
+            b'http://jscrapytest.org/',  # send origin
+            b'http://jscrapytest.org/',  # redirects to same origin: send origin
         ),
         (
-            'https://scrapytest.org/201',
-            'https://scrapytest.org/202',
+            'https://jscrapytest.org/201',
+            'https://jscrapytest.org/202',
             (
                 # redirecting to non-secure URL: no referrer
-                (301, 'http://scrapytest.org/203'),
+                (301, 'http://jscrapytest.org/203'),
             ),
-            b'https://scrapytest.org/',
+            b'https://jscrapytest.org/',
             None,
         ),
         (
-            'https://scrapytest.org/301',
-            'https://scrapytest.org/302',
+            'https://jscrapytest.org/301',
+            'https://jscrapytest.org/302',
             (
                 # redirecting to non-secure URL (different domain): no referrer
                 (301, 'http://example.com/303'),
             ),
-            b'https://scrapytest.org/',
+            b'https://jscrapytest.org/',
             None,
         ),
         (
-            'http://scrapy.org/401',
+            'http://jscrapy.org/401',
             'http://example.com/402',
             (
-                (301, 'http://scrapytest.org/403'),
+                (301, 'http://jscrapytest.org/403'),
             ),
-            b'http://scrapy.org/',
-            b'http://scrapy.org/',
+            b'http://jscrapy.org/',
+            b'http://jscrapy.org/',
         ),
         (
-            'https://scrapy.org/501',
+            'https://jscrapy.org/501',
             'https://example.com/502',
             (
                 # HTTPS all along, so origin referrer is kept as-is
                 (301, 'https://google.com/503'),
                 (301, 'https://facebook.com/504'),
             ),
-            b'https://scrapy.org/',
-            b'https://scrapy.org/',
+            b'https://jscrapy.org/',
+            b'https://jscrapy.org/',
         ),
         (
-            'https://scrapytest.org/601',
-            'http://scrapytest.org/602',                # TLS to non-TLS: no referrer
+            'https://jscrapytest.org/601',
+            'http://jscrapytest.org/602',                # TLS to non-TLS: no referrer
             (
-                (301, 'https://scrapytest.org/603'),    # TLS URL again: (still) no referrer
+                (301, 'https://jscrapytest.org/603'),    # TLS URL again: (still) no referrer
             ),
             None,
             None,
@@ -813,64 +813,64 @@ class TestReferrerOnRedirectOriginWhenCrossOrigin(TestReferrerOnRedirect):
     settings = {'REFERRER_POLICY': POLICY_ORIGIN_WHEN_CROSS_ORIGIN}
     scenarii = [
         (
-            'http://scrapytest.org/101',      # origin
-            'http://scrapytest.org/102',      # target + redirection
+            'http://jscrapytest.org/101',      # origin
+            'http://jscrapytest.org/102',      # target + redirection
             (
                 # redirections: code, URL
-                (301, 'http://scrapytest.org/103'),
-                (301, 'http://scrapytest.org/104'),
+                (301, 'http://jscrapytest.org/103'),
+                (301, 'http://jscrapytest.org/104'),
             ),
-            b'http://scrapytest.org/101',  # expected initial referer
-            b'http://scrapytest.org/101',  # expected referer for the redirection request
+            b'http://jscrapytest.org/101',  # expected initial referer
+            b'http://jscrapytest.org/101',  # expected referer for the redirection request
         ),
         (
-            'https://scrapytest.org/201',
-            'https://scrapytest.org/202',
+            'https://jscrapytest.org/201',
+            'https://jscrapytest.org/202',
             (
                 # redirecting to non-secure URL: send origin
-                (301, 'http://scrapytest.org/203'),
+                (301, 'http://jscrapytest.org/203'),
             ),
-            b'https://scrapytest.org/201',
-            b'https://scrapytest.org/',
+            b'https://jscrapytest.org/201',
+            b'https://jscrapytest.org/',
         ),
         (
-            'https://scrapytest.org/301',
-            'https://scrapytest.org/302',
+            'https://jscrapytest.org/301',
+            'https://jscrapytest.org/302',
             (
                 # redirecting to non-secure URL (different domain): send origin
                 (301, 'http://example.com/303'),
             ),
-            b'https://scrapytest.org/301',
-            b'https://scrapytest.org/',
+            b'https://jscrapytest.org/301',
+            b'https://jscrapytest.org/',
         ),
         (
-            'http://scrapy.org/401',
+            'http://jscrapy.org/401',
             'http://example.com/402',
             (
-                (301, 'http://scrapytest.org/403'),
+                (301, 'http://jscrapytest.org/403'),
             ),
-            b'http://scrapy.org/',
-            b'http://scrapy.org/',
+            b'http://jscrapy.org/',
+            b'http://jscrapy.org/',
         ),
         (
-            'https://scrapy.org/501',
+            'https://jscrapy.org/501',
             'https://example.com/502',
             (
                 # all different domains: send origin
                 (301, 'https://google.com/503'),
                 (301, 'https://facebook.com/504'),
             ),
-            b'https://scrapy.org/',
-            b'https://scrapy.org/',
+            b'https://jscrapy.org/',
+            b'https://jscrapy.org/',
         ),
         (
-            'https://scrapytest.org/301',
-            'http://scrapytest.org/302',                # TLS to non-TLS: send origin
+            'https://jscrapytest.org/301',
+            'http://jscrapytest.org/302',                # TLS to non-TLS: send origin
             (
-                (301, 'https://scrapytest.org/303'),    # TLS URL again: send origin (also)
+                (301, 'https://jscrapytest.org/303'),    # TLS URL again: send origin (also)
             ),
-            b'https://scrapytest.org/',
-            b'https://scrapytest.org/',
+            b'https://jscrapytest.org/',
+            b'https://jscrapytest.org/',
         ),
     ]
 
@@ -889,61 +889,61 @@ class TestReferrerOnRedirectStrictOriginWhenCrossOrigin(TestReferrerOnRedirect):
     settings = {'REFERRER_POLICY': POLICY_STRICT_ORIGIN_WHEN_CROSS_ORIGIN}
     scenarii = [
         (
-            'http://scrapytest.org/101',      # origin
-            'http://scrapytest.org/102',      # target + redirection
+            'http://jscrapytest.org/101',      # origin
+            'http://jscrapytest.org/102',      # target + redirection
             (
                 # redirections: code, URL
-                (301, 'http://scrapytest.org/103'),
-                (301, 'http://scrapytest.org/104'),
+                (301, 'http://jscrapytest.org/103'),
+                (301, 'http://jscrapytest.org/104'),
             ),
-            b'http://scrapytest.org/101',  # expected initial referer
-            b'http://scrapytest.org/101',  # expected referer for the redirection request
+            b'http://jscrapytest.org/101',  # expected initial referer
+            b'http://jscrapytest.org/101',  # expected referer for the redirection request
         ),
         (
-            'https://scrapytest.org/201',
-            'https://scrapytest.org/202',
+            'https://jscrapytest.org/201',
+            'https://jscrapytest.org/202',
             (
                 # redirecting to non-secure URL: do not send the "Referer" header
-                (301, 'http://scrapytest.org/203'),
+                (301, 'http://jscrapytest.org/203'),
             ),
-            b'https://scrapytest.org/201',
+            b'https://jscrapytest.org/201',
             None,
         ),
         (
-            'https://scrapytest.org/301',
-            'https://scrapytest.org/302',
+            'https://jscrapytest.org/301',
+            'https://jscrapytest.org/302',
             (
                 # redirecting to non-secure URL (different domain): send origin
                 (301, 'http://example.com/303'),
             ),
-            b'https://scrapytest.org/301',
+            b'https://jscrapytest.org/301',
             None,
         ),
         (
-            'http://scrapy.org/401',
+            'http://jscrapy.org/401',
             'http://example.com/402',
             (
-                (301, 'http://scrapytest.org/403'),
+                (301, 'http://jscrapytest.org/403'),
             ),
-            b'http://scrapy.org/',
-            b'http://scrapy.org/',
+            b'http://jscrapy.org/',
+            b'http://jscrapy.org/',
         ),
         (
-            'https://scrapy.org/501',
+            'https://jscrapy.org/501',
             'https://example.com/502',
             (
                 # all different domains: send origin
                 (301, 'https://google.com/503'),
                 (301, 'https://facebook.com/504'),
             ),
-            b'https://scrapy.org/',
-            b'https://scrapy.org/',
+            b'https://jscrapy.org/',
+            b'https://jscrapy.org/',
         ),
         (
-            'https://scrapytest.org/601',
-            'http://scrapytest.org/602',                # TLS to non-TLS: do not send "Referer"
+            'https://jscrapytest.org/601',
+            'http://jscrapytest.org/602',                # TLS to non-TLS: do not send "Referer"
             (
-                (301, 'https://scrapytest.org/603'),    # TLS URL again: (still) send nothing
+                (301, 'https://jscrapytest.org/603'),    # TLS URL again: (still) send nothing
             ),
             None,
             None,

@@ -6,8 +6,8 @@ from twisted.internet import defer
 from twisted.trial.unittest import TestCase
 from w3lib.url import add_or_replace_parameter
 
-from scrapy.crawler import CrawlerRunner
-from scrapy import signals
+from jscrapy.crawler import CrawlerRunner
+from jscrapy import signals
 from tests.mockserver import MockServer
 from tests.spiders import SimpleSpider
 
@@ -47,7 +47,7 @@ class RedirectedMediaDownloadSpider(MediaDownloadSpider):
 
 
 class FileDownloadCrawlTestCase(TestCase):
-    pipeline_class = 'scrapy.pipelines.files.FilesPipeline'
+    pipeline_class = 'jscrapy.pipelines.files.FilesPipeline'
     store_setting_key = 'FILES_STORE'
     media_key = 'files'
     media_urls_key = 'file_urls'
@@ -194,7 +194,7 @@ class ImageDownloadCrawlTestCase(FileDownloadCrawlTestCase):
 
     skip = skip_pillow
 
-    pipeline_class = 'scrapy.pipelines.images.ImagesPipeline'
+    pipeline_class = 'jscrapy.pipelines.images.ImagesPipeline'
     store_setting_key = 'IMAGES_STORE'
     media_key = 'images'
     media_urls_key = 'image_urls'

@@ -10,4 +10,4 @@ DjangoItem has been moved into a separate project.
 
 It is hosted at:
 
-    https://github.com/scrapy-plugins/scrapy-djangoitem
+    https://github.com/jscrapy-plugins/jscrapy-djangoitem

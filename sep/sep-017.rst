@@ -100,12 +100,12 @@ To check the contracts of a single spider:
 
 ::
 
-   scrapy-ctl.py check example.com
+   jscrapy-ctl.py check example.com
 
 Or to check all spiders:
 
 ::
 
-   scrapy-ctl.py check
+   jscrapy-ctl.py check
 
 No need to wait for the whole spider to run.

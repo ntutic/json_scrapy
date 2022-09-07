@@ -3,10 +3,10 @@ import unittest
 import pytest
 from w3lib.http import basic_auth_header
 
-from scrapy.exceptions import ScrapyDeprecationWarning
-from scrapy.http import Request
-from scrapy.downloadermiddlewares.httpauth import HttpAuthMiddleware
-from scrapy.spiders import Spider
+from jscrapy.exceptions import ScrapyDeprecationWarning
+from jscrapy.http import Request
+from jscrapy.downloadermiddlewares.httpauth import HttpAuthMiddleware
+from jscrapy.spiders import Spider
 
 
 class TestSpiderLegacy(Spider):

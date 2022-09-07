@@ -1,12 +1,12 @@
 # bash completion for the Scrapy command-line tool
 
-_scrapy_completion() {
+_jscrapy_completion() {
     local cmd cur commands spiders
     cmd=${COMP_WORDS[1]}
     cur=${COMP_WORDS[2]}
     case "$cmd" in
         crawl|edit|check)
-            spiders=$(scrapy list 2>/dev/null) || spiders=""
+            spiders=$(jscrapy list 2>/dev/null) || spiders=""
             COMPREPLY=(${COMPREPLY[@]:-} $(compgen -W "$spiders" -- "$cur"))
         ;;
         *)
@@ -17,4 +17,4 @@ _scrapy_completion() {
         ;;
     esac
 }
-complete -F _scrapy_completion -o default scrapy
+complete -F _jscrapy_completion -o default jscrapy

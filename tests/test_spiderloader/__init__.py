@@ -7,15 +7,15 @@ from zope.interface.verify import verifyObject
 from twisted.trial import unittest
 
 
-# ugly hack to avoid cyclic imports of scrapy.spiders when running this test
+# ugly hack to avoid cyclic imports of jscrapy.spiders when running this test
 # alone
-import scrapy
+import jscrapy
 import tempfile
-from scrapy.interfaces import ISpiderLoader
-from scrapy.spiderloader import SpiderLoader
-from scrapy.settings import Settings
-from scrapy.http import Request
-from scrapy.crawler import CrawlerRunner
+from jscrapy.interfaces import ISpiderLoader
+from jscrapy.spiderloader import SpiderLoader
+from jscrapy.settings import Settings
+from jscrapy.http import Request
+from jscrapy.crawler import CrawlerRunner
 
 module_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -57,16 +57,16 @@ class SpiderLoaderTest(unittest.TestCase):
 
     def test_find_by_request(self):
         self.assertEqual(
-            self.spider_loader.find_by_request(Request('http://scrapy1.org/test')),
+            self.spider_loader.find_by_request(Request('http://jscrapy1.org/test')),
             ['spider1'])
         self.assertEqual(
-            self.spider_loader.find_by_request(Request('http://scrapy2.org/test')),
+            self.spider_loader.find_by_request(Request('http://jscrapy2.org/test')),
             ['spider2'])
         self.assertEqual(
-            set(self.spider_loader.find_by_request(Request('http://scrapy3.org/test'))),
+            set(self.spider_loader.find_by_request(Request('http://jscrapy3.org/test'))),
             {'spider1', 'spider2'})
         self.assertEqual(
-            self.spider_loader.find_by_request(Request('http://scrapy999.org/test')),
+            self.spider_loader.find_by_request(Request('http://jscrapy999.org/test')),
             [])
         self.assertEqual(
             self.spider_loader.find_by_request(Request('http://spider3.com')),
@@ -105,7 +105,7 @@ class SpiderLoaderTest(unittest.TestCase):
                                runner.create_crawler, 'spider2')
 
         crawler = runner.create_crawler('spider1')
-        self.assertTrue(issubclass(crawler.spidercls, scrapy.Spider))
+        self.assertTrue(issubclass(crawler.spidercls, jscrapy.Spider))
         self.assertEqual(crawler.spidercls.name, 'spider1')
 
     def test_bad_spider_modules_exception(self):

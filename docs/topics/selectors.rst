@@ -48,7 +48,7 @@ Constructing selectors
 
 .. highlight:: python
 
-Response objects expose a :class:`~scrapy.Selector` instance
+Response objects expose a :class:`~jscrapy.Selector` instance
 on ``.selector`` attribute:
 
 >>> response.selector.xpath('//span/text()').get()
@@ -62,8 +62,8 @@ more shortcuts: ``response.xpath()`` and ``response.css()``:
 >>> response.css('span::text').get()
 'good'
 
-Scrapy selectors are instances of :class:`~scrapy.Selector` class
-constructed by passing either :class:`~scrapy.http.TextResponse` object or
+Scrapy selectors are instances of :class:`~jscrapy.Selector` class
+constructed by passing either :class:`~jscrapy.http.TextResponse` object or
 markup as a string (in ``text`` argument).
 
 Usually there is no need to construct Scrapy selectors manually:
@@ -75,16 +75,16 @@ you can also ensure the response body is parsed only once.
 But if required, it is possible to use ``Selector`` directly.
 Constructing from text:
 
->>> from scrapy.selector import Selector
+>>> from jscrapy.selector import Selector
 >>> body = '<html><body><span>good</span></body></html>'
 >>> Selector(text=body).xpath('//span/text()').get()
 'good'
 
-Constructing from response - :class:`~scrapy.http.HtmlResponse` is one of
-:class:`~scrapy.http.TextResponse` subclasses:
+Constructing from response - :class:`~jscrapy.http.HtmlResponse` is one of
+:class:`~jscrapy.http.TextResponse` subclasses:
 
->>> from scrapy.selector import Selector
->>> from scrapy.http import HtmlResponse
+>>> from jscrapy.selector import Selector
+>>> from jscrapy.http import HtmlResponse
 >>> response = HtmlResponse(url='http://example.com', body=body)
 >>> Selector(response=response).xpath('//span/text()').get()
 'good'
@@ -99,7 +99,7 @@ To explain how to use the selectors we'll use the ``Scrapy shell`` (which
 provides interactive testing) and an example page located in the Scrapy
 documentation server:
 
-    https://docs.scrapy.org/en/latest/_static/selectors-sample1.html
+    https://docs.jscrapy.org/en/latest/_static/selectors-sample1.html
 
 .. _topics-selectors-htmlcode:
 
@@ -112,7 +112,7 @@ For the sake of completeness, here's its full HTML code:
 
 First, let's open the shell::
 
-    scrapy shell https://docs.scrapy.org/en/latest/_static/selectors-sample1.html
+    jscrapy shell https://docs.jscrapy.org/en/latest/_static/selectors-sample1.html
 
 Then, after the shell loads, you'll have the response available as ``response``
 shell variable, and its attached selector in ``response.selector`` attribute.
@@ -146,7 +146,7 @@ pseudo-elements:
 'Example website'
 
 As you can see, ``.xpath()`` and ``.css()`` methods return a
-:class:`~scrapy.selector.SelectorList` instance, which is a list of new
+:class:`~jscrapy.selector.SelectorList` instance, which is a list of new
 selectors. This API can be used for quickly selecting nested data:
 
 >>> response.css('img').xpath('@src').getall()
@@ -175,7 +175,7 @@ of ``None``:
 'not-found'
 
 Instead of using e.g. ``'@src'`` XPath it is possible to query for attributes
-using ``.attrib`` property of a :class:`~scrapy.Selector`:
+using ``.attrib`` property of a :class:`~jscrapy.Selector`:
 
 >>> [img.attrib['src'] for img in response.css('img')]
 ['image1_thumb.jpg',
@@ -383,7 +383,7 @@ ID, or when selecting an unique element on a page):
 Using selectors with regular expressions
 ----------------------------------------
 
-:class:`~scrapy.Selector` also has a ``.re()`` method for extracting
+:class:`~jscrapy.Selector` also has a ``.re()`` method for extracting
 data using regular expressions. However, unlike using ``.xpath()`` or
 ``.css()`` methods, ``.re()`` returns a list of strings. So you
 can't construct nested ``.re()`` calls.
@@ -522,7 +522,7 @@ class name that shares the string ``someclass``.
 As it turns out, Scrapy selectors allow you to chain selectors, so most of the time
 you can just select by class using CSS and then switch to XPath when needed:
 
->>> from scrapy import Selector
+>>> from jscrapy import Selector
 >>> sel = Selector(text='<div class="hero shout"><time datetime="2014-07-23 19:00">Special date</time></div>')
 >>> sel.css('.shout').xpath('./time/@datetime').getall()
 ['2014-07-23 19:00']
@@ -539,7 +539,7 @@ Beware of the difference between //node[1] and (//node)[1]
 
 Example:
 
->>> from scrapy import Selector
+>>> from jscrapy import Selector
 >>> sel = Selector(text="""
 ....:     <ul class="list">
 ....:         <li>1</li>
@@ -585,7 +585,7 @@ a string function like ``contains()`` or ``starts-with()``, it results in the te
 
 Example:
 
->>> from scrapy import Selector
+>>> from jscrapy import Selector
 >>> sel = Selector(text='<a href="#">Click here to go to the <strong>Next Page</strong></a>')
 
 Converting a *node-set* to string:
@@ -664,7 +664,7 @@ Let's show an example that illustrates this with the Python Insider blog atom fe
 
 First, we open the shell with the url we want to scrape::
 
-    $ scrapy shell https://feeds.feedburner.com/PythonInsider
+    $ jscrapy shell https://feeds.feedburner.com/PythonInsider
 
 This is how the file starts::
 
@@ -735,7 +735,7 @@ The ``test()`` function, for example, can prove quite useful when XPath's
 
 Example selecting links in list item with a "class" attribute ending with a digit:
 
->>> from scrapy import Selector
+>>> from jscrapy import Selector
 >>> doc = """
 ... <div>
 ...     <ul>
@@ -901,7 +901,7 @@ Parsel also simplifies adding your own XPath extensions.
 Built-in Selectors reference
 ============================
 
-.. module:: scrapy.selector
+.. module:: jscrapy.selector
    :synopsis: Selector class
 
 Selector objects
@@ -981,7 +981,7 @@ Selector examples on HTML response
 
 Here are some :class:`Selector` examples to illustrate several concepts.
 In all cases, we assume there is already a :class:`Selector` instantiated with
-a :class:`~scrapy.http.HtmlResponse` object like this::
+a :class:`~jscrapy.http.HtmlResponse` object like this::
 
       sel = Selector(html_response)
 
@@ -1008,7 +1008,7 @@ Selector examples on XML response
 ---------------------------------
 
 Here are some examples to illustrate concepts for :class:`Selector` objects
-instantiated with an :class:`~scrapy.http.XmlResponse` object::
+instantiated with an :class:`~jscrapy.http.XmlResponse` object::
 
       sel = Selector(xml_response)
 

@@ -4,7 +4,7 @@
 Sending e-mail
 ==============
 
-.. module:: scrapy.mail
+.. module:: jscrapy.mail
    :synopsis: Email sending facility
 
 Although Python makes sending e-mails relatively easy via the :mod:`smtplib`
@@ -21,7 +21,7 @@ Quick example
 There are two ways to instantiate the mail sender. You can instantiate it using
 the standard ``__init__`` method::
 
-    from scrapy.mail import MailSender
+    from jscrapy.mail import MailSender
     mailer = MailSender()
 
 Or you can instantiate it passing a Scrapy settings object, which will respect
@@ -73,7 +73,7 @@ rest of the framework.
         :ref:`these Scrapy settings <topics-email-settings>`.
 
         :param settings: the e-mail recipients
-        :type settings: :class:`scrapy.settings.Settings` object
+        :type settings: :class:`jscrapy.settings.Settings` object
 
     .. method:: send(to, subject, body, cc=None, attachs=(), mimetype='text/plain', charset=None)
 
@@ -119,7 +119,7 @@ writing any code (for those extensions and code that uses :class:`MailSender`).
 MAIL_FROM
 ---------
 
-Default: ``'scrapy@localhost'``
+Default: ``'jscrapy@localhost'``
 
 Sender email to use (``From:`` header) for sending emails.
 

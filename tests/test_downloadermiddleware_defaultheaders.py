@@ -1,10 +1,10 @@
 from unittest import TestCase
 
-from scrapy.downloadermiddlewares.defaultheaders import DefaultHeadersMiddleware
-from scrapy.http import Request
-from scrapy.spiders import Spider
-from scrapy.utils.test import get_crawler
-from scrapy.utils.python import to_bytes
+from jscrapy.downloadermiddlewares.defaultheaders import DefaultHeadersMiddleware
+from jscrapy.http import Request
+from jscrapy.spiders import Spider
+from jscrapy.utils.test import get_crawler
+from jscrapy.utils.python import to_bytes
 
 
 class TestDefaultHeadersMiddleware(TestCase):
@@ -20,7 +20,7 @@ class TestDefaultHeadersMiddleware(TestCase):
 
     def test_process_request(self):
         defaults, spider, mw = self.get_defaults_spider_mw()
-        req = Request('http://www.scrapytest.org')
+        req = Request('http://www.jscrapytest.org')
         mw.process_request(req, spider)
         self.assertEqual(req.headers, defaults)
 
@@ -28,7 +28,7 @@ class TestDefaultHeadersMiddleware(TestCase):
         defaults, spider, mw = self.get_defaults_spider_mw()
         headers = {'Accept-Language': ['es'], 'Test-Header': ['test']}
         bytes_headers = {b'Accept-Language': [b'es'], b'Test-Header': [b'test']}
-        req = Request('http://www.scrapytest.org', headers=headers)
+        req = Request('http://www.jscrapytest.org', headers=headers)
         self.assertEqual(req.headers, bytes_headers)
 
         mw.process_request(req, spider)

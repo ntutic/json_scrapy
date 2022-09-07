@@ -1,7 +1,7 @@
-import scrapy
+import jscrapy
 
 
-class NormalSpider(scrapy.Spider):
+class NormalSpider(jscrapy.Spider):
     name = 'normal'
 
     custom_settings = {

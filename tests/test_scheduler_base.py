@@ -6,11 +6,11 @@ from testfixtures import LogCapture
 from twisted.internet import defer
 from twisted.trial.unittest import TestCase as TwistedTestCase
 
-from scrapy.core.scheduler import BaseScheduler
-from scrapy.http import Request
-from scrapy.spiders import Spider
-from scrapy.utils.request import fingerprint
-from scrapy.utils.test import get_crawler
+from jscrapy.core.scheduler import BaseScheduler
+from jscrapy.http import Request
+from jscrapy.spiders import Spider
+from jscrapy.utils.request import fingerprint
+from jscrapy.utils.test import get_crawler
 
 from tests.mockserver import MockServer
 

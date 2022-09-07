@@ -3,12 +3,12 @@ from unittest import mock
 
 from w3lib.encoding import resolve_encoding
 
-from scrapy.http import (Request, Response, TextResponse, HtmlResponse,
+from jscrapy.http import (Request, Response, TextResponse, HtmlResponse,
                          XmlResponse, Headers)
-from scrapy.selector import Selector
-from scrapy.utils.python import to_unicode
-from scrapy.exceptions import NotSupported
-from scrapy.link import Link
+from jscrapy.selector import Selector
+from jscrapy.utils.python import to_unicode
+from jscrapy.exceptions import NotSupported
+from jscrapy.link import Link
 from tests import get_testdata
 
 
@@ -787,19 +787,19 @@ class XmlResponseTest(TextResponseTest):
 
     def test_selector_shortcuts_kwargs(self):
         body = b'''<?xml version="1.0" encoding="utf-8"?>
-        <xml xmlns:somens="http://scrapy.org">
+        <xml xmlns:somens="http://jscrapy.org">
         <somens:elem>value</somens:elem>
         </xml>'''
         response = self.response_class("http://www.example.com", body=body)
 
         self.assertEqual(
-            response.xpath("//s:elem/text()", namespaces={'s': 'http://scrapy.org'}).getall(),
-            response.selector.xpath("//s:elem/text()", namespaces={'s': 'http://scrapy.org'}).getall(),
+            response.xpath("//s:elem/text()", namespaces={'s': 'http://jscrapy.org'}).getall(),
+            response.selector.xpath("//s:elem/text()", namespaces={'s': 'http://jscrapy.org'}).getall(),
         )
 
-        response.selector.register_namespace('s2', 'http://scrapy.org')
+        response.selector.register_namespace('s2', 'http://jscrapy.org')
         self.assertEqual(
-            response.xpath("//s1:elem/text()", namespaces={'s1': 'http://scrapy.org'}).getall(),
+            response.xpath("//s1:elem/text()", namespaces={'s1': 'http://jscrapy.org'}).getall(),
             response.selector.xpath("//s2:elem/text()").getall(),
         )
 

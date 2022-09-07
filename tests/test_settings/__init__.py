@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 
-from scrapy.settings import (BaseSettings, Settings, SettingsAttribute,
+from jscrapy.settings import (BaseSettings, Settings, SettingsAttribute,
                              SETTINGS_PRIORITIES, get_settings_priority)
 from . import default_settings
 
@@ -343,8 +343,8 @@ class SettingsTest(unittest.TestCase):
     def setUp(self):
         self.settings = Settings()
 
-    @mock.patch.dict('scrapy.settings.SETTINGS_PRIORITIES', {'default': 10})
-    @mock.patch('scrapy.settings.default_settings', default_settings)
+    @mock.patch.dict('jscrapy.settings.SETTINGS_PRIORITIES', {'default': 10})
+    @mock.patch('jscrapy.settings.default_settings', default_settings)
     def test_initial_defaults(self):
         settings = Settings()
         self.assertEqual(len(settings.attributes), 2)
@@ -355,8 +355,8 @@ class SettingsTest(unittest.TestCase):
         self.assertEqual(attr.value, 'defvalue')
         self.assertEqual(attr.priority, 10)
 
-    @mock.patch.dict('scrapy.settings.SETTINGS_PRIORITIES', {})
-    @mock.patch('scrapy.settings.default_settings', {})
+    @mock.patch.dict('jscrapy.settings.SETTINGS_PRIORITIES', {})
+    @mock.patch('jscrapy.settings.default_settings', {})
     def test_initial_values(self):
         settings = Settings({'TEST_OPTION': 'value'}, 10)
         self.assertEqual(len(settings.attributes), 1)
@@ -367,7 +367,7 @@ class SettingsTest(unittest.TestCase):
         self.assertEqual(attr.value, 'value')
         self.assertEqual(attr.priority, 10)
 
-    @mock.patch('scrapy.settings.default_settings', default_settings)
+    @mock.patch('jscrapy.settings.default_settings', default_settings)
     def test_autopromote_dicts(self):
         settings = Settings()
         mydict = settings.get('TEST_DICT')
@@ -376,7 +376,7 @@ class SettingsTest(unittest.TestCase):
         self.assertEqual(mydict['key'], 'val')
         self.assertEqual(mydict.getpriority('key'), 0)
 
-    @mock.patch('scrapy.settings.default_settings', default_settings)
+    @mock.patch('jscrapy.settings.default_settings', default_settings)
     def test_getdict_autodegrade_basesettings(self):
         settings = Settings()
         mydict = settings.getdict('TEST_DICT')
@@ -386,9 +386,9 @@ class SettingsTest(unittest.TestCase):
         self.assertEqual(mydict['key'], 'val')
 
     def test_passing_objects_as_values(self):
-        from scrapy.core.downloader.handlers.file import FileDownloadHandler
-        from scrapy.utils.misc import create_instance
-        from scrapy.utils.test import get_crawler
+        from jscrapy.core.downloader.handlers.file import FileDownloadHandler
+        from jscrapy.utils.misc import create_instance
+        from jscrapy.utils.test import get_crawler
 
         class TestPipeline():
             def process_item(self, i, s):

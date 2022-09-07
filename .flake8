@@ -7,13 +7,13 @@ exclude =
 # Exclude files that are meant to provide top-level imports
 # E402: Module level import not at top of file
 # F401: Module imported but unused
-    scrapy/__init__.py E402
-    scrapy/core/downloader/handlers/http.py F401
-    scrapy/http/__init__.py F401
-    scrapy/linkextractors/__init__.py E402 F401
-    scrapy/selector/__init__.py F401
-    scrapy/spiders/__init__.py E402 F401
+    jscrapy/__init__.py E402
+    jscrapy/core/downloader/handlers/http.py F401
+    jscrapy/http/__init__.py F401
+    jscrapy/linkextractors/__init__.py E402 F401
+    jscrapy/selector/__init__.py F401
+    jscrapy/spiders/__init__.py E402 F401
 
     # Issues pending a review:
-    scrapy/utils/url.py F403 F405
+    jscrapy/utils/url.py F403 F405
     tests/test_loader.py E741

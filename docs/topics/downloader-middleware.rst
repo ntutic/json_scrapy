@@ -28,9 +28,9 @@ The :setting:`DOWNLOADER_MIDDLEWARES` setting is merged with the
 to be overridden) and then sorted by order to get the final sorted list of
 enabled middlewares: the first middleware is the one closer to the engine and
 the last is the one closer to the downloader. In other words,
-the :meth:`~scrapy.downloadermiddlewares.DownloaderMiddleware.process_request`
+the :meth:`~jscrapy.downloadermiddlewares.DownloaderMiddleware.process_request`
 method of each middleware will be invoked in increasing
-middleware order (100, 200, 300, ...) and the :meth:`~scrapy.downloadermiddlewares.DownloaderMiddleware.process_response` method
+middleware order (100, 200, 300, ...) and the :meth:`~jscrapy.downloadermiddlewares.DownloaderMiddleware.process_response` method
 of each middleware will be invoked in decreasing order.
 
 To decide which order to assign to your middleware see the
@@ -46,7 +46,7 @@ as its value.  For example, if you want to disable the user-agent middleware::
 
     DOWNLOADER_MIDDLEWARES = {
         'myproject.middlewares.CustomDownloaderMiddleware': 543,
-        'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+        'jscrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     }
 
 Finally, keep in mind that some middlewares may need to be enabled through a
@@ -61,10 +61,10 @@ Each downloader middleware is a Python class that defines one or more of the
 methods defined below.
 
 The main entry point is the ``from_crawler`` class method, which receives a
-:class:`~scrapy.crawler.Crawler` instance. The :class:`~scrapy.crawler.Crawler`
+:class:`~jscrapy.crawler.Crawler` instance. The :class:`~jscrapy.crawler.Crawler`
 object gives you access, for example, to the :ref:`settings <topics-settings>`.
 
-.. module:: scrapy.downloadermiddlewares
+.. module:: jscrapy.downloadermiddlewares
 
 .. class:: DownloaderMiddleware
 
@@ -76,103 +76,103 @@ object gives you access, for example, to the :ref:`settings <topics-settings>`.
       middleware.
 
       :meth:`process_request` should either: return ``None``, return a
-      :class:`~scrapy.Response` object, return a :class:`~scrapy.http.Request`
-      object, or raise :exc:`~scrapy.exceptions.IgnoreRequest`.
+      :class:`~jscrapy.Response` object, return a :class:`~jscrapy.http.Request`
+      object, or raise :exc:`~jscrapy.exceptions.IgnoreRequest`.
 
       If it returns ``None``, Scrapy will continue processing this request, executing all
       other middlewares until, finally, the appropriate downloader handler is called
       the request performed (and its response downloaded).
 
-      If it returns a :class:`~scrapy.http.Response` object, Scrapy won't bother
+      If it returns a :class:`~jscrapy.http.Response` object, Scrapy won't bother
       calling *any* other :meth:`process_request` or :meth:`process_exception` methods,
       or the appropriate download function; it'll return that response. The :meth:`process_response`
       methods of installed middleware is always called on every response.
 
-      If it returns a :class:`~scrapy.Request` object, Scrapy will stop calling
+      If it returns a :class:`~jscrapy.Request` object, Scrapy will stop calling
       :meth:`process_request` methods and reschedule the returned request. Once the newly returned
       request is performed, the appropriate middleware chain will be called on
       the downloaded response.
 
-      If it raises an :exc:`~scrapy.exceptions.IgnoreRequest` exception, the
+      If it raises an :exc:`~jscrapy.exceptions.IgnoreRequest` exception, the
       :meth:`process_exception` methods of installed downloader middleware will be called.
       If none of them handle the exception, the errback function of the request
       (``Request.errback``) is called. If no code handles the raised exception, it is
       ignored and not logged (unlike other exceptions).
 
       :param request: the request being processed
-      :type request: :class:`~scrapy.Request` object
+      :type request: :class:`~jscrapy.Request` object
 
       :param spider: the spider for which this request is intended
-      :type spider: :class:`~scrapy.Spider` object
+      :type spider: :class:`~jscrapy.Spider` object
 
    .. method:: process_response(request, response, spider)
 
-      :meth:`process_response` should either: return a :class:`~scrapy.http.Response`
-      object, return a :class:`~scrapy.Request` object or
-      raise a :exc:`~scrapy.exceptions.IgnoreRequest` exception.
+      :meth:`process_response` should either: return a :class:`~jscrapy.http.Response`
+      object, return a :class:`~jscrapy.Request` object or
+      raise a :exc:`~jscrapy.exceptions.IgnoreRequest` exception.
 
-      If it returns a :class:`~scrapy.http.Response` (it could be the same given
+      If it returns a :class:`~jscrapy.http.Response` (it could be the same given
       response, or a brand-new one), that response will continue to be processed
       with the :meth:`process_response` of the next middleware in the chain.
 
-      If it returns a :class:`~scrapy.Request` object, the middleware chain is
+      If it returns a :class:`~jscrapy.Request` object, the middleware chain is
       halted and the returned request is rescheduled to be downloaded in the future.
       This is the same behavior as if a request is returned from :meth:`process_request`.
 
-      If it raises an :exc:`~scrapy.exceptions.IgnoreRequest` exception, the errback
+      If it raises an :exc:`~jscrapy.exceptions.IgnoreRequest` exception, the errback
       function of the request (``Request.errback``) is called. If no code handles the raised
       exception, it is ignored and not logged (unlike other exceptions).
 
       :param request: the request that originated the response
-      :type request: is a :class:`~scrapy.Request` object
+      :type request: is a :class:`~jscrapy.Request` object
 
       :param response: the response being processed
-      :type response: :class:`~scrapy.http.Response` object
+      :type response: :class:`~jscrapy.http.Response` object
 
       :param spider: the spider for which this response is intended
-      :type spider: :class:`~scrapy.Spider` object
+      :type spider: :class:`~jscrapy.Spider` object
 
    .. method:: process_exception(request, exception, spider)
 
       Scrapy calls :meth:`process_exception` when a download handler
       or a :meth:`process_request` (from a downloader middleware) raises an
-      exception (including an :exc:`~scrapy.exceptions.IgnoreRequest` exception)
+      exception (including an :exc:`~jscrapy.exceptions.IgnoreRequest` exception)
 
       :meth:`process_exception` should return: either ``None``,
-      a :class:`~scrapy.http.Response` object, or a :class:`~scrapy.Request` object.
+      a :class:`~jscrapy.http.Response` object, or a :class:`~jscrapy.Request` object.
 
       If it returns ``None``, Scrapy will continue processing this exception,
       executing any other :meth:`process_exception` methods of installed middleware,
       until no middleware is left and the default exception handling kicks in.
 
-      If it returns a :class:`~scrapy.http.Response` object, the :meth:`process_response`
+      If it returns a :class:`~jscrapy.http.Response` object, the :meth:`process_response`
       method chain of installed middleware is started, and Scrapy won't bother calling
       any other :meth:`process_exception` methods of middleware.
 
-      If it returns a :class:`~scrapy.Request` object, the returned request is
+      If it returns a :class:`~jscrapy.Request` object, the returned request is
       rescheduled to be downloaded in the future. This stops the execution of
       :meth:`process_exception` methods of the middleware the same as returning a
       response would.
 
       :param request: the request that generated the exception
-      :type request: is a :class:`~scrapy.Request` object
+      :type request: is a :class:`~jscrapy.Request` object
 
       :param exception: the raised exception
       :type exception: an ``Exception`` object
 
       :param spider: the spider for which this request is intended
-      :type spider: :class:`~scrapy.Spider` object
+      :type spider: :class:`~jscrapy.Spider` object
 
    .. method:: from_crawler(cls, crawler)
 
       If present, this classmethod is called to create a middleware instance
-      from a :class:`~scrapy.crawler.Crawler`. It must return a new instance
+      from a :class:`~jscrapy.crawler.Crawler`. It must return a new instance
       of the middleware. Crawler object provides access to all Scrapy core
       components like settings and signals; it is a way for middleware to
       access them and hook its functionality into Scrapy.
 
       :param crawler: crawler that uses this middleware
-      :type crawler: :class:`~scrapy.crawler.Crawler` object
+      :type crawler: :class:`~jscrapy.crawler.Crawler` object
 
 .. _topics-downloader-middleware-ref:
 
@@ -192,7 +192,7 @@ For a list of the components enabled by default (and their orders) see the
 CookiesMiddleware
 -----------------
 
-.. module:: scrapy.downloadermiddlewares.cookies
+.. module:: jscrapy.downloadermiddlewares.cookies
    :synopsis: Cookies Downloader Middleware
 
 .. class:: CookiesMiddleware
@@ -203,13 +203,13 @@ CookiesMiddleware
    browsers do.
 
    .. caution:: When non-UTF8 encoded byte sequences are passed to a
-      :class:`~scrapy.Request`, the ``CookiesMiddleware`` will log
+      :class:`~jscrapy.Request`, the ``CookiesMiddleware`` will log
       a warning. Refer to :ref:`topics-logging-advanced-customization`
       to customize the logging behaviour.
 
    .. caution:: Cookies set via the ``Cookie`` header are not considered by the
       :ref:`cookies-mw`. If you need to set cookies for a request, use the
-      :class:`Request.cookies <scrapy.Request>` parameter. This is a known
+      :class:`Request.cookies <jscrapy.Request>` parameter. This is a known
       current limitation that is being worked on.
 
 The following settings can be used to configure the cookie middleware:
@@ -229,7 +229,7 @@ There is support for keeping multiple cookie sessions per spider by using the
 For example::
 
     for i, url in enumerate(urls):
-        yield scrapy.Request(url, meta={'cookiejar': i},
+        yield jscrapy.Request(url, meta={'cookiejar': i},
             callback=self.parse_page)
 
 Keep in mind that the :reqmeta:`cookiejar` meta key is not "sticky". You need to keep
@@ -237,7 +237,7 @@ passing it along on subsequent requests. For example::
 
     def parse_page(self, response):
         # do some processing
-        return scrapy.Request("http://www.example.com/otherpage",
+        return jscrapy.Request("http://www.example.com/otherpage",
             meta={'cookiejar': response.meta['cookiejar']},
             callback=self.parse_other_page)
 
@@ -254,11 +254,11 @@ to web servers.
 Notice that despite the value of :setting:`COOKIES_ENABLED` setting if
 ``Request.``:reqmeta:`meta['dont_merge_cookies'] <dont_merge_cookies>`
 evaluates to ``True`` the request cookies will **not** be sent to the
-web server and received cookies in :class:`~scrapy.http.Response` will
+web server and received cookies in :class:`~jscrapy.http.Response` will
 **not** be merged with the existing cookies.
 
 For more detailed information see the ``cookies`` parameter in
-:class:`~scrapy.Request`.
+:class:`~jscrapy.Request`.
 
 .. setting:: COOKIES_DEBUG
 
@@ -272,21 +272,21 @@ header) and all cookies received in responses (i.e. ``Set-Cookie`` header).
 
 Here's an example of a log with :setting:`COOKIES_DEBUG` enabled::
 
-    2011-04-06 14:35:10-0300 [scrapy.core.engine] INFO: Spider opened
-    2011-04-06 14:35:10-0300 [scrapy.downloadermiddlewares.cookies] DEBUG: Sending cookies to: <GET http://www.diningcity.com/netherlands/index.html>
+    2011-04-06 14:35:10-0300 [jscrapy.core.engine] INFO: Spider opened
+    2011-04-06 14:35:10-0300 [jscrapy.downloadermiddlewares.cookies] DEBUG: Sending cookies to: <GET http://www.diningcity.com/netherlands/index.html>
             Cookie: clientlanguage_nl=en_EN
-    2011-04-06 14:35:14-0300 [scrapy.downloadermiddlewares.cookies] DEBUG: Received cookies from: <200 http://www.diningcity.com/netherlands/index.html>
+    2011-04-06 14:35:14-0300 [jscrapy.downloadermiddlewares.cookies] DEBUG: Received cookies from: <200 http://www.diningcity.com/netherlands/index.html>
             Set-Cookie: JSESSIONID=B~FA4DC0C496C8762AE4F1A620EAB34F38; Path=/
             Set-Cookie: ip_isocode=US
             Set-Cookie: clientlanguage_nl=en_EN; Expires=Thu, 07-Apr-2011 21:21:34 GMT; Path=/
-    2011-04-06 14:49:50-0300 [scrapy.core.engine] DEBUG: Crawled (200) <GET http://www.diningcity.com/netherlands/index.html> (referer: None)
+    2011-04-06 14:49:50-0300 [jscrapy.core.engine] DEBUG: Crawled (200) <GET http://www.diningcity.com/netherlands/index.html> (referer: None)
     [...]
 
 
 DefaultHeadersMiddleware
 ------------------------
 
-.. module:: scrapy.downloadermiddlewares.defaultheaders
+.. module:: jscrapy.downloadermiddlewares.defaultheaders
    :synopsis: Default Headers Downloader Middleware
 
 .. class:: DefaultHeadersMiddleware
@@ -297,7 +297,7 @@ DefaultHeadersMiddleware
 DownloadTimeoutMiddleware
 -------------------------
 
-.. module:: scrapy.downloadermiddlewares.downloadtimeout
+.. module:: jscrapy.downloadermiddlewares.downloadtimeout
    :synopsis: Download timeout middleware
 
 .. class:: DownloadTimeoutMiddleware
@@ -315,7 +315,7 @@ DownloadTimeoutMiddleware
 HttpAuthMiddleware
 ------------------
 
-.. module:: scrapy.downloadermiddlewares.httpauth
+.. module:: jscrapy.downloadermiddlewares.httpauth
    :synopsis: HTTP Auth downloader middleware
 
 .. class:: HttpAuthMiddleware
@@ -341,7 +341,7 @@ HttpAuthMiddleware
 
     Example::
 
-        from scrapy.spiders import CrawlSpider
+        from jscrapy.spiders import CrawlSpider
 
         class SomeIntranetSiteSpider(CrawlSpider):
 
@@ -358,7 +358,7 @@ HttpAuthMiddleware
 HttpCacheMiddleware
 -------------------
 
-.. module:: scrapy.downloadermiddlewares.httpcache
+.. module:: jscrapy.downloadermiddlewares.httpcache
    :synopsis: HTTP Cache downloader middleware
 
 .. class:: HttpCacheMiddleware
@@ -386,7 +386,7 @@ HttpCacheMiddleware
 
     You can also avoid caching a response on every policy using :reqmeta:`dont_cache` meta key equals ``True``.
 
-.. module:: scrapy.extensions.httpcache
+.. module:: jscrapy.extensions.httpcache
    :noindex:
 
 .. _httpcache-policy-dummy:
@@ -479,7 +479,7 @@ Filesystem storage backend (default)
         efficient deserialization
 
     The directory name is made from the request fingerprint (see
-    ``scrapy.utils.request.fingerprint``), and one level of subdirectories is
+    ``jscrapy.utils.request.fingerprint``), and one level of subdirectories is
     used to avoid creating too many files into the same directory (which is
     inefficient in many file systems). An example directory could be::
 
@@ -505,7 +505,7 @@ Writing your own storage backend
 You can implement a cache storage backend by creating a Python class that
 defines the methods described below.
 
-.. module:: scrapy.extensions.httpcache
+.. module:: jscrapy.extensions.httpcache
 
 .. class:: CacheStorage
 
@@ -515,7 +515,7 @@ defines the methods described below.
       the :signal:`open_spider <spider_opened>` signal.
 
       :param spider: the spider which has been opened
-      :type spider: :class:`~scrapy.Spider` object
+      :type spider: :class:`~jscrapy.Spider` object
 
     .. method:: close_spider(spider)
 
@@ -523,30 +523,30 @@ defines the methods described below.
       the :signal:`close_spider <spider_closed>` signal.
 
       :param spider: the spider which has been closed
-      :type spider: :class:`~scrapy.Spider` object
+      :type spider: :class:`~jscrapy.Spider` object
 
     .. method:: retrieve_response(spider, request)
 
       Return response if present in cache, or ``None`` otherwise.
 
       :param spider: the spider which generated the request
-      :type spider: :class:`~scrapy.Spider` object
+      :type spider: :class:`~jscrapy.Spider` object
 
       :param request: the request to find cached response for
-      :type request: :class:`~scrapy.Request` object
+      :type request: :class:`~jscrapy.Request` object
 
     .. method:: store_response(spider, request, response)
 
       Store the given response in the cache.
 
       :param spider: the spider for which the response is intended
-      :type spider: :class:`~scrapy.Spider` object
+      :type spider: :class:`~jscrapy.Spider` object
 
       :param request: the corresponding request the spider generated
-      :type request: :class:`~scrapy.Request` object
+      :type request: :class:`~jscrapy.Request` object
 
       :param response: the response to store in the cache
-      :type response: :class:`~scrapy.http.Response` object
+      :type response: :class:`~jscrapy.http.Response` object
 
 In order to use your storage backend, set:
 
@@ -623,7 +623,7 @@ Don't cache responses with these URI schemes.
 HTTPCACHE_STORAGE
 ^^^^^^^^^^^^^^^^^
 
-Default: ``'scrapy.extensions.httpcache.FilesystemCacheStorage'``
+Default: ``'jscrapy.extensions.httpcache.FilesystemCacheStorage'``
 
 The class which implements the cache storage backend.
 
@@ -642,7 +642,7 @@ The database module to use in the :ref:`DBM storage backend
 HTTPCACHE_POLICY
 ^^^^^^^^^^^^^^^^
 
-Default: ``'scrapy.extensions.httpcache.DummyPolicy'``
+Default: ``'jscrapy.extensions.httpcache.DummyPolicy'``
 
 The class which implements the cache policy.
 
@@ -695,7 +695,7 @@ not filtered.
 HttpCompressionMiddleware
 -------------------------
 
-.. module:: scrapy.downloadermiddlewares.httpcompression
+.. module:: jscrapy.downloadermiddlewares.httpcompression
    :synopsis: Http Compression Middleware
 
 .. class:: HttpCompressionMiddleware
@@ -729,7 +729,7 @@ Whether the Compression middleware will be enabled.
 HttpProxyMiddleware
 -------------------
 
-.. module:: scrapy.downloadermiddlewares.httpproxy
+.. module:: jscrapy.downloadermiddlewares.httpproxy
    :synopsis: Http Proxy Middleware
 
 .. reqmeta:: proxy
@@ -737,7 +737,7 @@ HttpProxyMiddleware
 .. class:: HttpProxyMiddleware
 
    This middleware sets the HTTP proxy to use for requests, by setting the
-   ``proxy`` meta value for :class:`~scrapy.Request` objects.
+   ``proxy`` meta value for :class:`~jscrapy.Request` objects.
 
    Like the Python standard library module :mod:`urllib.request`, it obeys
    the following environment variables:
@@ -754,7 +754,7 @@ HttpProxyMiddleware
 RedirectMiddleware
 ------------------
 
-.. module:: scrapy.downloadermiddlewares.redirect
+.. module:: jscrapy.downloadermiddlewares.redirect
    :synopsis: Redirection Middleware
 
 .. class:: RedirectMiddleware
@@ -764,12 +764,12 @@ RedirectMiddleware
 .. reqmeta:: redirect_urls
 
 The urls which the request goes through (while being redirected) can be found
-in the ``redirect_urls`` :attr:`Request.meta <scrapy.Request.meta>` key.
+in the ``redirect_urls`` :attr:`Request.meta <jscrapy.Request.meta>` key.
 
 .. reqmeta:: redirect_reasons
 
 The reason behind each redirect in :reqmeta:`redirect_urls` can be found in the
-``redirect_reasons`` :attr:`Request.meta <scrapy.Request.meta>` key. For
+``redirect_reasons`` :attr:`Request.meta <jscrapy.Request.meta>` key. For
 example: ``[301, 302, 307, 'meta refresh']``.
 
 The format of a reason depends on the middleware that handled the corresponding
@@ -785,7 +785,7 @@ settings (see the settings documentation for more info):
 
 .. reqmeta:: dont_redirect
 
-If :attr:`Request.meta <scrapy.Request.meta>` has ``dont_redirect``
+If :attr:`Request.meta <jscrapy.Request.meta>` has ``dont_redirect``
 key set to True, the request will be ignored by this middleware.
 
 If you want to handle some redirect status codes in your spider, you can
@@ -798,7 +798,7 @@ responses (and pass them through to your spider) you can do this::
         handle_httpstatus_list = [301, 302]
 
 The ``handle_httpstatus_list`` key of :attr:`Request.meta
-<scrapy.Request.meta>` can also be used to specify which response codes to
+<jscrapy.Request.meta>` can also be used to specify which response codes to
 allow on a per-request basis. You can also set the meta key
 ``handle_httpstatus_all`` to ``True`` if you want to allow any response code
 for a request.
@@ -884,7 +884,7 @@ restrict automatic redirection to the maximum delay.
 RetryMiddleware
 ---------------
 
-.. module:: scrapy.downloadermiddlewares.retry
+.. module:: jscrapy.downloadermiddlewares.retry
    :synopsis: Retry Middleware
 
 .. class:: RetryMiddleware
@@ -904,7 +904,7 @@ settings (see the settings documentation for more info):
 
 .. reqmeta:: dont_retry
 
-If :attr:`Request.meta <scrapy.Request.meta>` has ``dont_retry`` key
+If :attr:`Request.meta <jscrapy.Request.meta>` has ``dont_retry`` key
 set to True, the request will be ignored by this middleware.
 
 To retry requests from a spider callback, you can use the
@@ -934,7 +934,7 @@ Default: ``2``
 Maximum number of times to retry, in addition to the first download.
 
 Maximum number of retries can also be specified per-request using
-:reqmeta:`max_retry_times` attribute of :attr:`Request.meta <scrapy.Request.meta>`.
+:reqmeta:`max_retry_times` attribute of :attr:`Request.meta <jscrapy.Request.meta>`.
 When initialized, the :reqmeta:`max_retry_times` meta key takes higher
 precedence over the :setting:`RETRY_TIMES` setting.
 
@@ -970,7 +970,7 @@ Adjust retry request priority relative to original request:
 RobotsTxtMiddleware
 -------------------
 
-.. module:: scrapy.downloadermiddlewares.robotstxt
+.. module:: jscrapy.downloadermiddlewares.robotstxt
    :synopsis: robots.txt middleware
 
 .. class:: RobotsTxtMiddleware
@@ -1001,7 +1001,7 @@ RobotsTxtMiddleware
 
 .. reqmeta:: dont_obey_robotstxt
 
-If :attr:`Request.meta <scrapy.Request.meta>` has
+If :attr:`Request.meta <jscrapy.Request.meta>` has
 ``dont_obey_robotstxt`` key set to True
 the request will be ignored by this middleware even if
 :setting:`ROBOTSTXT_OBEY` is enabled.
@@ -1020,14 +1020,14 @@ Parsers vary in several aspects:
   (shorter) rule
 
 Performance comparison of different parsers is available at `the following link
-<https://github.com/scrapy/scrapy/issues/3969>`_.
+<https://github.com/jscrapy/jscrapy/issues/3969>`_.
 
 .. _protego-parser:
 
 Protego parser
 ~~~~~~~~~~~~~~
 
-Based on `Protego <https://github.com/scrapy/protego>`_:
+Based on `Protego <https://github.com/jscrapy/protego>`_:
 
 * implemented in Python
 
@@ -1060,7 +1060,7 @@ It is faster than Protego and backward-compatible with versions of Scrapy before
 
 In order to use this parser, set:
 
-* :setting:`ROBOTSTXT_PARSER` to ``scrapy.robotstxt.PythonRobotParser``
+* :setting:`ROBOTSTXT_PARSER` to ``jscrapy.robotstxt.PythonRobotParser``
 
 .. _reppy-parser:
 
@@ -1089,7 +1089,7 @@ In order to use this parser:
         <https://github.com/seomoz/reppy/issues/122>`_ prevents reppy usage in Python 3.9+.
 
 * Set :setting:`ROBOTSTXT_PARSER` setting to
-  ``scrapy.robotstxt.ReppyRobotParser``
+  ``jscrapy.robotstxt.ReppyRobotParser``
 
 
 .. _rerp-parser:
@@ -1114,7 +1114,7 @@ In order to use this parser:
   ``pip install robotexclusionrulesparser``
 
 * Set :setting:`ROBOTSTXT_PARSER` setting to
-  ``scrapy.robotstxt.RerpRobotParser``
+  ``jscrapy.robotstxt.RerpRobotParser``
 
 .. _support-for-new-robots-parser:
 
@@ -1122,10 +1122,10 @@ Implementing support for a new parser
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can implement support for a new robots.txt_ parser by subclassing
-the abstract base class :class:`~scrapy.robotstxt.RobotParser` and
+the abstract base class :class:`~jscrapy.robotstxt.RobotParser` and
 implementing the methods described below.
 
-.. module:: scrapy.robotstxt
+.. module:: jscrapy.robotstxt
    :synopsis: robots.txt parser interface and implementations
 
 .. autoclass:: RobotParser
@@ -1136,7 +1136,7 @@ implementing the methods described below.
 DownloaderStats
 ---------------
 
-.. module:: scrapy.downloadermiddlewares.stats
+.. module:: jscrapy.downloadermiddlewares.stats
    :synopsis: Downloader Stats Middleware
 
 .. class:: DownloaderStats
@@ -1150,7 +1150,7 @@ DownloaderStats
 UserAgentMiddleware
 -------------------
 
-.. module:: scrapy.downloadermiddlewares.useragent
+.. module:: jscrapy.downloadermiddlewares.useragent
    :synopsis: User Agent Middleware
 
 .. class:: UserAgentMiddleware
@@ -1165,7 +1165,7 @@ UserAgentMiddleware
 AjaxCrawlMiddleware
 -------------------
 
-.. module:: scrapy.downloadermiddlewares.ajaxcrawl
+.. module:: jscrapy.downloadermiddlewares.ajaxcrawl
 
 .. class:: AjaxCrawlMiddleware
 

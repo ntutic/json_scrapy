@@ -5,8 +5,8 @@ from twisted.trial import unittest
 from twisted.internet import reactor, defer
 from twisted.python.failure import Failure
 
-from scrapy.utils.asyncgen import collect_asyncgen, as_async_generator
-from scrapy.utils.defer import (
+from jscrapy.utils.asyncgen import collect_asyncgen, as_async_generator
+from jscrapy.utils.defer import (
     aiter_errback,
     deferred_f_from_coro_f,
     iter_errback,

@@ -1,9 +1,9 @@
 import unittest
 
-from scrapy.linkextractors import IGNORED_EXTENSIONS
-from scrapy.spiders import Spider
-from scrapy.utils.misc import arg_to_iter
-from scrapy.utils.url import (
+from jscrapy.linkextractors import IGNORED_EXTENSIONS
+from jscrapy.spiders import Spider
+from jscrapy.utils.misc import arg_to_iter
+from jscrapy.utils.url import (
     add_http_if_no_scheme,
     guess_scheme,
     _is_filesystem_path,
@@ -13,7 +13,7 @@ from scrapy.utils.url import (
     url_has_any_extension,
 )
 
-__doctests__ = ['scrapy.utils.url']
+__doctests__ = ['jscrapy.utils.url']
 
 
 class UrlUtilsTest(unittest.TestCase):
@@ -274,7 +274,7 @@ for k, args in enumerate(
         (
             r'C:\absolute\path\to\a\file.html',
             'file://',
-            'Windows filepath are not supported for scrapy shell',
+            'Windows filepath are not supported for jscrapy shell',
         ),
     ],
     start=1,

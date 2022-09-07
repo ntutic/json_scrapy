@@ -5,9 +5,9 @@ from twisted.names import cache, hosts as hostsModule, resolve
 from twisted.names.client import Resolver
 from twisted.python.runtime import platform
 
-from scrapy import Spider, Request
-from scrapy.crawler import CrawlerRunner
-from scrapy.utils.log import configure_logging
+from jscrapy import Spider, Request
+from jscrapy.crawler import CrawlerRunner
+from jscrapy.utils.log import configure_logging
 
 from tests.mockserver import MockServer, MockDNSServer
 

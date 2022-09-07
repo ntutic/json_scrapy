@@ -19,13 +19,13 @@ Current singletons
 
 Scrapy 0.7 has the following singletons:
 
-- Execution engine (``scrapy.core.engine.scrapyengine``)
-- Execution manager (``scrapy.core.manager.scrapymanager``)
-- Extension manager (``scrapy.extension.extensions``)
-- Spider manager (``scrapy.spider.spiders``)
-- Stats collector (``scrapy.stats.stats``)
-- Logging system (``scrapy.log``)
-- Signals system (``scrapy.xlib.pydispatcher``)
+- Execution engine (``jscrapy.core.engine.jscrapyengine``)
+- Execution manager (``jscrapy.core.manager.jscrapymanager``)
+- Extension manager (``jscrapy.extension.extensions``)
+- Spider manager (``jscrapy.spider.spiders``)
+- Stats collector (``jscrapy.stats.stats``)
+- Logging system (``jscrapy.log``)
+- Signals system (``jscrapy.xlib.pydispatcher``)
 
 Proposed API
 ============
@@ -34,13 +34,13 @@ The proposed architecture is to have one "root" object called ``Crawler``
 (which will replace the current Execution Manager) and make all current
 singletons members of that object, as explained below:
 
-- **crawler**: ``scrapy.crawler.Crawler`` instance (replaces current
-  ``scrapy.core.manager.ExecutionManager``) - instantiated with a ``Settings``
+- **crawler**: ``jscrapy.crawler.Crawler`` instance (replaces current
+  ``jscrapy.core.manager.ExecutionManager``) - instantiated with a ``Settings``
   object
 
-   - **crawler.settings**: ``scrapy.conf.Settings`` instance (passed in the ``__init__`` method)
-   - **crawler.extensions**: ``scrapy.extension.ExtensionManager`` instance
-   - **crawler.engine**: ``scrapy.core.engine.ExecutionEngine`` instance
+   - **crawler.settings**: ``jscrapy.conf.Settings`` instance (passed in the ``__init__`` method)
+   - **crawler.extensions**: ``jscrapy.extension.ExtensionManager`` instance
+   - **crawler.engine**: ``jscrapy.core.engine.ExecutionEngine`` instance
       - ``crawler.engine.scheduler``
          - ``crawler.engine.scheduler.middleware`` - to access scheduler
            middleware
@@ -54,7 +54,7 @@ singletons members of that object, as explained below:
    - **crawler.stats**: ``StatsCollector`` instance (concrete class given in
      ``STATS_CLASS`` setting)
    - **crawler.log**: Logger class with methods replacing the current
-     ``scrapy.log`` functions. Logging would be started (if enabled) on
+     ``jscrapy.log`` functions. Logging would be started (if enabled) on
      ``Crawler`` instantiation, so no log starting functions are required.
 
       - ``crawler.log.msg``
@@ -79,8 +79,8 @@ So, for a typical middleware ``__init__`` method code, instead of this:
 ::
 
    #!python
-   from scrapy.core.exceptions import NotConfigured
-   from scrapy.conf import settings
+   from jscrapy.core.exceptions import NotConfigured
+   from jscrapy.conf import settings
 
    class SomeMiddleware(object):
       def __init__(self):
@@ -92,7 +92,7 @@ We'd write this:
 ::
 
    #!python
-   from scrapy.core.exceptions import NotConfigured
+   from jscrapy.core.exceptions import NotConfigured
 
    class SomeMiddleware(object):
       def __init__(self, crawler):
@@ -103,7 +103,7 @@ Running from command line
 =========================
 
 When running from **command line** (the only mechanism supported so far) the
-``scrapy.command.cmdline`` module will:
+``jscrapy.command.cmdline`` module will:
 
 1. instantiate a ``Settings`` object and populate it with the values in
    SCRAPY_SETTINGS_MODULE, and per-command overrides

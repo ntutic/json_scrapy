@@ -8,7 +8,7 @@ import unittest
 from io import StringIO
 from subprocess import Popen, PIPE
 
-from scrapy.utils.test import get_testenv
+from jscrapy.utils.test import get_testenv
 
 
 class CmdlineTest(unittest.TestCase):
@@ -19,7 +19,7 @@ class CmdlineTest(unittest.TestCase):
 
     def _execute(self, *new_args, **kwargs):
         encoding = getattr(sys.stdout, 'encoding') or 'utf-8'
-        args = (sys.executable, '-m', 'scrapy.cmdline') + new_args
+        args = (sys.executable, '-m', 'jscrapy.cmdline') + new_args
         proc = Popen(args, stdout=PIPE, stderr=PIPE, env=self.env, **kwargs)
         comm = proc.communicate()[0].strip()
         return comm.decode(encoding)
@@ -46,7 +46,7 @@ class CmdlineTest(unittest.TestCase):
             stats.print_stats()
             out.seek(0)
             stats = out.read()
-            self.assertIn(os.path.join('scrapy', 'commands', 'version.py'),
+            self.assertIn(os.path.join('jscrapy', 'commands', 'version.py'),
                           stats)
             self.assertIn('tottime', stats)
         finally:

@@ -1,7 +1,7 @@
-import scrapy
+import jscrapy
 
 
-class ExceptionSpider(scrapy.Spider):
+class ExceptionSpider(jscrapy.Spider):
     name = 'exception'
 
     custom_settings = {

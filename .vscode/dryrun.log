@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/nikola/code/json_scrapy'
+make: Leaving directory '/home/nikola/code/json_scrapy'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

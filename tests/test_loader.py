@@ -5,10 +5,10 @@ import attr
 from itemadapter import ItemAdapter
 from itemloaders.processors import Compose, Identity, MapCompose, TakeFirst
 
-from scrapy.http import HtmlResponse, Response
-from scrapy.item import Item, Field
-from scrapy.loader import ItemLoader
-from scrapy.selector import Selector
+from jscrapy.http import HtmlResponse, Response
+from jscrapy.item import Item, Field
+from jscrapy.loader import ItemLoader
+from jscrapy.selector import Selector
 
 
 # test items
@@ -261,7 +261,7 @@ class SelectortemLoaderTest(unittest.TestCase):
     <body>
     <div id="id">marta</div>
     <p>paragraph</p>
-    <a href="http://www.scrapy.org">homepage</a>
+    <a href="http://www.jscrapy.org">homepage</a>
     <img src="/images/logo.png" width="244" height="65" alt="Scrapy">
     </body>
     </html>
@@ -298,7 +298,7 @@ class SelectortemLoaderTest(unittest.TestCase):
     
     def test_init_method_with_base_response(self):
         """Selector should be None after initialization"""
-        response = Response("https://scrapy.org")
+        response = Response("https://jscrapy.org")
         l = TestItemLoader(response=response)
         self.assertIs(l.selector, None)
 
@@ -317,14 +317,14 @@ class SelectortemLoaderTest(unittest.TestCase):
         self.assertEqual(l.get_output_value('name'), ['Marta'])
 
         l.add_css('url', 'a::attr(href)')
-        self.assertEqual(l.get_output_value('url'), ['http://www.scrapy.org'])
+        self.assertEqual(l.get_output_value('url'), ['http://www.jscrapy.org'])
 
         # combining/accumulating CSS selectors and XPath expressions
         l.add_xpath('name', '//div/text()')
         self.assertEqual(l.get_output_value('name'), ['Marta', 'Marta'])
 
         l.add_xpath('url', '//img/@src')
-        self.assertEqual(l.get_output_value('url'), ['http://www.scrapy.org', '/images/logo.png'])
+        self.assertEqual(l.get_output_value('url'), ['http://www.jscrapy.org', '/images/logo.png'])
 
     def test_add_xpath_re(self):
         l = TestItemLoader(response=self.response)
@@ -371,7 +371,7 @@ class SelectortemLoaderTest(unittest.TestCase):
         self.assertEqual(l.get_output_value('name'), ['Ma'])
 
         l.add_css('url', 'a::attr(href)', re='http://(.+)')
-        self.assertEqual(l.get_output_value('url'), ['www.scrapy.org'])
+        self.assertEqual(l.get_output_value('url'), ['www.jscrapy.org'])
 
     def test_replace_css(self):
         l = TestItemLoader(response=self.response)
@@ -385,7 +385,7 @@ class SelectortemLoaderTest(unittest.TestCase):
         self.assertEqual(l.get_output_value('name'), ['Paragraph', 'Marta'])
 
         l.add_css('url', 'a::attr(href)', re='http://(.+)')
-        self.assertEqual(l.get_output_value('url'), ['www.scrapy.org'])
+        self.assertEqual(l.get_output_value('url'), ['www.jscrapy.org'])
         l.replace_css('url', 'img::attr(src)')
         self.assertEqual(l.get_output_value('url'), ['/images/logo.png'])
 
@@ -397,7 +397,7 @@ class SelectortemLoaderTest(unittest.TestCase):
 
         self.assertEqual(l.get_css(['p::text', 'div::text']), ['paragraph', 'marta'])
         self.assertEqual(l.get_css(['a::attr(href)', 'img::attr(src)']),
-                         ['http://www.scrapy.org', '/images/logo.png'])
+                         ['http://www.jscrapy.org', '/images/logo.png'])
 
     def test_replace_css_multi_fields(self):
         l = TestItemLoader(response=self.response)
@@ -407,7 +407,7 @@ class SelectortemLoaderTest(unittest.TestCase):
         self.assertEqual(l.get_output_value('name'), ['Paragraph'])
 
         l.add_css(None, 'a::attr(href)', TakeFirst(), lambda x: {'url': x})
-        self.assertEqual(l.get_output_value('url'), ['http://www.scrapy.org'])
+        self.assertEqual(l.get_output_value('url'), ['http://www.jscrapy.org'])
         l.replace_css(None, 'img::attr(src)', TakeFirst(), lambda x: {'url': x})
         self.assertEqual(l.get_output_value('url'), ['/images/logo.png'])
 
@@ -415,9 +415,9 @@ class SelectortemLoaderTest(unittest.TestCase):
         l = TestItemLoader(response=self.response)
         self.assertTrue(l.selector)
         l.add_css('url', 'a::attr(href)')
-        self.assertEqual(l.get_output_value('url'), ['http://www.scrapy.org'])
+        self.assertEqual(l.get_output_value('url'), ['http://www.jscrapy.org'])
         l.replace_css('url', 'a::attr(href)', re=r'http://www\.(.+)')
-        self.assertEqual(l.get_output_value('url'), ['scrapy.org'])
+        self.assertEqual(l.get_output_value('url'), ['jscrapy.org'])
 
 
 class SubselectorLoaderTest(unittest.TestCase):
@@ -429,7 +429,7 @@ class SubselectorLoaderTest(unittest.TestCase):
       <p>paragraph</p>
     </header>
     <footer class="footer">
-      <a href="http://www.scrapy.org">homepage</a>
+      <a href="http://www.jscrapy.org">homepage</a>
       <img src="/images/logo.png" width="244" height="65" alt="Scrapy">
     </footer>
     </body>
@@ -473,11 +473,11 @@ class SubselectorLoaderTest(unittest.TestCase):
         nl2 = nl1.nested_xpath('a')
 
         l.add_xpath('url', '//footer/a/@href')
-        self.assertEqual(l.get_output_value('url'), ['http://www.scrapy.org'])
+        self.assertEqual(l.get_output_value('url'), ['http://www.jscrapy.org'])
         nl1.replace_xpath('url', 'img/@src')
         self.assertEqual(l.get_output_value('url'), ['/images/logo.png'])
         nl2.replace_xpath('url', '@href')
-        self.assertEqual(l.get_output_value('url'), ['http://www.scrapy.org'])
+        self.assertEqual(l.get_output_value('url'), ['http://www.jscrapy.org'])
 
     def test_nested_ordering(self):
         l = NestedItemLoader(response=self.response)
@@ -491,9 +491,9 @@ class SubselectorLoaderTest(unittest.TestCase):
 
         self.assertEqual(l.get_output_value('url'), [
             '/images/logo.png',
-            'http://www.scrapy.org',
+            'http://www.jscrapy.org',
             'homepage',
-            'http://www.scrapy.org',
+            'http://www.jscrapy.org',
         ])
 
     def test_nested_load_item(self):
@@ -512,7 +512,7 @@ class SubselectorLoaderTest(unittest.TestCase):
         assert item is nl2.item
 
         self.assertEqual(item['name'], ['marta'])
-        self.assertEqual(item['url'], ['http://www.scrapy.org'])
+        self.assertEqual(item['url'], ['http://www.jscrapy.org'])
         self.assertEqual(item['image'], ['/images/logo.png'])
 
 

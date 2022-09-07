@@ -7,16 +7,16 @@ from warnings import catch_warnings, filterwarnings
 
 from twisted.trial import unittest
 
-from scrapy.exceptions import ScrapyDeprecationWarning
-from scrapy.utils.asyncgen import as_async_generator, collect_asyncgen
-from scrapy.utils.defer import deferred_f_from_coro_f, aiter_errback
-from scrapy.utils.python import (
+from jscrapy.exceptions import ScrapyDeprecationWarning
+from jscrapy.utils.asyncgen import as_async_generator, collect_asyncgen
+from jscrapy.utils.defer import deferred_f_from_coro_f, aiter_errback
+from jscrapy.utils.python import (
     memoizemethod_noargs, binary_is_text, equal_attributes,
     WeakKeyCache, get_func_args, to_bytes, to_unicode,
     without_none_values, MutableChain, MutableAsyncChain)
 
 
-__doctests__ = ['scrapy.utils.python']
+__doctests__ = ['jscrapy.utils.python']
 
 
 class MutableChainTest(unittest.TestCase):
@@ -30,7 +30,7 @@ class MutableChainTest(unittest.TestCase):
         with catch_warnings(record=True) as warnings:
             self.assertEqual(m.next(), 2)
             self.assertEqual(len(warnings), 1)
-            self.assertIn('scrapy.utils.python.MutableChain.__next__',
+            self.assertIn('jscrapy.utils.python.MutableChain.__next__',
                           str(warnings[0].message))
         self.assertEqual(list(m), list(range(3, 13)))
 

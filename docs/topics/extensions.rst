@@ -34,8 +34,8 @@ your Scrapy settings. In :setting:`EXTENSIONS`, each extension is represented
 by a string: the full Python path to the extension's class name. For example::
 
     EXTENSIONS = {
-        'scrapy.extensions.corestats.CoreStats': 500,
-        'scrapy.extensions.telnet.TelnetConsole': 500,
+        'jscrapy.extensions.corestats.CoreStats': 500,
+        'jscrapy.extensions.telnet.TelnetConsole': 500,
     }
 
 
@@ -67,7 +67,7 @@ included in the :setting:`EXTENSIONS_BASE` setting) you must set its order to
 ``None``. For example::
 
     EXTENSIONS = {
-        'scrapy.extensions.corestats.CoreStats': None,
+        'jscrapy.extensions.corestats.CoreStats': None,
     }
 
 Writing your own extension
@@ -82,7 +82,7 @@ Typically, extensions connect to :ref:`signals <topics-signals>` and perform
 tasks triggered by them.
 
 Finally, if the ``from_crawler`` method raises the
-:exc:`~scrapy.exceptions.NotConfigured` exception, the extension will be
+:exc:`~jscrapy.exceptions.NotConfigured` exception, the extension will be
 disabled. Otherwise, the extension will be enabled.
 
 Sample extension
@@ -101,8 +101,8 @@ number of items will be specified through the ``MYEXT_ITEMCOUNT`` setting.
 Here is the code of such extension::
 
     import logging
-    from scrapy import signals
-    from scrapy.exceptions import NotConfigured
+    from jscrapy import signals
+    from jscrapy.exceptions import NotConfigured
 
     logger = logging.getLogger(__name__)
 
@@ -156,7 +156,7 @@ General purpose extensions
 Log Stats extension
 ~~~~~~~~~~~~~~~~~~~
 
-.. module:: scrapy.extensions.logstats
+.. module:: jscrapy.extensions.logstats
    :synopsis: Basic stats logging
 
 .. class:: LogStats
@@ -166,7 +166,7 @@ Log basic stats like crawled pages and scraped items.
 Core Stats extension
 ~~~~~~~~~~~~~~~~~~~~
 
-.. module:: scrapy.extensions.corestats
+.. module:: jscrapy.extensions.corestats
    :synopsis: Core stats collection
 
 .. class:: CoreStats
@@ -179,7 +179,7 @@ enabled (see :ref:`topics-stats`).
 Telnet console extension
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. module:: scrapy.extensions.telnet
+.. module:: jscrapy.extensions.telnet
    :synopsis: Telnet console
 
 .. class:: TelnetConsole
@@ -196,7 +196,7 @@ setting, and the server will listen in the port specified in
 Memory usage extension
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. module:: scrapy.extensions.memusage
+.. module:: jscrapy.extensions.memusage
    :synopsis: Memory usage extension
 
 .. class:: MemoryUsage
@@ -224,7 +224,7 @@ can be configured with the following settings:
 Memory debugger extension
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. module:: scrapy.extensions.memdebug
+.. module:: jscrapy.extensions.memdebug
    :synopsis: Memory debugger extension
 
 .. class:: MemoryDebugger
@@ -240,7 +240,7 @@ info will be stored in the stats.
 Close spider extension
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. module:: scrapy.extensions.closespider
+.. module:: jscrapy.extensions.closespider
    :synopsis: Close spider extension
 
 .. class:: CloseSpider
@@ -313,7 +313,7 @@ set), spiders won't be closed by number of errors.
 StatsMailer extension
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. module:: scrapy.extensions.statsmailer
+.. module:: jscrapy.extensions.statsmailer
    :synopsis: StatsMailer extension
 
 .. class:: StatsMailer
@@ -323,12 +323,12 @@ domain has finished scraping, including the Scrapy stats collected. The email
 will be sent to all recipients specified in the :setting:`STATSMAILER_RCPTS`
 setting.
 
-Emails can be sent using the :class:`~scrapy.mail.MailSender` class. To see a
+Emails can be sent using the :class:`~jscrapy.mail.MailSender` class. To see a
 full list of parameters, including examples on how to instantiate
-:class:`~scrapy.mail.MailSender` and use mail settings, see
+:class:`~jscrapy.mail.MailSender` and use mail settings, see
 :ref:`topics-email`.
 
-.. module:: scrapy.extensions.debug
+.. module:: jscrapy.extensions.debug
    :synopsis: Extensions for debugging Scrapy
 
 Debugging extensions
@@ -342,7 +342,7 @@ Stack trace dump extension
 Dumps information about the running process when a `SIGQUIT`_ or `SIGUSR2`_
 signal is received. The information dumped is the following:
 
-1. engine status (using ``scrapy.utils.engine.get_engine_status()``)
+1. engine status (using ``jscrapy.utils.engine.get_engine_status()``)
 2. live references (see :ref:`topics-leaks-trackrefs`)
 3. stack trace of all threads
 

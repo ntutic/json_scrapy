@@ -3,11 +3,11 @@ import os
 import unittest
 from unittest import mock
 
-from scrapy.item import Item, Field
-from scrapy.utils.misc import arg_to_iter, create_instance, load_object, rel_has_nofollow, set_environ, walk_modules
+from jscrapy.item import Item, Field
+from jscrapy.utils.misc import arg_to_iter, create_instance, load_object, rel_has_nofollow, set_environ, walk_modules
 
 
-__doctests__ = ['scrapy.utils.misc']
+__doctests__ = ['jscrapy.utils.misc']
 
 
 class UtilsMiscTestCase(unittest.TestCase):
@@ -15,18 +15,18 @@ class UtilsMiscTestCase(unittest.TestCase):
     def test_load_object_class(self):
         obj = load_object(Field)
         self.assertIs(obj, Field)
-        obj = load_object('scrapy.item.Field')
+        obj = load_object('jscrapy.item.Field')
         self.assertIs(obj, Field)
 
     def test_load_object_function(self):
         obj = load_object(load_object)
         self.assertIs(obj, load_object)
-        obj = load_object('scrapy.utils.misc.load_object')
+        obj = load_object('jscrapy.utils.misc.load_object')
         self.assertIs(obj, load_object)
 
     def test_load_object_exceptions(self):
         self.assertRaises(ImportError, load_object, 'nomodule999.mod.function')
-        self.assertRaises(NameError, load_object, 'scrapy.utils.misc.load_object999')
+        self.assertRaises(NameError, load_object, 'jscrapy.utils.misc.load_object999')
         self.assertRaises(TypeError, load_object, {})
 
     def test_walk_modules(self):

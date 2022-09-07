@@ -1,8 +1,8 @@
 from twisted.internet import defer
 from twisted.trial.unittest import TestCase
-from scrapy.signals import request_left_downloader
-from scrapy.spiders import Spider
-from scrapy.utils.test import get_crawler
+from jscrapy.signals import request_left_downloader
+from jscrapy.spiders import Spider
+from jscrapy.utils.test import get_crawler
 from tests.mockserver import MockServer
 
 

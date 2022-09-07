@@ -4,7 +4,7 @@
 Downloading and processing files and images
 ===========================================
 
-.. currentmodule:: scrapy.pipelines.images
+.. currentmodule:: jscrapy.pipelines.images
 
 Scrapy provides reusable :doc:`item pipelines </topics/item-pipeline>` for
 downloading files attached to a particular item (for example, when you scrape
@@ -89,11 +89,11 @@ To enable your media pipeline you must first add it to your project
 
 For Images Pipeline, use::
 
-    ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
+    ITEM_PIPELINES = {'jscrapy.pipelines.images.ImagesPipeline': 1}
 
 For Files Pipeline, use::
 
-    ITEM_PIPELINES = {'scrapy.pipelines.files.FilesPipeline': 1}
+    ITEM_PIPELINES = {'jscrapy.pipelines.files.FilesPipeline': 1}
 
 .. note::
     You can also use both the Files and Images Pipeline at the same time.
@@ -319,14 +319,14 @@ respectively), the pipeline will put the results under the respective field
 When using :ref:`item types <item-types>` for which fields are defined beforehand,
 you must define both the URLs field and the results field. For example, when
 using the images pipeline, items must define both the ``image_urls`` and the
-``images`` field. For instance, using the :class:`~scrapy.Item` class::
+``images`` field. For instance, using the :class:`~jscrapy.Item` class::
 
-    import scrapy
+    import jscrapy
 
-    class MyItem(scrapy.Item):
+    class MyItem(jscrapy.Item):
         # ... other item fields ...
-        image_urls = scrapy.Field()
-        images = scrapy.Field()
+        image_urls = jscrapy.Field()
+        images = jscrapy.Field()
 
 If you want to use another field name for the URLs key or for the results key,
 it is also possible to override it.
@@ -473,7 +473,7 @@ To handle media redirections, set this setting to ``True``::
 Extending the Media Pipelines
 =============================
 
-.. module:: scrapy.pipelines.files
+.. module:: jscrapy.pipelines.files
    :synopsis: Files Pipeline
 
 See here the methods that you can override in your custom Files Pipeline:
@@ -484,12 +484,12 @@ See here the methods that you can override in your custom Files Pipeline:
 
       This method is called once per downloaded item. It returns the
       download path of the file originating from the specified
-      :class:`response <scrapy.http.Response>`.
+      :class:`response <jscrapy.http.Response>`.
 
       In addition to ``response``, this method receives the original
-      :class:`request <scrapy.Request>`,
-      :class:`info <scrapy.pipelines.media.MediaPipeline.SpiderInfo>` and 
-      :class:`item <scrapy.Item>`
+      :class:`request <jscrapy.Request>`,
+      :class:`info <jscrapy.pipelines.media.MediaPipeline.SpiderInfo>` and 
+      :class:`item <jscrapy.Item>`
 
       You can override this method to customize the download path of each file.
 
@@ -501,7 +501,7 @@ See here the methods that you can override in your custom Files Pipeline:
         import os
         from urllib.parse import urlparse
 
-        from scrapy.pipelines.files import FilesPipeline
+        from jscrapy.pipelines.files import FilesPipeline
 
         class MyFilesPipeline(FilesPipeline):
 
@@ -529,7 +529,7 @@ See here the methods that you can override in your custom Files Pipeline:
          def get_media_requests(self, item, info):
              adapter = ItemAdapter(item)
              for file_url in adapter['file_urls']:
-                 yield scrapy.Request(file_url)
+                 yield jscrapy.Request(file_url)
 
       Those requests will be processed by the pipeline and, when they have finished
       downloading, the results will be sent to the
@@ -596,7 +596,7 @@ See here the methods that you can override in your custom Files Pipeline:
       item field, and we drop the item if it doesn't contain any files::
 
           from itemadapter import ItemAdapter
-          from scrapy.exceptions import DropItem
+          from jscrapy.exceptions import DropItem
 
           def item_completed(self, results, item, info):
               file_paths = [x['path'] for ok, x in results if ok]
@@ -609,7 +609,7 @@ See here the methods that you can override in your custom Files Pipeline:
       By default, the :meth:`item_completed` method returns the item.
 
 
-.. module:: scrapy.pipelines.images
+.. module:: jscrapy.pipelines.images
    :synopsis: Images Pipeline
 
 See here the methods that you can override in your custom Images Pipeline:
@@ -623,12 +623,12 @@ See here the methods that you can override in your custom Images Pipeline:
 
       This method is called once per downloaded item. It returns the
       download path of the file originating from the specified
-      :class:`response <scrapy.http.Response>`.
+      :class:`response <jscrapy.http.Response>`.
 
       In addition to ``response``, this method receives the original
-      :class:`request <scrapy.Request>`,
-      :class:`info <scrapy.pipelines.media.MediaPipeline.SpiderInfo>` and 
-      :class:`item <scrapy.Item>`
+      :class:`request <jscrapy.Request>`,
+      :class:`info <jscrapy.pipelines.media.MediaPipeline.SpiderInfo>` and 
+      :class:`item <jscrapy.Item>`
 
       You can override this method to customize the download path of each file.
 
@@ -640,7 +640,7 @@ See here the methods that you can override in your custom Images Pipeline:
         import os
         from urllib.parse import urlparse
 
-        from scrapy.pipelines.images import ImagesPipeline
+        from jscrapy.pipelines.images import ImagesPipeline
 
         class MyImagesPipeline(ImagesPipeline):
 
@@ -660,13 +660,13 @@ See here the methods that you can override in your custom Images Pipeline:
 
       This method is called for every item of  :setting:`IMAGES_THUMBS` per downloaded item. It returns the
       thumbnail download path of the image originating from the specified
-      :class:`response <scrapy.http.Response>`.
+      :class:`response <jscrapy.http.Response>`.
 
       In addition to ``response``, this method receives the original
-      :class:`request <scrapy.Request>`,
+      :class:`request <jscrapy.Request>`,
       ``thumb_id``,
-      :class:`info <scrapy.pipelines.media.MediaPipeline.SpiderInfo>` and
-      :class:`item <scrapy.Item>`.
+      :class:`info <jscrapy.pipelines.media.MediaPipeline.SpiderInfo>` and
+      :class:`item <jscrapy.Item>`.
 
       You can override this method to customize the thumbnail download path of each image.
       You can use the ``item`` to determine the file path based on some item
@@ -703,16 +703,16 @@ Custom Images pipeline example
 Here is a full example of the Images Pipeline whose methods are exemplified
 above::
 
-    import scrapy
+    import jscrapy
     from itemadapter import ItemAdapter
-    from scrapy.exceptions import DropItem
-    from scrapy.pipelines.images import ImagesPipeline
+    from jscrapy.exceptions import DropItem
+    from jscrapy.pipelines.images import ImagesPipeline
 
     class MyImagesPipeline(ImagesPipeline):
 
         def get_media_requests(self, item, info):
             for image_url in item['image_urls']:
-                yield scrapy.Request(image_url)
+                yield jscrapy.Request(image_url)
 
         def item_completed(self, results, item, info):
             image_paths = [x['path'] for ok, x in results if ok]

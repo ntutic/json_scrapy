@@ -4,7 +4,7 @@ import unittest
 
 import queuelib
 
-from scrapy.squeues import (
+from jscrapy.squeues import (
     PickleFifoDiskQueue,
     PickleLifoDiskQueue,
     MarshalFifoDiskQueue,
@@ -12,9 +12,9 @@ from scrapy.squeues import (
     FifoMemoryQueue,
     LifoMemoryQueue,
 )
-from scrapy.http import Request
-from scrapy.spiders import Spider
-from scrapy.utils.test import get_crawler
+from jscrapy.http import Request
+from jscrapy.spiders import Spider
+from jscrapy.utils.test import get_crawler
 
 
 """
@@ -24,7 +24,7 @@ Queues that handle requests
 
 class BaseQueueTestCase(unittest.TestCase):
     def setUp(self):
-        self.tmpdir = tempfile.mkdtemp(prefix="scrapy-queue-tests-")
+        self.tmpdir = tempfile.mkdtemp(prefix="jscrapy-queue-tests-")
         self.qpath = self.tempfilename()
         self.qdir = self.mkdtemp()
         self.crawler = get_crawler(Spider)

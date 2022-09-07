@@ -13,13 +13,13 @@ Run Scrapy from a script
 ========================
 
 You can use the :ref:`API <topics-api>` to run Scrapy from a script, instead of
-the typical way of running Scrapy via ``scrapy crawl``.
+the typical way of running Scrapy via ``jscrapy crawl``.
 
 Remember that Scrapy is built on top of the Twisted
 asynchronous networking library, so you need to run it inside the Twisted reactor.
 
 The first utility you can use to run your spiders is
-:class:`scrapy.crawler.CrawlerProcess`. This class will start a Twisted reactor
+:class:`jscrapy.crawler.CrawlerProcess`. This class will start a Twisted reactor
 for you, configuring the logging and setting shutdown handlers. This class is
 the one used by all Scrapy commands.
 
@@ -27,10 +27,10 @@ Here's an example showing how to run a single spider with it.
 
 ::
 
-    import scrapy
-    from scrapy.crawler import CrawlerProcess
+    import jscrapy
+    from jscrapy.crawler import CrawlerProcess
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         # Your spider definition
         ...
 
@@ -43,13 +43,13 @@ Here's an example showing how to run a single spider with it.
     process.crawl(MySpider)
     process.start() # the script will block here until the crawling is finished
 
-Define settings within dictionary in CrawlerProcess. Make sure to check :class:`~scrapy.crawler.CrawlerProcess`
+Define settings within dictionary in CrawlerProcess. Make sure to check :class:`~jscrapy.crawler.CrawlerProcess`
 documentation to get acquainted with its usage details.
 
 If you are inside a Scrapy project there are some additional helpers you can
 use to import those components within the project. You can automatically import
-your spiders passing their name to :class:`~scrapy.crawler.CrawlerProcess`, and
-use ``get_project_settings`` to get a :class:`~scrapy.settings.Settings`
+your spiders passing their name to :class:`~jscrapy.crawler.CrawlerProcess`, and
+use ``get_project_settings`` to get a :class:`~jscrapy.settings.Settings`
 instance with your project settings.
 
 What follows is a working example of how to do that, using the `testspiders`_
@@ -57,29 +57,29 @@ project as example.
 
 ::
 
-    from scrapy.crawler import CrawlerProcess
-    from scrapy.utils.project import get_project_settings
+    from jscrapy.crawler import CrawlerProcess
+    from jscrapy.utils.project import get_project_settings
 
     process = CrawlerProcess(get_project_settings())
 
     # 'followall' is the name of one of the spiders of the project.
-    process.crawl('followall', domain='scrapy.org')
+    process.crawl('followall', domain='jscrapy.org')
     process.start() # the script will block here until the crawling is finished
 
 There's another Scrapy utility that provides more control over the crawling
-process: :class:`scrapy.crawler.CrawlerRunner`. This class is a thin wrapper
+process: :class:`jscrapy.crawler.CrawlerRunner`. This class is a thin wrapper
 that encapsulates some simple helpers to run multiple crawlers, but it won't
 start or interfere with existing reactors in any way.
 
 Using this class the reactor should be explicitly run after scheduling your
-spiders. It's recommended you use :class:`~scrapy.crawler.CrawlerRunner`
-instead of :class:`~scrapy.crawler.CrawlerProcess` if your application is
+spiders. It's recommended you use :class:`~jscrapy.crawler.CrawlerRunner`
+instead of :class:`~jscrapy.crawler.CrawlerProcess` if your application is
 already using Twisted and you want to run Scrapy in the same reactor.
 
 Note that you will also have to shutdown the Twisted reactor yourself after the
 spider is finished. This can be achieved by adding callbacks to the deferred
 returned by the :meth:`CrawlerRunner.crawl
-<scrapy.crawler.CrawlerRunner.crawl>` method.
+<jscrapy.crawler.CrawlerRunner.crawl>` method.
 
 Here's an example of its usage, along with a callback to manually stop the
 reactor after ``MySpider`` has finished running.
@@ -87,11 +87,11 @@ reactor after ``MySpider`` has finished running.
 ::
 
     from twisted.internet import reactor
-    import scrapy
-    from scrapy.crawler import CrawlerRunner
-    from scrapy.utils.log import configure_logging
+    import jscrapy
+    from jscrapy.crawler import CrawlerRunner
+    from jscrapy.utils.log import configure_logging
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         # Your spider definition
         ...
 
@@ -109,7 +109,7 @@ reactor after ``MySpider`` has finished running.
 Running multiple spiders in the same process
 ============================================
 
-By default, Scrapy runs a single spider per process when you run ``scrapy
+By default, Scrapy runs a single spider per process when you run ``jscrapy
 crawl``. However, Scrapy supports running multiple spiders per process using
 the :ref:`internal API <topics-api>`.
 
@@ -117,15 +117,15 @@ Here is an example that runs multiple spiders simultaneously:
 
 ::
 
-    import scrapy
-    from scrapy.crawler import CrawlerProcess
-    from scrapy.utils.project import get_project_settings
+    import jscrapy
+    from jscrapy.crawler import CrawlerProcess
+    from jscrapy.utils.project import get_project_settings
 
-    class MySpider1(scrapy.Spider):
+    class MySpider1(jscrapy.Spider):
         # Your first spider definition
         ...
 
-    class MySpider2(scrapy.Spider):
+    class MySpider2(jscrapy.Spider):
         # Your second spider definition
         ...
 
@@ -135,21 +135,21 @@ Here is an example that runs multiple spiders simultaneously:
     process.crawl(MySpider2)
     process.start() # the script will block here until all crawling jobs are finished
 
-Same example using :class:`~scrapy.crawler.CrawlerRunner`:
+Same example using :class:`~jscrapy.crawler.CrawlerRunner`:
 
 ::
 
-    import scrapy
+    import jscrapy
     from twisted.internet import reactor
-    from scrapy.crawler import CrawlerRunner
-    from scrapy.utils.log import configure_logging
-    from scrapy.utils.project import get_project_settings
+    from jscrapy.crawler import CrawlerRunner
+    from jscrapy.utils.log import configure_logging
+    from jscrapy.utils.project import get_project_settings
 
-    class MySpider1(scrapy.Spider):
+    class MySpider1(jscrapy.Spider):
         # Your first spider definition
         ...
 
-    class MySpider2(scrapy.Spider):
+    class MySpider2(jscrapy.Spider):
         # Your second spider definition
         ...
 
@@ -168,15 +168,15 @@ Same example but running the spiders sequentially by chaining the deferreds:
 ::
 
     from twisted.internet import reactor, defer
-    from scrapy.crawler import CrawlerRunner
-    from scrapy.utils.log import configure_logging
-    from scrapy.utils.project import get_project_settings
+    from jscrapy.crawler import CrawlerRunner
+    from jscrapy.utils.log import configure_logging
+    from jscrapy.utils.project import get_project_settings
 
-    class MySpider1(scrapy.Spider):
+    class MySpider1(jscrapy.Spider):
         # Your first spider definition
         ...
 
-    class MySpider2(scrapy.Spider):
+    class MySpider2(jscrapy.Spider):
         # Your second spider definition
         ...
 
@@ -201,8 +201,8 @@ different for different settings:
 * :setting:`SPIDER_LOADER_CLASS` and the ones used by its value
   (:setting:`SPIDER_MODULES`, :setting:`SPIDER_LOADER_WARN_ONLY` for the
   default one) cannot be read from the per-spider settings. These are applied
-  when the :class:`~scrapy.crawler.CrawlerRunner` or
-  :class:`~scrapy.crawler.CrawlerProcess` object is created.
+  when the :class:`~jscrapy.crawler.CrawlerRunner` or
+  :class:`~jscrapy.crawler.CrawlerProcess` object is created.
 * For :setting:`TWISTED_REACTOR` and :setting:`ASYNCIO_EVENT_LOOP` the first
   available value is used, and if a spider requests a different reactor an
   exception will be raised. These are applied when the reactor is installed.
@@ -241,9 +241,9 @@ Then you fire a spider run on 3 different Scrapyd servers. The spider would
 receive a (spider) argument ``part`` with the number of the partition to
 crawl::
 
-    curl http://scrapy1.mycompany.com:6800/schedule.json -d project=myproject -d spider=spider1 -d part=1
-    curl http://scrapy2.mycompany.com:6800/schedule.json -d project=myproject -d spider=spider1 -d part=2
-    curl http://scrapy3.mycompany.com:6800/schedule.json -d project=myproject -d spider=spider1 -d part=3
+    curl http://jscrapy1.mycompany.com:6800/schedule.json -d project=myproject -d spider=spider1 -d part=1
+    curl http://jscrapy2.mycompany.com:6800/schedule.json -d project=myproject -d spider=spider1 -d part=2
+    curl http://jscrapy3.mycompany.com:6800/schedule.json -d project=myproject -d spider=spider1 -d part=3
 
 .. _bans:
 
@@ -275,7 +275,7 @@ If you are still unable to prevent your bot getting banned, consider contacting
 `commercial support`_.
 
 .. _Tor project: https://www.torproject.org/
-.. _commercial support: https://scrapy.org/support/
+.. _commercial support: https://jscrapy.org/support/
 .. _ProxyMesh: https://proxymesh.com/
 .. _Common Crawl: https://commoncrawl.org/
 .. _testspiders: https://github.com/scrapinghub/testspiders

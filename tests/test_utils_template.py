@@ -2,10 +2,10 @@ import os
 from shutil import rmtree
 from tempfile import mkdtemp
 import unittest
-from scrapy.utils.template import render_templatefile
+from jscrapy.utils.template import render_templatefile
 
 
-__doctests__ = ['scrapy.utils.template']
+__doctests__ = ['jscrapy.utils.template']
 
 
 class UtilsRenderTemplateFileTestCase(unittest.TestCase):

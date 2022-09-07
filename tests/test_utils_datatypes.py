@@ -2,12 +2,12 @@ import copy
 import unittest
 from collections.abc import Mapping, MutableMapping
 
-from scrapy.http import Request
-from scrapy.utils.datatypes import CaselessDict, LocalCache, LocalWeakReferencedCache, SequenceExclude
-from scrapy.utils.python import garbage_collect
+from jscrapy.http import Request
+from jscrapy.utils.datatypes import CaselessDict, LocalCache, LocalWeakReferencedCache, SequenceExclude
+from jscrapy.utils.python import garbage_collect
 
 
-__doctests__ = ['scrapy.utils.datatypes']
+__doctests__ = ['jscrapy.utils.datatypes']
 
 
 class CaselessDictTest(unittest.TestCase):

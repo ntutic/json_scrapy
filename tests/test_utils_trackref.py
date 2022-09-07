@@ -5,7 +5,7 @@ from unittest import mock
 
 from twisted.trial.unittest import SkipTest
 
-from scrapy.utils import trackref
+from jscrapy.utils import trackref
 
 
 class Foo(trackref.object_ref):

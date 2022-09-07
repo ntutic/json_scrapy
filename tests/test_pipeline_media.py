@@ -7,17 +7,17 @@ from twisted.python.failure import Failure
 from twisted.internet import reactor
 from twisted.internet.defer import Deferred, inlineCallbacks
 
-from scrapy import signals
-from scrapy.http import Request, Response
-from scrapy.settings import Settings
-from scrapy.spiders import Spider
-from scrapy.pipelines.files import FileException
-from scrapy.pipelines.images import ImagesPipeline
-from scrapy.pipelines.media import MediaPipeline
-from scrapy.utils.deprecate import ScrapyDeprecationWarning
-from scrapy.utils.log import failure_to_exc_info
-from scrapy.utils.signal import disconnect_all
-from scrapy.utils.test import get_crawler
+from jscrapy import signals
+from jscrapy.http import Request, Response
+from jscrapy.settings import Settings
+from jscrapy.spiders import Spider
+from jscrapy.pipelines.files import FileException
+from jscrapy.pipelines.images import ImagesPipeline
+from jscrapy.pipelines.media import MediaPipeline
+from jscrapy.utils.deprecate import ScrapyDeprecationWarning
+from jscrapy.utils.log import failure_to_exc_info
+from jscrapy.utils.signal import disconnect_all
+from jscrapy.utils.test import get_crawler
 
 
 try:

@@ -22,12 +22,12 @@ from twisted import version as twisted_version
 from twisted.python.versions import Version
 from twisted.trial import unittest
 
-import scrapy
-from scrapy.commands import view, ScrapyCommand, ScrapyHelpFormatter
-from scrapy.commands.startproject import IGNORE
-from scrapy.settings import Settings
-from scrapy.utils.python import to_unicode
-from scrapy.utils.test import get_testenv
+import jscrapy
+from jscrapy.commands import view, ScrapyCommand, ScrapyHelpFormatter
+from jscrapy.commands.startproject import IGNORE
+from jscrapy.settings import Settings
+from jscrapy.utils.python import to_unicode
+from jscrapy.utils.test import get_testenv
 
 from tests.test_crawler import ExceptionSpider, NoRequestsSpider
 
@@ -45,16 +45,16 @@ class CommandSettings(unittest.TestCase):
         feeds_json = '{"data.json": {"format": "json"}, "data.xml": {"format": "xml"}}'
         opts, args = self.parser.parse_known_args(args=['-s', f'FEEDS={feeds_json}', 'spider.py'])
         self.command.process_options(args, opts)
-        self.assertIsInstance(self.command.settings['FEEDS'], scrapy.settings.BaseSettings)
+        self.assertIsInstance(self.command.settings['FEEDS'], jscrapy.settings.BaseSettings)
         self.assertEqual(dict(self.command.settings['FEEDS']), json.loads(feeds_json))
 
     def test_help_formatter(self):
-        formatter = ScrapyHelpFormatter(prog='scrapy')
-        part_strings = ['usage: scrapy genspider [options] <name> <domain>\n\n',
+        formatter = ScrapyHelpFormatter(prog='jscrapy')
+        part_strings = ['usage: jscrapy genspider [options] <name> <domain>\n\n',
                         '\n', 'optional arguments:\n', '\n', 'Global Options:\n']
         self.assertEqual(
             formatter._join_parts(part_strings),
-            ('Usage\n=====\n  scrapy genspider [options] <name> <domain>\n\n\n'
+            ('Usage\n=====\n  jscrapy genspider [options] <name> <domain>\n\n\n'
              'Optional Arguments\n==================\n\n'
              'Global Options\n--------------\n')
         )
@@ -75,12 +75,12 @@ class ProjectTest(unittest.TestCase):
 
     def call(self, *new_args, **kwargs):
         with tempfile.TemporaryFile() as out:
-            args = (sys.executable, '-m', 'scrapy.cmdline') + new_args
+            args = (sys.executable, '-m', 'jscrapy.cmdline') + new_args
             return subprocess.call(args, stdout=out, stderr=out, cwd=self.cwd,
                                    env=self.env, **kwargs)
 
     def proc(self, *new_args, **popen_kwargs):
-        args = (sys.executable, '-m', 'scrapy.cmdline') + new_args
+        args = (sys.executable, '-m', 'jscrapy.cmdline') + new_args
         p = subprocess.Popen(
             args,
             cwd=popen_kwargs.pop('cwd', self.cwd),
@@ -122,7 +122,7 @@ class StartprojectTest(ProjectTest):
         print(err, file=sys.stderr)
         self.assertEqual(p.returncode, 0)
 
-        assert exists(join(self.proj_path, 'scrapy.cfg'))
+        assert exists(join(self.proj_path, 'jscrapy.cfg'))
         assert exists(join(self.proj_path, 'testproject'))
         assert exists(join(self.proj_mod_path, '__init__.py'))
         assert exists(join(self.proj_mod_path, 'items.py'))
@@ -138,7 +138,7 @@ class StartprojectTest(ProjectTest):
         project_dir = mkdtemp()
         self.assertEqual(0, self.call('startproject', self.project_name, project_dir))
 
-        assert exists(join(abspath(project_dir), 'scrapy.cfg'))
+        assert exists(join(abspath(project_dir), 'jscrapy.cfg'))
         assert exists(join(abspath(project_dir), 'testproject'))
         assert exists(join(join(abspath(project_dir), self.project_name), '__init__.py'))
         assert exists(join(join(abspath(project_dir), self.project_name), 'items.py'))
@@ -166,7 +166,7 @@ class StartprojectTest(ProjectTest):
         print(err, file=sys.stderr)
         self.assertEqual(p.returncode, 0)
 
-        assert exists(join(abspath(project_path), 'scrapy.cfg'))
+        assert exists(join(abspath(project_path), 'jscrapy.cfg'))
         assert exists(join(abspath(project_path), project_name))
         assert exists(join(join(abspath(project_path), project_name), '__init__.py'))
         assert exists(join(join(abspath(project_path), project_name), 'items.py'))
@@ -212,7 +212,7 @@ class StartprojectTemplatesTest(ProjectTest):
         self.tmpl_proj = join(self.tmpl, 'project')
 
     def test_startproject_template_override(self):
-        copytree(join(scrapy.__path__[0], 'templates'), self.tmpl)
+        copytree(join(jscrapy.__path__[0], 'templates'), self.tmpl)
         with open(join(self.tmpl_proj, 'root_template'), 'w'):
             pass
         assert exists(join(self.tmpl_proj, 'root_template'))
@@ -228,8 +228,8 @@ class StartprojectTemplatesTest(ProjectTest):
         """Check that generated files have the right permissions when the
         template folder has the same permissions as in the project, i.e.
         everything is writable."""
-        scrapy_path = scrapy.__path__[0]
-        project_template = os.path.join(scrapy_path, 'templates', 'project')
+        jscrapy_path = jscrapy.__path__[0]
+        project_template = os.path.join(jscrapy_path, 'templates', 'project')
         project_name = 'startproject1'
         renamings = (
             ('module', project_name),
@@ -246,7 +246,7 @@ class StartprojectTemplatesTest(ProjectTest):
             (
                 sys.executable,
                 '-m',
-                'scrapy.cmdline',
+                'jscrapy.cmdline',
                 'startproject',
                 project_name,
             ),
@@ -265,10 +265,10 @@ class StartprojectTemplatesTest(ProjectTest):
         template folder has been made read-only, which is something that some
         systems do.
 
-        See https://github.com/scrapy/scrapy/pull/4604
+        See https://github.com/jscrapy/jscrapy/pull/4604
         """
-        scrapy_path = scrapy.__path__[0]
-        templates_dir = os.path.join(scrapy_path, 'templates')
+        jscrapy_path = jscrapy.__path__[0]
+        templates_dir = os.path.join(jscrapy_path, 'templates')
         project_template = os.path.join(templates_dir, 'project')
         project_name = 'startproject2'
         renamings = (
@@ -297,7 +297,7 @@ class StartprojectTemplatesTest(ProjectTest):
             (
                 sys.executable,
                 '-m',
-                'scrapy.cmdline',
+                'jscrapy.cmdline',
                 'startproject',
                 project_name,
                 '--set',
@@ -316,8 +316,8 @@ class StartprojectTemplatesTest(ProjectTest):
     def test_startproject_permissions_unchanged_in_destination(self):
         """Check that pre-existing folders and files in the destination folder
         do not see their permissions modified."""
-        scrapy_path = scrapy.__path__[0]
-        project_template = os.path.join(scrapy_path, 'templates', 'project')
+        jscrapy_path = jscrapy.__path__[0]
+        project_template = os.path.join(jscrapy_path, 'templates', 'project')
         project_name = 'startproject3'
         renamings = (
             ('module', project_name),
@@ -353,7 +353,7 @@ class StartprojectTemplatesTest(ProjectTest):
             (
                 sys.executable,
                 '-m',
-                'scrapy.cmdline',
+                'jscrapy.cmdline',
                 'startproject',
                 project_name,
                 '.',
@@ -377,9 +377,9 @@ class StartprojectTemplatesTest(ProjectTest):
             yield
             os.umask(cur_mask)
 
-        scrapy_path = scrapy.__path__[0]
+        jscrapy_path = jscrapy.__path__[0]
         project_template = os.path.join(
-            scrapy_path,
+            jscrapy_path,
             'templates',
             'project'
         )
@@ -400,7 +400,7 @@ class StartprojectTemplatesTest(ProjectTest):
                 (
                     sys.executable,
                     '-m',
-                    'scrapy.cmdline',
+                    'jscrapy.cmdline',
                     'startproject',
                     project_name,
                 ),
@@ -568,9 +568,9 @@ class RunSpiderCommandTest(CommandTest):
     spider_filename = 'myspider.py'
 
     debug_log_spider = """
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
 
     def start_requests(self):
@@ -579,9 +579,9 @@ class MySpider(scrapy.Spider):
 """
 
     badspider = """
-import scrapy
+import jscrapy
 
-class BadSpider(scrapy.Spider):
+class BadSpider(jscrapy.Spider):
     name = "bad"
     def start_requests(self):
         raise Exception("oops!")
@@ -618,12 +618,12 @@ class BadSpider(scrapy.Spider):
         self.assertIn("INFO: Spider closed (finished)", log)
 
     def test_run_fail_spider(self):
-        proc, _, _ = self.runspider("import scrapy\n" + inspect.getsource(ExceptionSpider))
+        proc, _, _ = self.runspider("import jscrapy\n" + inspect.getsource(ExceptionSpider))
         ret = proc.returncode
         self.assertNotEqual(ret, 0)
 
     def test_run_good_spider(self):
-        proc, _, _ = self.runspider("import scrapy\n" + inspect.getsource(NoRequestsSpider))
+        proc, _, _ = self.runspider("import jscrapy\n" + inspect.getsource(NoRequestsSpider))
         ret = proc.returncode
         self.assertEqual(ret, 0)
 
@@ -634,15 +634,15 @@ class BadSpider(scrapy.Spider):
         self.assertIn("INFO: Spider opened", log)
 
     def test_runspider_dnscache_disabled(self):
-        # see https://github.com/scrapy/scrapy/issues/2811
+        # see https://github.com/jscrapy/jscrapy/issues/2811
         # The spider below should not be able to connect to localhost:12345,
         # which is intended,
         # but this should not be because of DNS lookup error
         # assumption: localhost will resolve in all cases (true?)
         dnscache_spider = """
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
     start_urls = ['http://localhost:12345']
 
@@ -657,17 +657,17 @@ class MySpider(scrapy.Spider):
         log1 = self.get_log(self.debug_log_spider,
                             args=('-s', 'LOG_SHORT_NAMES=1'))
         self.assertIn("[myspider] DEBUG: It Works!", log1)
-        self.assertIn("[scrapy]", log1)
-        self.assertNotIn("[scrapy.core.engine]", log1)
+        self.assertIn("[jscrapy]", log1)
+        self.assertNotIn("[jscrapy.core.engine]", log1)
 
         log2 = self.get_log(self.debug_log_spider,
                             args=('-s', 'LOG_SHORT_NAMES=0'))
         self.assertIn("[myspider] DEBUG: It Works!", log2)
-        self.assertNotIn("[scrapy]", log2)
-        self.assertIn("[scrapy.core.engine]", log2)
+        self.assertNotIn("[jscrapy]", log2)
+        self.assertIn("[jscrapy.core.engine]", log2)
 
     def test_runspider_no_spider_found(self):
-        log = self.get_log("from scrapy.spiders import Spider\n")
+        log = self.get_log("from jscrapy.spiders import Spider\n")
         self.assertIn("No spider found in file", log)
 
     def test_runspider_file_not_found(self):
@@ -718,9 +718,9 @@ class MySpider(scrapy.Spider):
 
     def test_output(self):
         spider_code = """
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
 
     def start_requests(self):
@@ -734,9 +734,9 @@ class MySpider(scrapy.Spider):
     def test_overwrite_output(self):
         spider_code = """
 import json
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
 
     def start_requests(self):
@@ -758,9 +758,9 @@ class MySpider(scrapy.Spider):
 
     def test_output_and_overwrite_output(self):
         spider_code = """
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
 
     def start_requests(self):
@@ -772,9 +772,9 @@ class MySpider(scrapy.Spider):
 
     def test_output_stdout(self):
         spider_code = """
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
 
     def start_requests(self):
@@ -841,7 +841,7 @@ class ViewCommandTest(CommandTest):
     def test_methods(self):
         command = view.Command()
         command.settings = Settings()
-        parser = argparse.ArgumentParser(prog='scrapy', prefix_chars='-',
+        parser = argparse.ArgumentParser(prog='jscrapy', prefix_chars='-',
                                          formatter_class=ScrapyHelpFormatter,
                                          conflict_handler='resolve')
         command.add_options(parser)
@@ -865,9 +865,9 @@ class CrawlCommandTest(CommandTest):
 
     def test_no_output(self):
         spider_code = """
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
 
     def start_requests(self):
@@ -879,9 +879,9 @@ class MySpider(scrapy.Spider):
 
     def test_output(self):
         spider_code = """
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
 
     def start_requests(self):
@@ -895,9 +895,9 @@ class MySpider(scrapy.Spider):
     def test_overwrite_output(self):
         spider_code = """
 import json
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
 
     def start_requests(self):
@@ -919,9 +919,9 @@ class MySpider(scrapy.Spider):
 
     def test_output_and_overwrite_output(self):
         spider_code = """
-import scrapy
+import jscrapy
 
-class MySpider(scrapy.Spider):
+class MySpider(jscrapy.Spider):
     name = 'myspider'
 
     def start_requests(self):

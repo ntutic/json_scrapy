@@ -30,7 +30,7 @@ Proposed Implementation of ItemField
 ::
 
    #!python
-   from scrapy.item.fields import BaseField
+   from jscrapy.item.fields import BaseField
 
    class ItemField(BaseField):
        def __init__(self, item_type, default=None):
@@ -57,8 +57,8 @@ Defining an item containing ItemField's
 ::
 
    #!python
-   from scrapy.item.models import Item
-   from scrapy.item.fields import ListField, ItemField, TextField, UrlField, DecimalField
+   from jscrapy.item.models import Item
+   from jscrapy.item.fields import ListField, ItemField, TextField, UrlField, DecimalField
 
    class Supplier(Item):
        name = TextField(default="anonymous supplier")

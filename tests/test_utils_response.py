@@ -3,14 +3,14 @@ import unittest
 import warnings
 from urllib.parse import urlparse
 
-from scrapy.exceptions import ScrapyDeprecationWarning
-from scrapy.http import Response, TextResponse, HtmlResponse
-from scrapy.utils.python import to_bytes
-from scrapy.utils.response import (response_httprepr, open_in_browser,
+from jscrapy.exceptions import ScrapyDeprecationWarning
+from jscrapy.http import Response, TextResponse, HtmlResponse
+from jscrapy.utils.python import to_bytes
+from jscrapy.utils.response import (response_httprepr, open_in_browser,
                                    get_meta_refresh, get_base_url, response_status_message)
 
 
-__doctests__ = ['scrapy.utils.response']
+__doctests__ = ['jscrapy.utils.response']
 
 
 class ResponseUtilsTest(unittest.TestCase):

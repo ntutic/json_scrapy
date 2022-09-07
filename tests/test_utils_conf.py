@@ -1,9 +1,9 @@
 import unittest
 import warnings
 
-from scrapy.exceptions import UsageError, ScrapyDeprecationWarning
-from scrapy.settings import BaseSettings, Settings
-from scrapy.utils.conf import (
+from jscrapy.exceptions import UsageError, ScrapyDeprecationWarning
+from jscrapy.settings import BaseSettings, Settings
+from jscrapy.utils.conf import (
     arglist_to_dict,
     build_component_list,
     feed_complete_default_values_from_settings,

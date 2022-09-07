@@ -7,10 +7,10 @@ Debugging Spiders
 This document explains the most common techniques for debugging spiders.
 Consider the following Scrapy spider below::
 
-    import scrapy
+    import jscrapy
     from myproject.items import MyItem
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         name = 'myspider'
         start_urls = (
             'http://example.com/page1',
@@ -21,14 +21,14 @@ Consider the following Scrapy spider below::
             # <processing code not shown>
             # collect `item_urls` 
             for item_url in item_urls:
-                yield scrapy.Request(item_url, self.parse_item)
+                yield jscrapy.Request(item_url, self.parse_item)
 
         def parse_item(self, response):
             # <processing code not shown>
             item = MyItem()
             # populate `item` fields
             # and extract item_details_url
-            yield scrapy.Request(item_details_url, self.parse_details, cb_kwargs={'item': item})
+            yield jscrapy.Request(item_details_url, self.parse_details, cb_kwargs={'item': item})
 
         def parse_details(self, response, item):
             # populate more `item` fields
@@ -36,7 +36,7 @@ Consider the following Scrapy spider below::
 
 Basically this is a simple spider which parses two pages of items (the
 start_urls). Items also have a details page with additional information, so we
-use the ``cb_kwargs`` functionality of :class:`~scrapy.Request` to pass a
+use the ``cb_kwargs`` functionality of :class:`~jscrapy.Request` to pass a
 partially populated item.
 
 
@@ -54,8 +54,8 @@ simple to use, but does not allow debugging code inside a method.
 
 In order to see the item scraped from a specific url::
 
-    $ scrapy parse --spider=myspider -c parse_item -d 2 <item_url>
-    [ ... scrapy log lines crawling example.com spider ... ]
+    $ jscrapy parse --spider=myspider -c parse_item -d 2 <item_url>
+    [ ... jscrapy log lines crawling example.com spider ... ]
 
     >>> STATUS DEPTH LEVEL 2 <<<
     # Scraped Items  ------------------------------------------------------------
@@ -66,8 +66,8 @@ In order to see the item scraped from a specific url::
 
 Using the ``--verbose`` or ``-v`` option we can see the status at each depth level::
 
-    $ scrapy parse --spider=myspider -c parse_item -d 2 -v <item_url>
-    [ ... scrapy log lines crawling example.com spider ... ]
+    $ jscrapy parse --spider=myspider -c parse_item -d 2 -v <item_url>
+    [ ... jscrapy log lines crawling example.com spider ... ]
 
     >>> DEPTH LEVEL: 1 <<<
     # Scraped Items  ------------------------------------------------------------
@@ -87,7 +87,7 @@ Using the ``--verbose`` or ``-v`` option we can see the status at each depth lev
 Checking items scraped from a single start_url, can also be easily achieved
 using::
 
-    $ scrapy parse --spider=myspider -d 3 'http://example.com/page1'
+    $ jscrapy parse --spider=myspider -d 3 'http://example.com/page1'
 
 .. skip: end
 
@@ -105,7 +105,7 @@ showing the response received and the output. How to debug the situation when
 Fortunately, the :command:`shell` is your bread and butter in this case (see
 :ref:`topics-shell-inspect-response`)::
 
-    from scrapy.shell import inspect_response
+    from jscrapy.shell import inspect_response
 
     def parse_details(self, response, item=None):
         if item:
@@ -123,7 +123,7 @@ Sometimes you just want to see how a certain response looks in a browser, you
 can use the ``open_in_browser`` function for that. Here is an example of how
 you would use it::
 
-    from scrapy.utils.response import open_in_browser
+    from jscrapy.utils.response import open_in_browser
 
     def parse_details(self, response):
         if "item name" not in response.body:

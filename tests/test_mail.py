@@ -4,36 +4,36 @@ import unittest
 from io import BytesIO
 from email.charset import Charset
 
-from scrapy.mail import MailSender
+from jscrapy.mail import MailSender
 
 
 class MailSenderTest(unittest.TestCase):
 
     def test_send(self):
         mailsender = MailSender(debug=True)
-        mailsender.send(to=['test@scrapy.org'], subject='subject', body='body',
+        mailsender.send(to=['test@jscrapy.org'], subject='subject', body='body',
                         _callback=self._catch_mail_sent)
 
         assert self.catched_msg
 
-        self.assertEqual(self.catched_msg['to'], ['test@scrapy.org'])
+        self.assertEqual(self.catched_msg['to'], ['test@jscrapy.org'])
         self.assertEqual(self.catched_msg['subject'], 'subject')
         self.assertEqual(self.catched_msg['body'], 'body')
 
         msg = self.catched_msg['msg']
-        self.assertEqual(msg['to'], 'test@scrapy.org')
+        self.assertEqual(msg['to'], 'test@jscrapy.org')
         self.assertEqual(msg['subject'], 'subject')
         self.assertEqual(msg.get_payload(), 'body')
         self.assertEqual(msg.get('Content-Type'), 'text/plain')
 
     def test_send_single_values_to_and_cc(self):
         mailsender = MailSender(debug=True)
-        mailsender.send(to='test@scrapy.org', subject='subject', body='body',
-                        cc='test@scrapy.org', _callback=self._catch_mail_sent)
+        mailsender.send(to='test@jscrapy.org', subject='subject', body='body',
+                        cc='test@jscrapy.org', _callback=self._catch_mail_sent)
 
     def test_send_html(self):
         mailsender = MailSender(debug=True)
-        mailsender.send(to=['test@scrapy.org'], subject='subject',
+        mailsender.send(to=['test@jscrapy.org'], subject='subject',
                         body='<p>body</p>', mimetype='text/html',
                         _callback=self._catch_mail_sent)
 
@@ -48,16 +48,16 @@ class MailSenderTest(unittest.TestCase):
         attachs = [('attachment', 'text/plain', attach)]
 
         mailsender = MailSender(debug=True)
-        mailsender.send(to=['test@scrapy.org'], subject='subject', body='body',
+        mailsender.send(to=['test@jscrapy.org'], subject='subject', body='body',
                         attachs=attachs, _callback=self._catch_mail_sent)
 
         assert self.catched_msg
-        self.assertEqual(self.catched_msg['to'], ['test@scrapy.org'])
+        self.assertEqual(self.catched_msg['to'], ['test@jscrapy.org'])
         self.assertEqual(self.catched_msg['subject'], 'subject')
         self.assertEqual(self.catched_msg['body'], 'body')
 
         msg = self.catched_msg['msg']
-        self.assertEqual(msg['to'], 'test@scrapy.org')
+        self.assertEqual(msg['to'], 'test@jscrapy.org')
         self.assertEqual(msg['subject'], 'subject')
 
         payload = msg.get_payload()
@@ -76,7 +76,7 @@ class MailSenderTest(unittest.TestCase):
         subject = 'sübjèçt'
         body = 'bödÿ-àéïöñß'
         mailsender = MailSender(debug=True)
-        mailsender.send(to=['test@scrapy.org'], subject=subject, body=body,
+        mailsender.send(to=['test@jscrapy.org'], subject=subject, body=body,
                         charset='utf-8', _callback=self._catch_mail_sent)
 
         assert self.catched_msg
@@ -98,7 +98,7 @@ class MailSenderTest(unittest.TestCase):
         attachs = [('attachment', 'text/plain', attach)]
 
         mailsender = MailSender(debug=True)
-        mailsender.send(to=['test@scrapy.org'], subject=subject, body=body,
+        mailsender.send(to=['test@jscrapy.org'], subject=subject, body=body,
                         attachs=attachs, charset='utf-8',
                         _callback=self._catch_mail_sent)
 

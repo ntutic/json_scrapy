@@ -12,11 +12,11 @@ from twisted.internet.error import (
 )
 from twisted.web.client import ResponseFailed
 
-from scrapy.downloadermiddlewares.retry import get_retry_request, RetryMiddleware
-from scrapy.exceptions import IgnoreRequest
-from scrapy.http import Request, Response
-from scrapy.spiders import Spider
-from scrapy.utils.test import get_crawler
+from jscrapy.downloadermiddlewares.retry import get_retry_request, RetryMiddleware
+from jscrapy.exceptions import IgnoreRequest
+from jscrapy.http import Request, Response
+from jscrapy.spiders import Spider
+from jscrapy.utils.test import get_crawler
 
 
 class RetryTest(unittest.TestCase):
@@ -27,43 +27,43 @@ class RetryTest(unittest.TestCase):
         self.mw.max_retry_times = 2
 
     def test_priority_adjust(self):
-        req = Request('http://www.scrapytest.org/503')
-        rsp = Response('http://www.scrapytest.org/503', body=b'', status=503)
+        req = Request('http://www.jscrapytest.org/503')
+        rsp = Response('http://www.jscrapytest.org/503', body=b'', status=503)
         req2 = self.mw.process_response(req, rsp, self.spider)
         assert req2.priority < req.priority
 
     def test_404(self):
-        req = Request('http://www.scrapytest.org/404')
-        rsp = Response('http://www.scrapytest.org/404', body=b'', status=404)
+        req = Request('http://www.jscrapytest.org/404')
+        rsp = Response('http://www.jscrapytest.org/404', body=b'', status=404)
 
         # dont retry 404s
         assert self.mw.process_response(req, rsp, self.spider) is rsp
 
     def test_dont_retry(self):
-        req = Request('http://www.scrapytest.org/503', meta={'dont_retry': True})
-        rsp = Response('http://www.scrapytest.org/503', body=b'', status=503)
+        req = Request('http://www.jscrapytest.org/503', meta={'dont_retry': True})
+        rsp = Response('http://www.jscrapytest.org/503', body=b'', status=503)
 
         # first retry
         r = self.mw.process_response(req, rsp, self.spider)
         assert r is rsp
 
         # Test retry when dont_retry set to False
-        req = Request('http://www.scrapytest.org/503', meta={'dont_retry': False})
-        rsp = Response('http://www.scrapytest.org/503')
+        req = Request('http://www.jscrapytest.org/503', meta={'dont_retry': False})
+        rsp = Response('http://www.jscrapytest.org/503')
 
         # first retry
         r = self.mw.process_response(req, rsp, self.spider)
         assert r is rsp
 
     def test_dont_retry_exc(self):
-        req = Request('http://www.scrapytest.org/503', meta={'dont_retry': True})
+        req = Request('http://www.jscrapytest.org/503', meta={'dont_retry': True})
 
         r = self.mw.process_exception(req, DNSLookupError(), self.spider)
         assert r is None
 
     def test_503(self):
-        req = Request('http://www.scrapytest.org/503')
-        rsp = Response('http://www.scrapytest.org/503', body=b'', status=503)
+        req = Request('http://www.jscrapytest.org/503')
+        rsp = Response('http://www.jscrapytest.org/503', body=b'', status=503)
 
         # first retry
         req = self.mw.process_response(req, rsp, self.spider)
@@ -96,7 +96,7 @@ class RetryTest(unittest.TestCase):
         ]
 
         for exc in exceptions:
-            req = Request(f'http://www.scrapytest.org/{exc.__name__}')
+            req = Request(f'http://www.jscrapytest.org/{exc.__name__}')
             self._test_retry_exception(req, exc('foo'))
 
         stats = self.crawler.stats
@@ -122,7 +122,7 @@ class RetryTest(unittest.TestCase):
 
 class MaxRetryTimesTest(unittest.TestCase):
 
-    invalid_url = 'http://www.scrapytest.org/invalid_url'
+    invalid_url = 'http://www.jscrapytest.org/invalid_url'
 
     def get_spider_and_middleware(self, settings=None):
         crawler = get_crawler(Spider, settings or {})
@@ -280,7 +280,7 @@ class GetRetryRequestTest(unittest.TestCase):
             self.assertEqual(spider.crawler.stats.get_value(stat), 1)
         log.check_present(
             (
-                "scrapy.downloadermiddlewares.retry",
+                "jscrapy.downloadermiddlewares.retry",
                 "DEBUG",
                 f"Retrying {request} (failed {expected_retry_times} times): "
                 f"{expected_reason}",
@@ -306,7 +306,7 @@ class GetRetryRequestTest(unittest.TestCase):
         expected_reason = "unspecified"
         log.check_present(
             (
-                "scrapy.downloadermiddlewares.retry",
+                "jscrapy.downloadermiddlewares.retry",
                 "ERROR",
                 f"Gave up retrying {request} (failed {failure_count} times): "
                 f"{expected_reason}",
@@ -333,7 +333,7 @@ class GetRetryRequestTest(unittest.TestCase):
             self.assertEqual(spider.crawler.stats.get_value(stat), 1)
         log.check_present(
             (
-                "scrapy.downloadermiddlewares.retry",
+                "jscrapy.downloadermiddlewares.retry",
                 "DEBUG",
                 f"Retrying {request} (failed {expected_retry_times} times): "
                 f"{expected_reason}",
@@ -364,7 +364,7 @@ class GetRetryRequestTest(unittest.TestCase):
                 self.assertEqual(value, expected_retry_times)
             log.check_present(
                 (
-                    "scrapy.downloadermiddlewares.retry",
+                    "jscrapy.downloadermiddlewares.retry",
                     "DEBUG",
                     f"Retrying {request} (failed {expected_retry_times} times): "
                     f"{expected_reason}",
@@ -386,7 +386,7 @@ class GetRetryRequestTest(unittest.TestCase):
         expected_reason = "unspecified"
         log.check_present(
             (
-                "scrapy.downloadermiddlewares.retry",
+                "jscrapy.downloadermiddlewares.retry",
                 "ERROR",
                 f"Gave up retrying {request} (failed {failure_count} times): "
                 f"{expected_reason}",
@@ -488,7 +488,7 @@ class GetRetryRequestTest(unittest.TestCase):
             self.assertEqual(spider.crawler.stats.get_value(stat), 1)
         log.check_present(
             (
-                "scrapy.downloadermiddlewares.retry",
+                "jscrapy.downloadermiddlewares.retry",
                 "DEBUG",
                 f"Retrying {request} (failed {expected_retry_times} times): "
                 f"{expected_reason}",
@@ -513,7 +513,7 @@ class GetRetryRequestTest(unittest.TestCase):
         self.assertEqual(stat, 1)
         log.check_present(
             (
-                "scrapy.downloadermiddlewares.retry",
+                "jscrapy.downloadermiddlewares.retry",
                 "DEBUG",
                 f"Retrying {request} (failed {expected_retry_times} times): "
                 f"{expected_reason}",
@@ -538,7 +538,7 @@ class GetRetryRequestTest(unittest.TestCase):
         self.assertEqual(stat, 1)
         log.check_present(
             (
-                "scrapy.downloadermiddlewares.retry",
+                "jscrapy.downloadermiddlewares.retry",
                 "DEBUG",
                 f"Retrying {request} (failed {expected_retry_times} times): "
                 f"{expected_reason}",
@@ -549,7 +549,7 @@ class GetRetryRequestTest(unittest.TestCase):
         request = Request('https://example.com')
         spider = self.get_spider()
         expected_reason = IgnoreRequest()
-        expected_reason_string = 'scrapy.exceptions.IgnoreRequest'
+        expected_reason_string = 'jscrapy.exceptions.IgnoreRequest'
         with LogCapture() as log:
             get_retry_request(
                 request,
@@ -563,7 +563,7 @@ class GetRetryRequestTest(unittest.TestCase):
         self.assertEqual(stat, 1)
         log.check_present(
             (
-                "scrapy.downloadermiddlewares.retry",
+                "jscrapy.downloadermiddlewares.retry",
                 "DEBUG",
                 f"Retrying {request} (failed {expected_retry_times} times): "
                 f"{expected_reason}",
@@ -574,7 +574,7 @@ class GetRetryRequestTest(unittest.TestCase):
         request = Request('https://example.com')
         spider = self.get_spider()
         expected_reason = IgnoreRequest
-        expected_reason_string = 'scrapy.exceptions.IgnoreRequest'
+        expected_reason_string = 'jscrapy.exceptions.IgnoreRequest'
         with LogCapture() as log:
             get_retry_request(
                 request,
@@ -588,7 +588,7 @@ class GetRetryRequestTest(unittest.TestCase):
         self.assertEqual(stat, 1)
         log.check_present(
             (
-                "scrapy.downloadermiddlewares.retry",
+                "jscrapy.downloadermiddlewares.retry",
                 "DEBUG",
                 f"Retrying {request} (failed {expected_retry_times} times): "
                 f"{expected_reason}",

@@ -1,4 +1,4 @@
-from scrapy.spiders import Spider
+from jscrapy.spiders import Spider
 
 
 class Spider4(Spider):

@@ -1,5 +1,5 @@
 [run]
 branch = true
-include = scrapy/*
+include = jscrapy/*
 omit =
   tests/*

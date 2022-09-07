@@ -4,7 +4,7 @@
 Item Loaders
 ============
 
-.. module:: scrapy.loader
+.. module:: jscrapy.loader
    :synopsis: Item Loader class
 
 Item Loaders provide a convenient mechanism for populating scraped :ref:`items
@@ -48,7 +48,7 @@ Here is a typical Item Loader usage in a :ref:`Spider <topics-spiders>`, using
 the :ref:`Product item <topics-items-declaring>` declared in the :ref:`Items
 chapter <topics-items>`::
 
-    from scrapy.loader import ItemLoader
+    from jscrapy.loader import ItemLoader
     from myproject.items import Product
 
     def parse(self, response):
@@ -187,7 +187,7 @@ Declaring Item Loaders
 Item Loaders are declared using a class definition syntax. Here is an example::
 
     from itemloaders.processors import TakeFirst, MapCompose, Join
-    from scrapy.loader import ItemLoader
+    from jscrapy.loader import ItemLoader
 
     class ProductLoader(ItemLoader):
 
@@ -217,7 +217,7 @@ this way. However, there is one more place where you can specify the input and
 output processors to use: in the :ref:`Item Field <topics-items-fields>`
 metadata. Here is an example::
 
-    import scrapy
+    import jscrapy
     from itemloaders.processors import Join, MapCompose, TakeFirst
     from w3lib.html import remove_tags
 
@@ -225,17 +225,17 @@ metadata. Here is an example::
         if value.isdigit():
             return value
 
-    class Product(scrapy.Item):
-        name = scrapy.Field(
+    class Product(jscrapy.Item):
+        name = jscrapy.Field(
             input_processor=MapCompose(remove_tags),
             output_processor=Join(),
         )
-        price = scrapy.Field(
+        price = jscrapy.Field(
             input_processor=MapCompose(remove_tags, filter_price),
             output_processor=TakeFirst(),
         )
 
->>> from scrapy.loader import ItemLoader
+>>> from jscrapy.loader import ItemLoader
 >>> il = ItemLoader(item=Product())
 >>> il.add_value('name', ['Welcome to my', '<strong>website</strong>'])
 >>> il.add_value('price', ['&euro;', '<span>1000</span>'])
@@ -299,7 +299,7 @@ There are several ways to modify Item Loader context values:
 ItemLoader objects
 ==================
 
-.. autoclass:: scrapy.loader.ItemLoader
+.. autoclass:: jscrapy.loader.ItemLoader
     :members:
     :inherited-members:
 

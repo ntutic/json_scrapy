@@ -3,10 +3,10 @@ from datetime import datetime
 import shutil
 from twisted.trial import unittest
 
-from scrapy.extensions.spiderstate import SpiderState
-from scrapy.spiders import Spider
-from scrapy.exceptions import NotConfigured
-from scrapy.utils.test import get_crawler
+from jscrapy.extensions.spiderstate import SpiderState
+from jscrapy.spiders import Spider
+from jscrapy.exceptions import NotConfigured
+from jscrapy.utils.test import get_crawler
 
 
 class SpiderStateTest(unittest.TestCase):

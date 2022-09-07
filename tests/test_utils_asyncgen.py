@@ -1,7 +1,7 @@
 from twisted.trial import unittest
 
-from scrapy.utils.asyncgen import as_async_generator, collect_asyncgen
-from scrapy.utils.defer import deferred_f_from_coro_f
+from jscrapy.utils.asyncgen import as_async_generator, collect_asyncgen
+from jscrapy.utils.defer import deferred_f_from_coro_f
 
 
 class AsyncgenUtilsTest(unittest.TestCase):

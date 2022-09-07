@@ -19,7 +19,7 @@ Proposed Implementation
 ::
 
    #!python
-   from scrapy.item.fields import BaseField
+   from jscrapy.item.fields import BaseField
 
    class ListField(BaseField):
        def __init__(self, field, default=None):
@@ -45,8 +45,8 @@ Defining a list field
 ::
 
    #!python
-   from scrapy.item.models import Item
-   from scrapy.item.fields import ListField, TextField, DateField, IntegerField
+   from jscrapy.item.models import Item
+   from jscrapy.item.fields import ListField, TextField, DateField, IntegerField
 
    class Article(Item):
        categories = ListField(TextField)
@@ -59,8 +59,8 @@ important to instantiate !ListField with field instances, not classes:
 ::
 
    #!python
-   from scrapy.item.models import Item
-   from scrapy.item.fields import ListField, TextField
+   from jscrapy.item.models import Item
+   from jscrapy.item.fields import ListField, TextField
 
    class Variant(Item):
        name = TextField()

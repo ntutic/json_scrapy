@@ -4,7 +4,7 @@
 Exceptions
 ==========
 
-.. module:: scrapy.exceptions
+.. module:: jscrapy.exceptions
    :synopsis: Scrapy exceptions
 
 .. _topics-exceptions-ref:
@@ -85,7 +85,7 @@ StopDownload
 
 .. exception:: StopDownload(fail=True)
 
-Raised from a :class:`~scrapy.signals.bytes_received` or :class:`~scrapy.signals.headers_received`
+Raised from a :class:`~jscrapy.signals.bytes_received` or :class:`~jscrapy.signals.headers_received`
 signal handler to indicate that no further bytes should be downloaded for a response.
 
 The ``fail`` boolean parameter controls which method will handle the resulting
@@ -110,6 +110,6 @@ attribute.
     ``StopDownload(False)`` or ``StopDownload(True)`` will raise
     a :class:`TypeError`.
 
-See the documentation for the :class:`~scrapy.signals.bytes_received` and
-:class:`~scrapy.signals.headers_received` signals
+See the documentation for the :class:`~jscrapy.signals.bytes_received` and
+:class:`~jscrapy.signals.headers_received` signals
 and the :ref:`topics-stop-response-download` topic for additional information and examples.

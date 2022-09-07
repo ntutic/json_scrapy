@@ -1,8 +1,8 @@
 from twisted.trial import unittest
 from twisted.internet import defer
 
-from scrapy.utils.testsite import SiteTest
-from scrapy.utils.testproc import ProcessTest
+from jscrapy.utils.testsite import SiteTest
+from jscrapy.utils.testproc import ProcessTest
 
 
 class FetchTest(ProcessTest, SiteTest, unittest.TestCase):

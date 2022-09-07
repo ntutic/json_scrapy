@@ -1,9 +1,9 @@
 import unittest
 
-from scrapy import Spider
-from scrapy.http import Request
-from scrapy.item import Item
-from scrapy.utils.spider import iterate_spider_output, iter_spider_classes
+from jscrapy import Spider
+from jscrapy.http import Request
+from jscrapy.item import Item
+from jscrapy.utils.spider import iterate_spider_output, iter_spider_classes
 
 
 class MySpider1(Spider):
@@ -18,7 +18,7 @@ class UtilsSpidersTestCase(unittest.TestCase):
 
     def test_iterate_spider_output(self):
         i = Item()
-        r = Request('http://scrapytest.org')
+        r = Request('http://jscrapytest.org')
         o = object()
 
         self.assertEqual(list(iterate_spider_output(i)), [i])

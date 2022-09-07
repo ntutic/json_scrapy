@@ -34,7 +34,7 @@ is unavailable.
 Through Scrapy's settings you can configure it to use any one of
 ``ipython``, ``bpython`` or the standard ``python`` shell, regardless of which
 are installed. This is done by setting the ``SCRAPY_PYTHON_SHELL`` environment
-variable; or by defining it in your :ref:`scrapy.cfg <topics-config-settings>`::
+variable; or by defining it in your :ref:`jscrapy.cfg <topics-config-settings>`::
 
     [settings]
     shell = bpython
@@ -49,7 +49,7 @@ Launch the shell
 To launch the Scrapy shell you can use the :command:`shell` command like
 this::
 
-    scrapy shell <url>
+    jscrapy shell <url>
 
 Where the ``<url>`` is the URL you want to scrape.
 
@@ -58,16 +58,16 @@ to play around with a local copy of a web page. :command:`shell` understands
 the following syntaxes for local files::
 
     # UNIX-style
-    scrapy shell ./path/to/file.html
-    scrapy shell ../other/path/to/file.html
-    scrapy shell /absolute/path/to/file.html
+    jscrapy shell ./path/to/file.html
+    jscrapy shell ../other/path/to/file.html
+    jscrapy shell /absolute/path/to/file.html
 
     # File URI
-    scrapy shell file:///absolute/path/to/file.html
+    jscrapy shell file:///absolute/path/to/file.html
 
 .. note:: When using relative file paths, be explicit and prepend them
     with ``./`` (or ``../`` when relevant).
-    ``scrapy shell index.html`` will not work as one might expect (and
+    ``jscrapy shell index.html`` will not work as one might expect (and
     this is by design, not a bug).
 
     Because :command:`shell` favors HTTP URLs over File URIs,
@@ -75,8 +75,8 @@ the following syntaxes for local files::
     :command:`shell` will treat ``index.html`` as a domain name and trigger
     a DNS lookup error::
 
-        $ scrapy shell index.html
-        [ ... scrapy shell starts ... ]
+        $ jscrapy shell index.html
+        [ ... jscrapy shell starts ... ]
         [ ... traceback ... ]
         twisted.internet.error.DNSLookupError: DNS lookup failed:
         address 'index.html' not found: [Errno -5] No address associated with hostname.
@@ -117,24 +117,24 @@ Available Scrapy objects
 ------------------------
 
 The Scrapy shell automatically creates some convenient objects from the
-downloaded page, like the :class:`~scrapy.http.Response` object and the
-:class:`~scrapy.Selector` objects (for both HTML and XML
+downloaded page, like the :class:`~jscrapy.http.Response` object and the
+:class:`~jscrapy.Selector` objects (for both HTML and XML
 content).
 
 Those objects are:
 
--    ``crawler`` - the current :class:`~scrapy.crawler.Crawler` object.
+-    ``crawler`` - the current :class:`~jscrapy.crawler.Crawler` object.
 
 -   ``spider`` - the Spider which is known to handle the URL, or a
-    :class:`~scrapy.Spider` object if there is no spider found for the
+    :class:`~jscrapy.Spider` object if there is no spider found for the
     current URL
 
--   ``request`` - a :class:`~scrapy.Request` object of the last fetched
+-   ``request`` - a :class:`~jscrapy.Request` object of the last fetched
     page. You can modify this request using
-    :meth:`~scrapy.Request.replace` or fetch a new request (without
+    :meth:`~jscrapy.Request.replace` or fetch a new request (without
     leaving the shell) using the ``fetch`` shortcut.
 
--   ``response`` - a :class:`~scrapy.http.Response` object containing the last
+-   ``response`` - a :class:`~jscrapy.http.Response` object containing the last
     fetched page
 
 -   ``settings`` - the current :ref:`Scrapy settings <topics-settings>`
@@ -143,7 +143,7 @@ Example of shell session
 ========================
 
 Here's an example of a typical shell session where we start by scraping the
-https://scrapy.org page, and then proceed to scrape the https://old.reddit.com/
+https://jscrapy.org page, and then proceed to scrape the https://old.reddit.com/
 page. Finally, we modify the (Reddit) request method to POST and re-fetch it
 getting an error. We end the session by typing Ctrl-D (in Unix systems) or
 Ctrl-Z in Windows.
@@ -155,7 +155,7 @@ shell works.
 
 First, we launch the shell::
 
-    scrapy shell 'https://scrapy.org' --nolog
+    jscrapy shell 'https://jscrapy.org' --nolog
 
 .. note::
 
@@ -165,7 +165,7 @@ First, we launch the shell::
 
    On Windows, use double quotes instead::
 
-       scrapy shell "https://scrapy.org" --nolog
+       jscrapy shell "https://jscrapy.org" --nolog
 
 
 Then, the shell fetches the URL (using the Scrapy downloader) and prints the
@@ -173,16 +173,16 @@ list of available objects and useful shortcuts (you'll notice that these lines
 all start with the ``[s]`` prefix)::
 
     [s] Available Scrapy objects:
-    [s]   scrapy     scrapy module (contains scrapy.Request, scrapy.Selector, etc)
-    [s]   crawler    <scrapy.crawler.Crawler object at 0x7f07395dd690>
+    [s]   jscrapy     jscrapy module (contains jscrapy.Request, jscrapy.Selector, etc)
+    [s]   crawler    <jscrapy.crawler.Crawler object at 0x7f07395dd690>
     [s]   item       {}
-    [s]   request    <GET https://scrapy.org>
-    [s]   response   <200 https://scrapy.org/>
-    [s]   settings   <scrapy.settings.Settings object at 0x7f07395dd710>
+    [s]   request    <GET https://jscrapy.org>
+    [s]   response   <200 https://jscrapy.org/>
+    [s]   settings   <jscrapy.settings.Settings object at 0x7f07395dd710>
     [s]   spider     <DefaultSpider 'default' at 0x7f0735891690>
     [s] Useful shortcuts:
     [s]   fetch(url[, redirect=True]) Fetch URL and update local objects (by default, redirects are followed)
-    [s]   fetch(req)                  Fetch a scrapy.Request and update local objects
+    [s]   fetch(req)                  Fetch a jscrapy.Request and update local objects
     [s]   shelp()           Shell help (print this help)
     [s]   view(response)    View response in a browser
 
@@ -240,14 +240,14 @@ Sometimes you want to inspect the responses that are being processed in a
 certain point of your spider, if only to check that response you expect is
 getting there.
 
-This can be achieved by using the ``scrapy.shell.inspect_response`` function.
+This can be achieved by using the ``jscrapy.shell.inspect_response`` function.
 
 Here's an example of how you would call it from your spider::
 
-    import scrapy
+    import jscrapy
 
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         name = "myspider"
         start_urls = [
             "http://example.com",
@@ -258,17 +258,17 @@ Here's an example of how you would call it from your spider::
         def parse(self, response):
             # We want to inspect one specific response.
             if ".org" in response.url:
-                from scrapy.shell import inspect_response
+                from jscrapy.shell import inspect_response
                 inspect_response(response, self)
 
             # Rest of parsing code.
 
 When you run the spider, you will get something similar to this::
 
-    2014-01-23 17:48:31-0400 [scrapy.core.engine] DEBUG: Crawled (200) <GET http://example.com> (referer: None)
-    2014-01-23 17:48:31-0400 [scrapy.core.engine] DEBUG: Crawled (200) <GET http://example.org> (referer: None)
+    2014-01-23 17:48:31-0400 [jscrapy.core.engine] DEBUG: Crawled (200) <GET http://example.com> (referer: None)
+    2014-01-23 17:48:31-0400 [jscrapy.core.engine] DEBUG: Crawled (200) <GET http://example.org> (referer: None)
     [s] Available Scrapy objects:
-    [s]   crawler    <scrapy.crawler.Crawler object at 0x1e16b50>
+    [s]   crawler    <jscrapy.crawler.Crawler object at 0x1e16b50>
     ...
 
     >>> response.url
@@ -289,7 +289,7 @@ Finally you hit Ctrl-D (or Ctrl-Z in Windows) to exit the shell and resume the
 crawling::
 
     >>> ^D
-    2014-01-23 17:50:03-0400 [scrapy.core.engine] DEBUG: Crawled (200) <GET http://example.net> (referer: None)
+    2014-01-23 17:50:03-0400 [jscrapy.core.engine] DEBUG: Crawled (200) <GET http://example.net> (referer: None)
     ...
 
 Note that you can't use the ``fetch`` shortcut here since the Scrapy engine is

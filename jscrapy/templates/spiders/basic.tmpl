@@ -1,0 +1,10 @@
+import jscrapy
+
+
+class $classname(jscrapy.Spider):
+    name = '$name'
+    allowed_domains = ['$domain']
+    start_urls = ['http://$domain/']
+
+    def parse(self, response):
+        pass

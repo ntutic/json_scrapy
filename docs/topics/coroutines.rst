@@ -17,7 +17,7 @@ Supported callables
 The following callables may be defined as coroutines using ``async def``, and
 hence use coroutine syntax (e.g. ``await``, ``async for``, ``async with``):
 
--   :class:`~scrapy.Request` callbacks.
+-   :class:`~jscrapy.Request` callbacks.
 
     If you are using any custom or third-party :ref:`spider middleware
     <topics-spider-middleware>`, see :ref:`sync-async-spider-middleware`.
@@ -30,17 +30,17 @@ hence use coroutine syntax (e.g. ``await``, ``async for``, ``async with``):
     :ref:`item pipelines <topics-item-pipeline>`.
 
 -   The
-    :meth:`~scrapy.downloadermiddlewares.DownloaderMiddleware.process_request`,
-    :meth:`~scrapy.downloadermiddlewares.DownloaderMiddleware.process_response`,
+    :meth:`~jscrapy.downloadermiddlewares.DownloaderMiddleware.process_request`,
+    :meth:`~jscrapy.downloadermiddlewares.DownloaderMiddleware.process_response`,
     and
-    :meth:`~scrapy.downloadermiddlewares.DownloaderMiddleware.process_exception`
+    :meth:`~jscrapy.downloadermiddlewares.DownloaderMiddleware.process_exception`
     methods of
     :ref:`downloader middlewares <topics-downloader-middleware-custom>`.
 
 -   :ref:`Signal handlers that support deferreds <signal-deferred>`.
 
 -   The
-    :meth:`~scrapy.spidermiddlewares.SpiderMiddleware.process_spider_output`
+    :meth:`~jscrapy.spidermiddlewares.SpiderMiddleware.process_spider_output`
     method of :ref:`spider middlewares <topics-spider-middleware>`.
 
     It must be defined as an :term:`asynchronous generator`. The input
@@ -131,9 +131,9 @@ Mixing synchronous and asynchronous spider middlewares
 
 .. versionadded:: VERSION
 
-The output of a :class:`~scrapy.Request` callback is passed as the ``result``
+The output of a :class:`~jscrapy.Request` callback is passed as the ``result``
 parameter to the
-:meth:`~scrapy.spidermiddlewares.SpiderMiddleware.process_spider_output` method
+:meth:`~jscrapy.spidermiddlewares.SpiderMiddleware.process_spider_output` method
 of the first :ref:`spider middleware <topics-spider-middleware>` from the
 :ref:`list of active spider middlewares <topics-spider-middleware-setting>`.
 Then the output of that ``process_spider_output`` method is passed to the

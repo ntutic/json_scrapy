@@ -1,8 +1,8 @@
 import unittest
 from urllib.parse import urlparse
 
-from scrapy.http import Request
-from scrapy.utils.httpobj import urlparse_cached
+from jscrapy.http import Request
+from jscrapy.utils.httpobj import urlparse_cached
 
 
 class HttpobjUtilsTest(unittest.TestCase):

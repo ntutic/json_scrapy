@@ -29,8 +29,8 @@ Here's a simple proof-of-concept code of such script:
 ::
 
    #!/usr/bin/env python
-   from scrapy.http import Request
-   from scrapy import Crawler
+   from jscrapy.http import Request
+   from jscrapy import Crawler
 
    # a container to hold scraped items
    scraped_items = []
@@ -77,7 +77,7 @@ Spider Manager
 ==============
 
 The role of the spider manager will be to "resolve" spiders from URLs and
-domains. Also, it should be moved outside scrapy.spider (and only BaseSpider
+domains. Also, it should be moved outside jscrapy.spider (and only BaseSpider
 left there).
 
 There is also the ``close_spider()`` method which is called for all closed

@@ -14,17 +14,17 @@ from itemadapter import ItemAdapter
 from twisted.internet import defer
 from twisted.trial import unittest
 
-from scrapy.http import Request, Response
-from scrapy.item import Field, Item
-from scrapy.pipelines.files import (
+from jscrapy.http import Request, Response
+from jscrapy.item import Field, Item
+from jscrapy.pipelines.files import (
     FilesPipeline,
     FSFilesStore,
     FTPFilesStore,
     GCSFilesStore,
     S3FilesStore,
 )
-from scrapy.settings import Settings
-from scrapy.utils.test import (
+from jscrapy.settings import Settings
+from jscrapy.utils.test import (
     assert_gcs_environ,
     get_crawler,
     get_ftp_content_and_delete,
@@ -529,7 +529,7 @@ class TestGCSFilesStore(unittest.TestCase):
             raise unittest.SkipTest("google-cloud-storage is not installed")
         else:
             with mock.patch('google.cloud.storage') as _:
-                with mock.patch('scrapy.pipelines.files.time') as _:
+                with mock.patch('jscrapy.pipelines.files.time') as _:
                     uri = 'gs://my_bucket/my_prefix/'
                     store = GCSFilesStore(uri)
                     store.bucket = mock.Mock()

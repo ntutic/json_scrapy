@@ -2,11 +2,11 @@ from unittest import TestCase
 
 from testfixtures import LogCapture
 
-from scrapy.spidermiddlewares.urllength import UrlLengthMiddleware
-from scrapy.http import Response, Request
-from scrapy.spiders import Spider
-from scrapy.utils.test import get_crawler
-from scrapy.settings import Settings
+from jscrapy.spidermiddlewares.urllength import UrlLengthMiddleware
+from jscrapy.http import Response, Request
+from jscrapy.spiders import Spider
+from jscrapy.utils.test import get_crawler
+from jscrapy.settings import Settings
 
 
 class TestUrlLengthMiddleware(TestCase):
@@ -20,9 +20,9 @@ class TestUrlLengthMiddleware(TestCase):
         self.stats = crawler.stats
         self.mw = UrlLengthMiddleware.from_settings(settings)
 
-        self.response = Response('http://scrapytest.org')
-        self.short_url_req = Request('http://scrapytest.org/')
-        self.long_url_req = Request('http://scrapytest.org/this_is_a_long_url')
+        self.response = Response('http://jscrapytest.org')
+        self.short_url_req = Request('http://jscrapytest.org/')
+        self.long_url_req = Request('http://jscrapytest.org/this_is_a_long_url')
         self.reqs = [self.short_url_req, self.long_url_req]
 
     def process_spider_output(self):

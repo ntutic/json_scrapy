@@ -5,7 +5,7 @@ Logging
 =======
 
 .. note::
-    :mod:`scrapy.log` has been deprecated alongside its functions in favor of
+    :mod:`jscrapy.log` has been deprecated alongside its functions in favor of
     explicit calls to the Python standard logging. Keep reading to learn more
     about the new logging system.
 
@@ -16,7 +16,7 @@ use-cases it's strongly suggested to read thoroughly its documentation.
 Logging works out of the box, and can be configured to some extent with the
 Scrapy settings listed in :ref:`topics-logging-settings`.
 
-Scrapy calls :func:`scrapy.utils.log.configure_logging` to set some reasonable
+Scrapy calls :func:`jscrapy.utils.log.configure_logging` to set some reasonable
 defaults and handle those settings in :ref:`topics-logging-settings` when
 running commands, so it's recommended to manually call it if you're running
 Scrapy from scripts as described in :ref:`run-from-script`.
@@ -93,15 +93,15 @@ path::
 Logging from Spiders
 ====================
 
-Scrapy provides a :data:`~scrapy.Spider.logger` within each Spider
+Scrapy provides a :data:`~jscrapy.Spider.logger` within each Spider
 instance, which can be accessed and used like this::
 
-    import scrapy
+    import jscrapy
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
 
         name = 'myspider'
-        start_urls = ['https://scrapy.org']
+        start_urls = ['https://jscrapy.org']
 
         def parse(self, response):
             self.logger.info('Parse function called on %s', response.url)
@@ -110,14 +110,14 @@ That logger is created using the Spider's name, but you can use any custom
 Python logger you want. For example::
 
     import logging
-    import scrapy
+    import jscrapy
 
     logger = logging.getLogger('mycustomlogger')
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
 
         name = 'myspider'
-        start_urls = ['https://scrapy.org']
+        start_urls = ['https://jscrapy.org']
 
         def parse(self, response):
             logger.info('Parse function called on %s', response.url)
@@ -199,10 +199,10 @@ Custom Log Formats
 ------------------
 
 A custom log format can be set for different actions by extending
-:class:`~scrapy.logformatter.LogFormatter` class and making
+:class:`~jscrapy.logformatter.LogFormatter` class and making
 :setting:`LOG_FORMATTER` point to your new class.
 
-.. autoclass:: scrapy.logformatter.LogFormatter
+.. autoclass:: jscrapy.logformatter.LogFormatter
    :members:
 
 
@@ -217,33 +217,33 @@ all features of stdlib logging.
 For example, let's say you're scraping a website which returns many
 HTTP 404 and 500 responses, and you want to hide all messages like this::
 
-    2016-12-16 22:00:06 [scrapy.spidermiddlewares.httperror] INFO: Ignoring
+    2016-12-16 22:00:06 [jscrapy.spidermiddlewares.httperror] INFO: Ignoring
     response <500 https://quotes.toscrape.com/page/1-34/>: HTTP status code
     is not handled or not allowed
 
 The first thing to note is a logger name - it is in brackets:
-``[scrapy.spidermiddlewares.httperror]``. If you get just ``[scrapy]`` then
+``[jscrapy.spidermiddlewares.httperror]``. If you get just ``[jscrapy]`` then
 :setting:`LOG_SHORT_NAMES` is likely set to True; set it to False and re-run
 the crawl.
 
 Next, we can see that the message has INFO level. To hide it
-we should set logging level for ``scrapy.spidermiddlewares.httperror``
+we should set logging level for ``jscrapy.spidermiddlewares.httperror``
 higher than INFO; next level after INFO is WARNING. It could be done
 e.g. in the spider's ``__init__`` method::
 
     import logging
-    import scrapy
+    import jscrapy
 
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         # ...
         def __init__(self, *args, **kwargs):
-            logger = logging.getLogger('scrapy.spidermiddlewares.httperror')
+            logger = logging.getLogger('jscrapy.spidermiddlewares.httperror')
             logger.setLevel(logging.WARNING)
             super().__init__(*args, **kwargs)
 
 If you run this spider again then INFO messages from
-``scrapy.spidermiddlewares.httperror`` logger will be gone.
+``jscrapy.spidermiddlewares.httperror`` logger will be gone.
 
 You can also filter log records by :class:`~logging.LogRecord` data. For 
 example, you can filter log records by message content using a substring or
@@ -266,9 +266,9 @@ filter all loggers in different parts of the project
 (middlewares, spider, etc.)::
 
     import logging
-    import scrapy
+    import jscrapy
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         # ...
         def __init__(self, *args, **kwargs):
             for handler in logging.root.handlers:
@@ -278,33 +278,33 @@ Alternatively, you may choose a specific logger
 and hide it without affecting other loggers::
 
     import logging
-    import scrapy
+    import jscrapy
     
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         # ...
         def __init__(self, *args, **kwargs):
             logger = logging.getLogger('my_logger')
             logger.addFilter(ContentFilter())
             
-scrapy.utils.log module
+jscrapy.utils.log module
 =======================
 
-.. module:: scrapy.utils.log
+.. module:: jscrapy.utils.log
    :synopsis: Logging utils
 
 .. autofunction:: configure_logging
 
     ``configure_logging`` is automatically called when using Scrapy commands
-    or :class:`~scrapy.crawler.CrawlerProcess`, but needs to be called explicitly
-    when running custom scripts using :class:`~scrapy.crawler.CrawlerRunner`.
+    or :class:`~jscrapy.crawler.CrawlerProcess`, but needs to be called explicitly
+    when running custom scripts using :class:`~jscrapy.crawler.CrawlerRunner`.
     In that case, its usage is not required but it's recommended.
 
     Another option when running custom scripts is to manually configure the logging.
     To do this you can use :func:`logging.basicConfig` to set a basic root handler.
 
-    Note that :class:`~scrapy.crawler.CrawlerProcess` automatically calls ``configure_logging``,
+    Note that :class:`~jscrapy.crawler.CrawlerProcess` automatically calls ``configure_logging``,
     so it is recommended to only use :func:`logging.basicConfig` together with
-    :class:`~scrapy.crawler.CrawlerRunner`.
+    :class:`~jscrapy.crawler.CrawlerRunner`.
 
     This is an example on how to redirect ``INFO`` or higher messages to a file::
 

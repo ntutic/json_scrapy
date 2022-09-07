@@ -1,8 +1,8 @@
-import scrapy
-from scrapy.crawler import CrawlerProcess
+import jscrapy
+from jscrapy.crawler import CrawlerProcess
 
 
-class NoRequestsSpider(scrapy.Spider):
+class NoRequestsSpider(jscrapy.Spider):
     name = 'no_request'
 
     def start_requests(self):

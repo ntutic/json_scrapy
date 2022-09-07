@@ -7,15 +7,15 @@ from urllib.parse import urlencode
 
 from twisted.internet import defer
 
-from scrapy import signals
-from scrapy.exceptions import StopDownload
-from scrapy.http import Request
-from scrapy.item import Item
-from scrapy.linkextractors import LinkExtractor
-from scrapy.spiders import Spider
-from scrapy.spiders.crawl import CrawlSpider, Rule
-from scrapy.utils.defer import deferred_to_future, maybe_deferred_to_future
-from scrapy.utils.test import get_from_asyncio_queue, get_web_client_agent_req
+from jscrapy import signals
+from jscrapy.exceptions import StopDownload
+from jscrapy.http import Request
+from jscrapy.item import Item
+from jscrapy.linkextractors import LinkExtractor
+from jscrapy.spiders import Spider
+from jscrapy.spiders.crawl import CrawlSpider, Rule
+from jscrapy.utils.defer import deferred_to_future, maybe_deferred_to_future
+from jscrapy.utils.test import get_from_asyncio_queue, get_web_client_agent_req
 
 
 class MockServerSpider(Spider):

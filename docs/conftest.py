@@ -1,7 +1,7 @@
 import os
 from doctest import ELLIPSIS, NORMALIZE_WHITESPACE
 
-from scrapy.http.response.html import HtmlResponse
+from jscrapy.http.response.html import HtmlResponse
 from sybil import Sybil
 try:
     # >2.0.1

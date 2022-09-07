@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from twisted.web.http import H2_ENABLED
 
-from scrapy.utils.reactor import install_reactor
+from jscrapy.utils.reactor import install_reactor
 
 from tests.keys import generate_keys
 
@@ -14,7 +14,7 @@ def _py_files(folder):
 
 collect_ignore = [
     # not a test, but looks like a test
-    "scrapy/utils/testsite.py",
+    "jscrapy/utils/testsite.py",
     # contains scripts to be run by tests/test_crawler.py::CrawlerProcessSubprocess
     *_py_files("tests/CrawlerProcess"),
     # contains scripts to be run by tests/test_crawler.py::CrawlerRunnerSubprocess
@@ -30,8 +30,8 @@ with open('tests/ignores.txt') as reader:
 if not H2_ENABLED:
     collect_ignore.extend(
         (
-            'scrapy/core/downloader/handlers/http2.py',
-            *_py_files("scrapy/core/http2"),
+            'jscrapy/core/downloader/handlers/http2.py',
+            *_py_files("jscrapy/core/http2"),
         )
     )
 

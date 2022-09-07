@@ -4,7 +4,7 @@
 Item Exporters
 ==============
 
-.. module:: scrapy.exporters
+.. module:: jscrapy.exporters
    :synopsis: Item Exporters
 
 Once you have scraped your items, you often want to persist or export those
@@ -41,7 +41,7 @@ Item Exporters to group scraped items to different files according to the
 value of one of their fields::
 
     from itemadapter import ItemAdapter
-    from scrapy.exporters import XmlItemExporter
+    from jscrapy.exporters import XmlItemExporter
 
     class PerYearXmlExportPipeline:
         """Distribute items across multiple XML files according to their 'year' field"""
@@ -90,20 +90,20 @@ described next.
 1. Declaring a serializer in the field
 --------------------------------------
 
-If you use :class:`~scrapy.Item` you can declare a serializer in the
+If you use :class:`~jscrapy.Item` you can declare a serializer in the
 :ref:`field metadata <topics-items-fields>`. The serializer must be
 a callable which receives a value and returns its serialized form.
 
 Example::
 
-    import scrapy
+    import jscrapy
 
     def serialize_price(value):
         return f'$ {str(value)}'
 
-    class Product(scrapy.Item):
-        name = scrapy.Field()
-        price = scrapy.Field(serializer=serialize_price)
+    class Product(jscrapy.Item):
+        name = jscrapy.Field()
+        price = jscrapy.Field(serializer=serialize_price)
 
 
 2. Overriding the serialize_field() method
@@ -117,7 +117,7 @@ after your custom code.
 
 Example::
 
-      from scrapy.exporters import XmlItemExporter
+      from jscrapy.exporters import XmlItemExporter
 
       class ProductXmlExporter(XmlItemExporter):
 
@@ -172,7 +172,7 @@ BaseItemExporter
       :param field: the field being serialized. If the source :ref:`item object
           <item-types>` does not define field metadata, *field* is an empty
           :class:`dict`.
-      :type field: :class:`~scrapy.Field` object or a :class:`dict` instance
+      :type field: :class:`~jscrapy.Field` object or a :class:`dict` instance
 
       :param name: the name of the field being serialized
       :type name: str

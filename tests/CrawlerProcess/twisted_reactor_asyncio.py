@@ -1,8 +1,8 @@
-import scrapy
-from scrapy.crawler import CrawlerProcess
+import jscrapy
+from jscrapy.crawler import CrawlerProcess
 
 
-class AsyncioReactorSpider(scrapy.Spider):
+class AsyncioReactorSpider(jscrapy.Spider):
     name = 'asyncio_reactor'
 
 

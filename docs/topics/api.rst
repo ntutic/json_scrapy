@@ -12,12 +12,12 @@ extensions and middlewares.
 Crawler API
 ===========
 
-The main entry point to Scrapy API is the :class:`~scrapy.crawler.Crawler`
+The main entry point to Scrapy API is the :class:`~jscrapy.crawler.Crawler`
 object, passed to extensions through the ``from_crawler`` class method. This
 object provides access to all Scrapy core components, and it's the only way for
 extensions to access them and hook their functionality into Scrapy.
 
-.. module:: scrapy.crawler
+.. module:: jscrapy.crawler
    :synopsis: The Scrapy crawler
 
 The Extension Manager is responsible for loading and keeping track of installed
@@ -29,8 +29,8 @@ how you :ref:`configure the downloader middlewares
 .. class:: Crawler(spidercls, settings)
 
     The Crawler object must be instantiated with a
-    :class:`scrapy.Spider` subclass and a
-    :class:`scrapy.settings.Settings` object.
+    :class:`jscrapy.Spider` subclass and a
+    :class:`jscrapy.settings.Settings` object.
 
     .. attribute:: request_fingerprinter
 
@@ -48,7 +48,7 @@ how you :ref:`configure the downloader middlewares
 
         For an introduction on Scrapy settings see :ref:`topics-settings`.
 
-        For the API see :class:`~scrapy.settings.Settings` class.
+        For the API see :class:`~jscrapy.settings.Settings` class.
 
     .. attribute:: signals
 
@@ -59,7 +59,7 @@ how you :ref:`configure the downloader middlewares
 
         For an introduction on signals see :ref:`topics-signals`.
 
-        For the API see :class:`~scrapy.signalmanager.SignalManager` class.
+        For the API see :class:`~jscrapy.signalmanager.SignalManager` class.
 
     .. attribute:: stats
 
@@ -70,7 +70,7 @@ how you :ref:`configure the downloader middlewares
 
         For an introduction on stats collection see :ref:`topics-stats`.
 
-        For the API see :class:`~scrapy.statscollectors.StatsCollector` class.
+        For the API see :class:`~jscrapy.statscollectors.StatsCollector` class.
 
     .. attribute:: extensions
 
@@ -119,7 +119,7 @@ how you :ref:`configure the downloader middlewares
 Settings API
 ============
 
-.. module:: scrapy.settings
+.. module:: jscrapy.settings
    :synopsis: Settings manager
 
 .. attribute:: SETTINGS_PRIORITIES
@@ -130,7 +130,7 @@ Settings API
     Each item defines a settings entry point, giving it a code name for
     identification and an integer priority. Greater priorities take more
     precedence over lesser ones when setting and retrieving values in the
-    :class:`~scrapy.settings.Settings` class.
+    :class:`~jscrapy.settings.Settings` class.
 
     .. highlight:: python
 
@@ -161,7 +161,7 @@ Settings API
 SpiderLoader API
 ================
 
-.. module:: scrapy.spiderloader
+.. module:: jscrapy.spiderloader
    :synopsis: The spider loader
 
 .. class:: SpiderLoader
@@ -171,7 +171,7 @@ SpiderLoader API
 
     Custom spider loaders can be employed by specifying their path in the
     :setting:`SPIDER_LOADER_CLASS` project setting. They must fully implement
-    the :class:`scrapy.interfaces.ISpiderLoader` interface to guarantee an
+    the :class:`jscrapy.interfaces.ISpiderLoader` interface to guarantee an
     errorless execution.
 
     .. method:: from_settings(settings)
@@ -182,7 +182,7 @@ SpiderLoader API
        setting.
 
        :param settings: project settings
-       :type settings: :class:`~scrapy.settings.Settings` instance
+       :type settings: :class:`~jscrapy.settings.Settings` instance
 
     .. method:: load(spider_name)
 
@@ -203,14 +203,14 @@ SpiderLoader API
        match the request's url against the domains of the spiders.
 
        :param request: queried request
-       :type request: :class:`~scrapy.Request` instance
+       :type request: :class:`~jscrapy.Request` instance
 
 .. _topics-api-signals:
 
 Signals API
 ===========
 
-.. automodule:: scrapy.signalmanager
+.. automodule:: jscrapy.signalmanager
     :synopsis: The signal manager
     :members:
     :undoc-members:
@@ -221,11 +221,11 @@ Stats Collector API
 ===================
 
 There are several Stats Collectors available under the
-:mod:`scrapy.statscollectors` module and they all implement the Stats
-Collector API defined by the :class:`~scrapy.statscollectors.StatsCollector`
+:mod:`jscrapy.statscollectors` module and they all implement the Stats
+Collector API defined by the :class:`~jscrapy.statscollectors.StatsCollector`
 class (which they all inherit from).
 
-.. module:: scrapy.statscollectors
+.. module:: jscrapy.statscollectors
    :synopsis: Stats Collectors
 
 .. class:: StatsCollector

@@ -1,7 +1,7 @@
 import unittest
 import copy
 
-from scrapy.http import Headers
+from jscrapy.http import Headers
 
 
 class HeadersTest(unittest.TestCase):

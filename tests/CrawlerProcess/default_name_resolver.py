@@ -1,8 +1,8 @@
-import scrapy
-from scrapy.crawler import CrawlerProcess
+import jscrapy
+from jscrapy.crawler import CrawlerProcess
 
 
-class IPv6Spider(scrapy.Spider):
+class IPv6Spider(jscrapy.Spider):
     """
     Raises a twisted.internet.error.DNSLookupError:
     the default name resolver does not handle IPv6 addresses.

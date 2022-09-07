@@ -3,11 +3,11 @@ import re
 import unittest
 from warnings import catch_warnings
 
-from scrapy.exceptions import ScrapyDeprecationWarning
-from scrapy.http import HtmlResponse, XmlResponse
-from scrapy.link import Link
-from scrapy.linkextractors import FilteringLinkExtractor
-from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
+from jscrapy.exceptions import ScrapyDeprecationWarning
+from jscrapy.http import HtmlResponse, XmlResponse
+from jscrapy.link import Link
+from jscrapy.linkextractors import FilteringLinkExtractor
+from jscrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 from tests import get_testdata
 
 

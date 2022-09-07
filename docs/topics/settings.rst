@@ -60,16 +60,16 @@ settings using the ``-s`` (or ``--set``) command line option.
 
 Example::
 
-    scrapy crawl myspider -s LOG_FILE=scrapy.log
+    jscrapy crawl myspider -s LOG_FILE=jscrapy.log
 
 2. Settings per-spider
 ----------------------
 
 Spiders (See the :ref:`topics-spiders` chapter for reference) can define their
 own settings that will take precedence and override the project ones. They can
-do so by setting their :attr:`~scrapy.Spider.custom_settings` attribute::
+do so by setting their :attr:`~jscrapy.Spider.custom_settings` attribute::
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         name = 'myspider'
 
         custom_settings = {
@@ -95,7 +95,7 @@ class.
 5. Default global settings
 --------------------------
 
-The global defaults are located in the ``scrapy.settings.default_settings``
+The global defaults are located in the ``jscrapy.settings.default_settings``
 module and documented in the :ref:`topics-settings-ref` section.
 
 
@@ -131,7 +131,7 @@ How to access settings
 
 In a spider, the settings are available through ``self.settings``::
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         name = 'myspider'
         start_urls = ['http://example.com']
 
@@ -142,9 +142,9 @@ In a spider, the settings are available through ``self.settings``::
     The ``settings`` attribute is set in the base Spider class after the spider
     is initialized.  If you want to use the settings before the initialization
     (e.g., in your spider's ``__init__()`` method), you'll need to override the
-    :meth:`~scrapy.Spider.from_crawler` method.
+    :meth:`~jscrapy.Spider.from_crawler` method.
 
-Settings can be accessed through the :attr:`scrapy.crawler.Crawler.settings`
+Settings can be accessed through the :attr:`jscrapy.crawler.Crawler.settings`
 attribute of the Crawler that is passed to ``from_crawler`` method in
 extensions, middlewares and item pipelines::
 
@@ -161,7 +161,7 @@ extensions, middlewares and item pipelines::
 The settings object can be used like a dict (e.g.,
 ``settings['LOG_ENABLED']``), but it's usually preferred to extract the setting
 in the format you need it to avoid type errors, using one of the methods
-provided by the :class:`~scrapy.settings.Settings` API.
+provided by the :class:`~jscrapy.settings.Settings` API.
 
 Rationale for setting names
 ===========================
@@ -269,7 +269,7 @@ asyncio event loop to be used with it. Set the setting to the import path of the
 desired asyncio event loop class. If the setting is set to ``None`` the default asyncio
 event loop will be used.
 
-If you are installing the asyncio reactor manually using the :func:`~scrapy.utils.reactor.install_reactor`
+If you are installing the asyncio reactor manually using the :func:`~jscrapy.utils.reactor.install_reactor`
 function, you can use the ``event_loop_path`` parameter to indicate the import path of the event loop
 class to be used.
 
@@ -277,7 +277,7 @@ Note that the event loop class must inherit from :class:`asyncio.AbstractEventLo
 
 .. caution:: Please be aware that, when using a non-default event loop
     (either defined via :setting:`ASYNCIO_EVENT_LOOP` or installed with
-    :func:`~scrapy.utils.reactor.install_reactor`), Scrapy will call
+    :func:`~jscrapy.utils.reactor.install_reactor`), Scrapy will call
     :func:`asyncio.set_event_loop`, which will set the specified event loop
     as the current loop for the current OS thread.
 
@@ -286,7 +286,7 @@ Note that the event loop class must inherit from :class:`asyncio.AbstractEventLo
 BOT_NAME
 --------
 
-Default: ``'scrapybot'``
+Default: ``'jscrapybot'``
 
 The name of the bot implemented by this Scrapy project (also known as the
 project name). This name will be used for the logging too.
@@ -351,7 +351,7 @@ is non-zero, download delay is enforced per IP, not per domain.
 DEFAULT_ITEM_CLASS
 ------------------
 
-Default: ``'scrapy.Item'``
+Default: ``'jscrapy.Item'``
 
 The default class that will be used for instantiating items in the :ref:`the
 Scrapy shell <topics-shell>`.
@@ -369,11 +369,11 @@ Default::
     }
 
 The default headers used for Scrapy HTTP Requests. They're populated in the
-:class:`~scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware`.
+:class:`~jscrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware`.
 
 .. caution:: Cookies set via the ``Cookie`` header are not considered by the
     :ref:`cookies-mw`. If you need to set cookies for a request, use the
-    :class:`Request.cookies <scrapy.Request>` parameter. This is a known
+    :class:`Request.cookies <jscrapy.Request>` parameter. This is a known
     current limitation that is being worked on.
 
 .. setting:: DEPTH_LIMIT
@@ -383,7 +383,7 @@ DEPTH_LIMIT
 
 Default: ``0``
 
-Scope: ``scrapy.spidermiddlewares.depth.DepthMiddleware``
+Scope: ``jscrapy.spidermiddlewares.depth.DepthMiddleware``
 
 The maximum depth that will be allowed to crawl for any site. If zero, no limit
 will be imposed.
@@ -395,10 +395,10 @@ DEPTH_PRIORITY
 
 Default: ``0``
 
-Scope: ``scrapy.spidermiddlewares.depth.DepthMiddleware``
+Scope: ``jscrapy.spidermiddlewares.depth.DepthMiddleware``
 
-An integer that is used to adjust the :attr:`~scrapy.Request.priority` of
-a :class:`~scrapy.Request` based on its depth.
+An integer that is used to adjust the :attr:`~jscrapy.Request.priority` of
+a :class:`~jscrapy.Request` based on its depth.
 
 The priority of a request is adjusted as follows::
 
@@ -421,7 +421,7 @@ DEPTH_STATS_VERBOSE
 
 Default: ``False``
 
-Scope: ``scrapy.spidermiddlewares.depth.DepthMiddleware``
+Scope: ``jscrapy.spidermiddlewares.depth.DepthMiddleware``
 
 Whether to collect verbose depth stats. If this is enabled, the number of
 requests for each depth is collected in the stats.
@@ -451,12 +451,12 @@ DNS_RESOLVER
 
 .. versionadded:: 2.0
 
-Default: ``'scrapy.resolver.CachingThreadedResolver'``
+Default: ``'jscrapy.resolver.CachingThreadedResolver'``
 
-The class to be used to resolve DNS names. The default ``scrapy.resolver.CachingThreadedResolver``
+The class to be used to resolve DNS names. The default ``jscrapy.resolver.CachingThreadedResolver``
 supports specifying a timeout for DNS requests via the :setting:`DNS_TIMEOUT` setting,
 but works only with IPv4 addresses. Scrapy provides an alternative resolver,
-``scrapy.resolver.CachingHostnameResolver``, which supports IPv4/IPv6 addresses but does not
+``jscrapy.resolver.CachingHostnameResolver``, which supports IPv4/IPv6 addresses but does not
 take the :setting:`DNS_TIMEOUT` setting into account.
 
 .. setting:: DNS_TIMEOUT
@@ -473,7 +473,7 @@ Timeout for processing of DNS queries in seconds. Float is supported.
 DOWNLOADER
 ----------
 
-Default: ``'scrapy.core.downloader.Downloader'``
+Default: ``'jscrapy.core.downloader.Downloader'``
 
 The downloader to use for crawling.
 
@@ -482,7 +482,7 @@ The downloader to use for crawling.
 DOWNLOADER_HTTPCLIENTFACTORY
 ----------------------------
 
-Default: ``'scrapy.core.downloader.webclient.ScrapyHTTPClientFactory'``
+Default: ``'jscrapy.core.downloader.webclient.ScrapyHTTPClientFactory'``
 
 Defines a Twisted ``protocol.ClientFactory``  class to use for HTTP/1.0
 connections (for ``HTTP10DownloadHandler``).
@@ -492,14 +492,14 @@ connections (for ``HTTP10DownloadHandler``).
     HTTP/1.0 is rarely used nowadays so you can safely ignore this setting,
     unless you really want to use HTTP/1.0 and override
     :setting:`DOWNLOAD_HANDLERS` for ``http(s)`` scheme accordingly,
-    i.e. to ``'scrapy.core.downloader.handlers.http.HTTP10DownloadHandler'``.
+    i.e. to ``'jscrapy.core.downloader.handlers.http.HTTP10DownloadHandler'``.
 
 .. setting:: DOWNLOADER_CLIENTCONTEXTFACTORY
 
 DOWNLOADER_CLIENTCONTEXTFACTORY
 -------------------------------
 
-Default: ``'scrapy.core.downloader.contextfactory.ScrapyClientContextFactory'``
+Default: ``'jscrapy.core.downloader.contextfactory.ScrapyClientContextFactory'``
 
 Represents the classpath to the ContextFactory to use.
 
@@ -514,7 +514,7 @@ or even enable client-side authentication (and various other things).
 
     If you do need remote server certificate verification enabled,
     Scrapy also has another context factory class that you can set,
-    ``'scrapy.core.downloader.contextfactory.BrowserLikeContextFactory'``,
+    ``'jscrapy.core.downloader.contextfactory.BrowserLikeContextFactory'``,
     which uses the platform's certificates to validate remote endpoints.
 
 If you do use a custom ContextFactory, make sure its ``__init__`` method
@@ -595,20 +595,20 @@ DOWNLOADER_MIDDLEWARES_BASE
 Default::
 
     {
-        'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware': 100,
-        'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware': 300,
-        'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware': 350,
-        'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware': 400,
-        'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 500,
-        'scrapy.downloadermiddlewares.retry.RetryMiddleware': 550,
-        'scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware': 560,
-        'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware': 580,
-        'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 590,
-        'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': 600,
-        'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
-        'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 750,
-        'scrapy.downloadermiddlewares.stats.DownloaderStats': 850,
-        'scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware': 900,
+        'jscrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware': 100,
+        'jscrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware': 300,
+        'jscrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware': 350,
+        'jscrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware': 400,
+        'jscrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 500,
+        'jscrapy.downloadermiddlewares.retry.RetryMiddleware': 550,
+        'jscrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware': 560,
+        'jscrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware': 580,
+        'jscrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 590,
+        'jscrapy.downloadermiddlewares.redirect.RedirectMiddleware': 600,
+        'jscrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
+        'jscrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 750,
+        'jscrapy.downloadermiddlewares.stats.DownloaderStats': 850,
+        'jscrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware': 900,
     }
 
 A dict containing the downloader middlewares enabled by default in Scrapy. Low
@@ -670,12 +670,12 @@ DOWNLOAD_HANDLERS_BASE
 Default::
 
     {
-        'data': 'scrapy.core.downloader.handlers.datauri.DataURIDownloadHandler',
-        'file': 'scrapy.core.downloader.handlers.file.FileDownloadHandler',
-        'http': 'scrapy.core.downloader.handlers.http.HTTPDownloadHandler',
-        'https': 'scrapy.core.downloader.handlers.http.HTTPDownloadHandler',
-        's3': 'scrapy.core.downloader.handlers.s3.S3DownloadHandler',
-        'ftp': 'scrapy.core.downloader.handlers.ftp.FTPDownloadHandler',
+        'data': 'jscrapy.core.downloader.handlers.datauri.DataURIDownloadHandler',
+        'file': 'jscrapy.core.downloader.handlers.file.FileDownloadHandler',
+        'http': 'jscrapy.core.downloader.handlers.http.HTTPDownloadHandler',
+        'https': 'jscrapy.core.downloader.handlers.http.HTTPDownloadHandler',
+        's3': 'jscrapy.core.downloader.handlers.s3.S3DownloadHandler',
+        'ftp': 'jscrapy.core.downloader.handlers.ftp.FTPDownloadHandler',
     }
 
 
@@ -701,7 +701,7 @@ The default HTTPS handler uses HTTP/1.1. To use HTTP/2:
 #.  Update :setting:`DOWNLOAD_HANDLERS` as follows::
 
         DOWNLOAD_HANDLERS = {
-            'https': 'scrapy.core.downloader.handlers.http2.H2DownloadHandler',
+            'https': 'jscrapy.core.downloader.handlers.http2.H2DownloadHandler',
         }
 
 .. warning::
@@ -810,7 +810,7 @@ Optionally, this can be set per-request basis by using the
 .. warning::
 
     This setting is ignored by the
-    :class:`~scrapy.core.downloader.handlers.http2.H2DownloadHandler`
+    :class:`~jscrapy.core.downloader.handlers.http2.H2DownloadHandler`
     download handler (see :setting:`DOWNLOAD_HANDLERS`). In case of a data loss
     error, the corresponding HTTP/2 connection may be corrupted, affecting other
     requests that use the same connection; hence, a ``ResponseFailed([InvalidBodyLengthError])``
@@ -821,7 +821,7 @@ Optionally, this can be set per-request basis by using the
 DUPEFILTER_CLASS
 ----------------
 
-Default: ``'scrapy.dupefilters.RFPDupeFilter'``
+Default: ``'jscrapy.dupefilters.RFPDupeFilter'``
 
 The class used to detect and filter duplicate requests.
 
@@ -829,10 +829,10 @@ The default (``RFPDupeFilter``) filters based on the
 :setting:`REQUEST_FINGERPRINTER_CLASS` setting.
 
 You can disable filtering of duplicate requests by setting
-:setting:`DUPEFILTER_CLASS` to ``'scrapy.dupefilters.BaseDupeFilter'``.
+:setting:`DUPEFILTER_CLASS` to ``'jscrapy.dupefilters.BaseDupeFilter'``.
 Be very careful about this however, because you can get into crawling loops.
 It's usually a better idea to set the ``dont_filter`` parameter to
-``True`` on the specific :class:`~scrapy.Request` that should not be
+``True`` on the specific :class:`~jscrapy.Request` that should not be
 filtered.
 
 .. setting:: DUPEFILTER_DEBUG
@@ -873,15 +873,15 @@ EXTENSIONS_BASE
 Default::
 
     {
-        'scrapy.extensions.corestats.CoreStats': 0,
-        'scrapy.extensions.telnet.TelnetConsole': 0,
-        'scrapy.extensions.memusage.MemoryUsage': 0,
-        'scrapy.extensions.memdebug.MemoryDebugger': 0,
-        'scrapy.extensions.closespider.CloseSpider': 0,
-        'scrapy.extensions.feedexport.FeedExporter': 0,
-        'scrapy.extensions.logstats.LogStats': 0,
-        'scrapy.extensions.spiderstate.SpiderState': 0,
-        'scrapy.extensions.throttle.AutoThrottle': 0,
+        'jscrapy.extensions.corestats.CoreStats': 0,
+        'jscrapy.extensions.telnet.TelnetConsole': 0,
+        'jscrapy.extensions.memusage.MemoryUsage': 0,
+        'jscrapy.extensions.memdebug.MemoryDebugger': 0,
+        'jscrapy.extensions.closespider.CloseSpider': 0,
+        'jscrapy.extensions.feedexport.FeedExporter': 0,
+        'jscrapy.extensions.logstats.LogStats': 0,
+        'jscrapy.extensions.spiderstate.SpiderState': 0,
+        'jscrapy.extensions.throttle.AutoThrottle': 0,
     }
 
 A dict containing the extensions available by default in Scrapy, and their
@@ -1060,7 +1060,7 @@ whole list of available directives.
 LOG_FORMATTER
 -------------
 
-Default: :class:`scrapy.logformatter.LogFormatter`
+Default: :class:`jscrapy.logformatter.LogFormatter`
 
 The class to use for :ref:`formatting log messages <custom-log-formats>` for different actions.
 
@@ -1103,7 +1103,7 @@ LOGSTATS_INTERVAL
 Default: ``60.0``
 
 The interval (in seconds) between each logging printout of the stats
-by :class:`~scrapy.extensions.logstats.LogStats`.
+by :class:`~jscrapy.extensions.logstats.LogStats`.
 
 .. setting:: MEMDEBUG_ENABLED
 
@@ -1136,7 +1136,7 @@ MEMUSAGE_ENABLED
 
 Default: ``True``
 
-Scope: ``scrapy.extensions.memusage``
+Scope: ``jscrapy.extensions.memusage``
 
 Whether to enable the memory usage extension. This extension keeps track of
 a peak memory used by the process (it writes it to stats). It can also
@@ -1153,7 +1153,7 @@ MEMUSAGE_LIMIT_MB
 
 Default: ``0``
 
-Scope: ``scrapy.extensions.memusage``
+Scope: ``jscrapy.extensions.memusage``
 
 The maximum amount of memory to allow (in megabytes) before shutting down
 Scrapy  (if MEMUSAGE_ENABLED is True). If zero, no check will be performed.
@@ -1167,7 +1167,7 @@ MEMUSAGE_CHECK_INTERVAL_SECONDS
 
 Default: ``60.0``
 
-Scope: ``scrapy.extensions.memusage``
+Scope: ``jscrapy.extensions.memusage``
 
 The :ref:`Memory usage extension <topics-extensions-ref-memusage>`
 checks the current memory usage, versus the limits set by
@@ -1185,7 +1185,7 @@ MEMUSAGE_NOTIFY_MAIL
 
 Default: ``False``
 
-Scope: ``scrapy.extensions.memusage``
+Scope: ``jscrapy.extensions.memusage``
 
 A list of emails to notify if the memory limit has been reached.
 
@@ -1202,7 +1202,7 @@ MEMUSAGE_WARNING_MB
 
 Default: ``0``
 
-Scope: ``scrapy.extensions.memusage``
+Scope: ``jscrapy.extensions.memusage``
 
 The maximum amount of memory to allow (in megabytes) before sending a warning
 email notifying about it. If zero, no warning will be produced.
@@ -1259,7 +1259,7 @@ REDIRECT_PRIORITY_ADJUST
 
 Default: ``+2``
 
-Scope: ``scrapy.downloadermiddlewares.redirect.RedirectMiddleware``
+Scope: ``jscrapy.downloadermiddlewares.redirect.RedirectMiddleware``
 
 Adjust redirect request priority relative to original request:
 
@@ -1273,7 +1273,7 @@ ROBOTSTXT_OBEY
 
 Default: ``False``
 
-Scope: ``scrapy.downloadermiddlewares.robotstxt``
+Scope: ``jscrapy.downloadermiddlewares.robotstxt``
 
 If enabled, Scrapy will respect robots.txt policies. For more information see
 :ref:`topics-dlmw-robots`.
@@ -1282,14 +1282,14 @@ If enabled, Scrapy will respect robots.txt policies. For more information see
 
     While the default value is ``False`` for historical reasons,
     this option is enabled by default in settings.py file generated
-    by ``scrapy startproject`` command.
+    by ``jscrapy startproject`` command.
 
 .. setting:: ROBOTSTXT_PARSER
 
 ROBOTSTXT_PARSER
 ----------------
 
-Default: ``'scrapy.robotstxt.ProtegoRobotParser'``
+Default: ``'jscrapy.robotstxt.ProtegoRobotParser'``
 
 The parser backend to use for parsing ``robots.txt`` files. For more information see
 :ref:`topics-dlmw-robots`.
@@ -1311,7 +1311,7 @@ the user agent to use in the robots.txt file.
 SCHEDULER
 ---------
 
-Default: ``'scrapy.core.scheduler.Scheduler'``
+Default: ``'jscrapy.core.scheduler.Scheduler'``
 
 The scheduler class to be used for crawling.
 See the :ref:`topics-scheduler` topic for details.
@@ -1329,7 +1329,7 @@ Stats counter (``scheduler/unserializable``) tracks the number of times this hap
 
 Example entry in logs::
 
-    1956-01-31 00:00:00+0800 [scrapy.core.scheduler] ERROR: Unable to serialize request:
+    1956-01-31 00:00:00+0800 [jscrapy.core.scheduler] ERROR: Unable to serialize request:
     <GET http://example.com> - reason: cannot serialize <Request at 0x9a7c7ec>
     (type Request)> - no more unserializable requests will be logged
     (see 'scheduler/unserializable' stats counter)
@@ -1340,32 +1340,32 @@ Example entry in logs::
 SCHEDULER_DISK_QUEUE
 --------------------
 
-Default: ``'scrapy.squeues.PickleLifoDiskQueue'``
+Default: ``'jscrapy.squeues.PickleLifoDiskQueue'``
 
 Type of disk queue that will be used by scheduler. Other available types are
-``scrapy.squeues.PickleFifoDiskQueue``, ``scrapy.squeues.MarshalFifoDiskQueue``,
-``scrapy.squeues.MarshalLifoDiskQueue``.
+``jscrapy.squeues.PickleFifoDiskQueue``, ``jscrapy.squeues.MarshalFifoDiskQueue``,
+``jscrapy.squeues.MarshalLifoDiskQueue``.
 
 .. setting:: SCHEDULER_MEMORY_QUEUE
 
 SCHEDULER_MEMORY_QUEUE
 ----------------------
-Default: ``'scrapy.squeues.LifoMemoryQueue'``
+Default: ``'jscrapy.squeues.LifoMemoryQueue'``
 
 Type of in-memory queue used by scheduler. Other available type is:
-``scrapy.squeues.FifoMemoryQueue``.
+``jscrapy.squeues.FifoMemoryQueue``.
 
 .. setting:: SCHEDULER_PRIORITY_QUEUE
 
 SCHEDULER_PRIORITY_QUEUE
 ------------------------
-Default: ``'scrapy.pqueues.ScrapyPriorityQueue'``
+Default: ``'jscrapy.pqueues.ScrapyPriorityQueue'``
 
 Type of priority queue used by the scheduler. Another available type is
-``scrapy.pqueues.DownloaderAwarePriorityQueue``.
-``scrapy.pqueues.DownloaderAwarePriorityQueue`` works better than
-``scrapy.pqueues.ScrapyPriorityQueue`` when you crawl many different
-domains in parallel. But currently ``scrapy.pqueues.DownloaderAwarePriorityQueue``
+``jscrapy.pqueues.DownloaderAwarePriorityQueue``.
+``jscrapy.pqueues.DownloaderAwarePriorityQueue`` works better than
+``jscrapy.pqueues.ScrapyPriorityQueue`` when you crawl many different
+domains in parallel. But currently ``jscrapy.pqueues.DownloaderAwarePriorityQueue``
 does not work together with :setting:`CONCURRENT_REQUESTS_PER_IP`.
 
 .. setting:: SCRAPER_SLOT_MAX_ACTIVE_SIZE
@@ -1400,9 +1400,9 @@ SPIDER_CONTRACTS_BASE
 Default::
 
     {
-        'scrapy.contracts.default.UrlContract' : 1,
-        'scrapy.contracts.default.ReturnsContract': 2,
-        'scrapy.contracts.default.ScrapesContract': 3,
+        'jscrapy.contracts.default.UrlContract' : 1,
+        'jscrapy.contracts.default.ReturnsContract': 2,
+        'jscrapy.contracts.default.ScrapesContract': 3,
     }
 
 A dict containing the Scrapy contracts enabled by default in Scrapy. You should
@@ -1414,7 +1414,7 @@ path in :setting:`SPIDER_CONTRACTS`. E.g., to disable the built-in
 ``ScrapesContract``, place this in your ``settings.py``::
 
     SPIDER_CONTRACTS = {
-        'scrapy.contracts.default.ScrapesContract': None,
+        'jscrapy.contracts.default.ScrapesContract': None,
     }
 
 .. setting:: SPIDER_LOADER_CLASS
@@ -1422,7 +1422,7 @@ path in :setting:`SPIDER_CONTRACTS`. E.g., to disable the built-in
 SPIDER_LOADER_CLASS
 -------------------
 
-Default: ``'scrapy.spiderloader.SpiderLoader'``
+Default: ``'jscrapy.spiderloader.SpiderLoader'``
 
 The class that will be used for loading spiders, which must implement the
 :ref:`topics-api-spiderloader`.
@@ -1440,13 +1440,13 @@ But you can choose to silence this exception and turn it into a simple
 warning by setting ``SPIDER_LOADER_WARN_ONLY = True``.
 
 .. note::
-    Some :ref:`scrapy commands <topics-commands>` run with this setting to ``True``
+    Some :ref:`jscrapy commands <topics-commands>` run with this setting to ``True``
     already (i.e. they will only issue a warning and will not fail)
     since they do not actually need to load spider classes to work:
-    :command:`scrapy runspider <runspider>`,
-    :command:`scrapy settings <settings>`,
-    :command:`scrapy startproject <startproject>`,
-    :command:`scrapy version <version>`.
+    :command:`jscrapy runspider <runspider>`,
+    :command:`jscrapy settings <settings>`,
+    :command:`jscrapy startproject <startproject>`,
+    :command:`jscrapy version <version>`.
 
 .. setting:: SPIDER_MIDDLEWARES
 
@@ -1466,11 +1466,11 @@ SPIDER_MIDDLEWARES_BASE
 Default::
 
     {
-        'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware': 50,
-        'scrapy.spidermiddlewares.offsite.OffsiteMiddleware': 500,
-        'scrapy.spidermiddlewares.referer.RefererMiddleware': 700,
-        'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware': 800,
-        'scrapy.spidermiddlewares.depth.DepthMiddleware': 900,
+        'jscrapy.spidermiddlewares.httperror.HttpErrorMiddleware': 50,
+        'jscrapy.spidermiddlewares.offsite.OffsiteMiddleware': 500,
+        'jscrapy.spidermiddlewares.referer.RefererMiddleware': 700,
+        'jscrapy.spidermiddlewares.urllength.UrlLengthMiddleware': 800,
+        'jscrapy.spidermiddlewares.depth.DepthMiddleware': 900,
     }
 
 A dict containing the spider middlewares enabled by default in Scrapy, and
@@ -1495,7 +1495,7 @@ Example::
 STATS_CLASS
 -----------
 
-Default: ``'scrapy.statscollectors.MemoryStatsCollector'``
+Default: ``'jscrapy.statscollectors.MemoryStatsCollector'``
 
 The class to use for collecting stats, who must implement the
 :ref:`topics-api-stats`.
@@ -1520,7 +1520,7 @@ STATSMAILER_RCPTS
 Default: ``[]`` (empty list)
 
 Send Scrapy stats after spiders finish scraping. See
-:class:`~scrapy.extensions.statsmailer.StatsMailer` for more info.
+:class:`~jscrapy.extensions.statsmailer.StatsMailer` for more info.
 
 .. setting:: TELNETCONSOLE_ENABLED
 
@@ -1537,7 +1537,7 @@ will be enabled (provided its extension is also enabled).
 TEMPLATES_DIR
 -------------
 
-Default: ``templates`` dir inside scrapy module
+Default: ``templates`` dir inside jscrapy module
 
 The directory where to look for templates when creating new projects with
 :command:`startproject` command and new spiders with :command:`genspider`
@@ -1558,19 +1558,19 @@ Default: ``None``
 Import path of a given :mod:`~twisted.internet.reactor`.
 
 Scrapy will install this reactor if no other reactor is installed yet, such as
-when the ``scrapy`` CLI program is invoked or when using the
-:class:`~scrapy.crawler.CrawlerProcess` class.
+when the ``jscrapy`` CLI program is invoked or when using the
+:class:`~jscrapy.crawler.CrawlerProcess` class.
 
-If you are using the :class:`~scrapy.crawler.CrawlerRunner` class, you also
+If you are using the :class:`~jscrapy.crawler.CrawlerRunner` class, you also
 need to install the correct reactor manually. You can do that using
-:func:`~scrapy.utils.reactor.install_reactor`:
+:func:`~jscrapy.utils.reactor.install_reactor`:
 
-.. autofunction:: scrapy.utils.reactor.install_reactor
+.. autofunction:: jscrapy.utils.reactor.install_reactor
 
 If a reactor is already installed,
-:func:`~scrapy.utils.reactor.install_reactor` has no effect.
+:func:`~jscrapy.utils.reactor.install_reactor` has no effect.
 
-:meth:`CrawlerRunner.__init__ <scrapy.crawler.CrawlerRunner.__init__>` raises
+:meth:`CrawlerRunner.__init__ <jscrapy.crawler.CrawlerRunner.__init__>` raises
 :exc:`Exception` if the installed reactor does not match the
 :setting:`TWISTED_REACTOR` setting; therefore, having top-level
 :mod:`~twisted.internet.reactor` imports in project files and imported
@@ -1579,11 +1579,11 @@ it checks which reactor is installed.
 
 In order to use the reactor installed by Scrapy::
 
-    import scrapy
+    import jscrapy
     from twisted.internet import reactor
 
 
-    class QuotesSpider(scrapy.Spider):
+    class QuotesSpider(jscrapy.Spider):
         name = 'quotes'
 
         def __init__(self, *args, **kwargs):
@@ -1595,7 +1595,7 @@ In order to use the reactor installed by Scrapy::
 
             urls = ['https://quotes.toscrape.com/page/1']
             for url in urls:
-                yield scrapy.Request(url=url, callback=self.parse)
+                yield jscrapy.Request(url=url, callback=self.parse)
 
         def parse(self, response):
             for quote in response.css('div.quote'):
@@ -1607,10 +1607,10 @@ In order to use the reactor installed by Scrapy::
 
 which raises :exc:`Exception`, becomes::
 
-    import scrapy
+    import jscrapy
 
 
-    class QuotesSpider(scrapy.Spider):
+    class QuotesSpider(jscrapy.Spider):
         name = 'quotes'
 
         def __init__(self, *args, **kwargs):
@@ -1623,7 +1623,7 @@ which raises :exc:`Exception`, becomes::
 
             urls = ['https://quotes.toscrape.com/page/1']
             for url in urls:
-                yield scrapy.Request(url=url, callback=self.parse)
+                yield jscrapy.Request(url=url, callback=self.parse)
 
         def parse(self, response):
             for quote in response.css('div.quote'):
@@ -1670,10 +1670,10 @@ length`_, even though this setting exists for different reasons.
 USER_AGENT
 ----------
 
-Default: ``"Scrapy/VERSION (+https://scrapy.org)"``
+Default: ``"Scrapy/VERSION (+https://jscrapy.org)"``
 
 The default User-Agent to use when crawling, unless overridden. This user agent is
-also used by :class:`~scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware`
+also used by :class:`~jscrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware`
 if :setting:`ROBOTSTXT_USER_AGENT` setting is ``None`` and
 there is no overriding User-Agent header specified for the request.
 

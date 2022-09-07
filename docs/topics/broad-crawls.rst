@@ -44,13 +44,13 @@ efficient broad crawl.
 Use the right :setting:`SCHEDULER_PRIORITY_QUEUE`
 =================================================
 
-Scrapy’s default scheduler priority queue is ``'scrapy.pqueues.ScrapyPriorityQueue'``.
+Scrapy’s default scheduler priority queue is ``'jscrapy.pqueues.ScrapyPriorityQueue'``.
 It works best during single-domain crawl. It does not work well with crawling
 many different domains in parallel
 
 To apply the recommended priority queue use::
 
-    SCHEDULER_PRIORITY_QUEUE = 'scrapy.pqueues.DownloaderAwarePriorityQueue'
+    SCHEDULER_PRIORITY_QUEUE = 'jscrapy.pqueues.DownloaderAwarePriorityQueue'
 
 .. _broad-crawls-concurrency:
 

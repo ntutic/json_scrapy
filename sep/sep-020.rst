@@ -77,8 +77,8 @@ This is a working code sample that covers just the basics.
 
 ::
 
-    from scrapy.contrib.loader import XPathItemLoader
-    from scrapy.contrib.loader.processor import MapCompose
+    from jscrapy.contrib.loader import XPathItemLoader
+    from jscrapy.contrib.loader.processor import MapCompose
 
     class BulkItemLoader(XPathItemLoader):
         """ Item loader based on specified pattern recognition
@@ -135,8 +135,8 @@ Spider code
 
 ::
 
-    from scrapy.spider import BaseSpider
-    from scrapy.contrib.loader.bulk import BulkItemLoader
+    from jscrapy.spider import BaseSpider
+    from jscrapy.contrib.loader.bulk import BulkItemLoader
 
     class W3cSpider(BaseSpider):
         name = "w3c"
@@ -156,15 +156,15 @@ Log Output
 
 ::
 
-    2012-11-19 14:21:22-0600 [scrapy] INFO: Scrapy 0.17.0 started (bot: scrapy-loader)
-    2012-11-19 14:21:22-0600 [scrapy] DEBUG: Enabled extensions: LogStats, TelnetConsole, CloseSpider, WebService, CoreStats, SpiderState
-    2012-11-19 14:21:22-0600 [scrapy] DEBUG: Enabled downloader middlewares: HttpAuthMiddleware, DownloadTimeoutMiddleware, UserAgentMiddleware, RetryMiddleware, DefaultHeadersMiddleware, RedirectMiddleware, CookiesMiddleware, HttpCompressionMiddleware, ChunkedTransferMiddleware, DownloaderStats, HttpCacheMiddleware
-    2012-11-19 14:21:22-0600 [scrapy] DEBUG: Enabled spider middlewares: HttpErrorMiddleware, OffsiteMiddleware, RefererMiddleware, UrlLengthMiddleware, DepthMiddleware
-    2012-11-19 14:21:22-0600 [scrapy] DEBUG: Enabled item pipelines:
+    2012-11-19 14:21:22-0600 [jscrapy] INFO: Scrapy 0.17.0 started (bot: jscrapy-loader)
+    2012-11-19 14:21:22-0600 [jscrapy] DEBUG: Enabled extensions: LogStats, TelnetConsole, CloseSpider, WebService, CoreStats, SpiderState
+    2012-11-19 14:21:22-0600 [jscrapy] DEBUG: Enabled downloader middlewares: HttpAuthMiddleware, DownloadTimeoutMiddleware, UserAgentMiddleware, RetryMiddleware, DefaultHeadersMiddleware, RedirectMiddleware, CookiesMiddleware, HttpCompressionMiddleware, ChunkedTransferMiddleware, DownloaderStats, HttpCacheMiddleware
+    2012-11-19 14:21:22-0600 [jscrapy] DEBUG: Enabled spider middlewares: HttpErrorMiddleware, OffsiteMiddleware, RefererMiddleware, UrlLengthMiddleware, DepthMiddleware
+    2012-11-19 14:21:22-0600 [jscrapy] DEBUG: Enabled item pipelines:
     2012-11-19 14:21:22-0600 [w3c] INFO: Spider opened
     2012-11-19 14:21:22-0600 [w3c] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
-    2012-11-19 14:21:22-0600 [scrapy] DEBUG: Telnet console listening on 0.0.0.0:6023
-    2012-11-19 14:21:22-0600 [scrapy] DEBUG: Web service listening on 0.0.0.0:6080
+    2012-11-19 14:21:22-0600 [jscrapy] DEBUG: Telnet console listening on 0.0.0.0:6023
+    2012-11-19 14:21:22-0600 [jscrapy] DEBUG: Web service listening on 0.0.0.0:6080
     2012-11-19 14:21:22-0600 [w3c] DEBUG: Crawled (200) <GET http://www.w3.org/TR/html401/struct/lists.html> (referer: None) ['cached']
     {'Notes': [u'The recipe may be improved by adding raisins.'],
      'The ingredients': [u'',

@@ -17,15 +17,15 @@ For spiders, the scraping cycle goes through something like this:
    those requests.
 
    The first requests to perform are obtained by calling the
-   :meth:`~scrapy.Spider.start_requests` method which (by default)
-   generates :class:`~scrapy.Request` for the URLs specified in the
-   :attr:`~scrapy.Spider.start_urls` and the
-   :attr:`~scrapy.Spider.parse` method as callback function for the
+   :meth:`~jscrapy.Spider.start_requests` method which (by default)
+   generates :class:`~jscrapy.Request` for the URLs specified in the
+   :attr:`~jscrapy.Spider.start_urls` and the
+   :attr:`~jscrapy.Spider.parse` method as callback function for the
    Requests.
 
 2. In the callback function, you parse the response (web page) and return
    :ref:`item objects <topics-items>`,
-   :class:`~scrapy.Request` objects, or an iterable of these objects.
+   :class:`~jscrapy.Request` objects, or an iterable of these objects.
    Those Requests will also contain a callback (maybe
    the same) and will then be downloaded by Scrapy and then their
    response handled by the specified callback.
@@ -44,11 +44,11 @@ We will talk about those types here.
 
 .. _topics-spiders-ref:
 
-scrapy.Spider
+jscrapy.Spider
 =============
 
-.. class:: scrapy.spiders.Spider
-.. class:: scrapy.Spider()
+.. class:: jscrapy.spiders.Spider
+.. class:: jscrapy.Spider()
 
    This is the simplest spider, and the one from which every other spider
    must inherit (including spiders that come bundled with Scrapy, as well as spiders
@@ -75,7 +75,7 @@ scrapy.Spider
        An optional list of strings containing domains that this spider is
        allowed to crawl. Requests for URLs not belonging to the domain names
        specified in this list (or their subdomains) won't be followed if
-       :class:`~scrapy.spidermiddlewares.offsite.OffsiteMiddleware` is enabled.
+       :class:`~jscrapy.spidermiddlewares.offsite.OffsiteMiddleware` is enabled.
 
        Let's say your target url is ``https://www.example.com/1.html``,
        then add ``'example.com'`` to the list.
@@ -84,7 +84,7 @@ scrapy.Spider
 
        A list of URLs where the spider will begin to crawl from, when no
        particular URLs are specified. So, the first pages downloaded will be those
-       listed here. The subsequent :class:`~scrapy.Request` will be generated successively from data
+       listed here. The subsequent :class:`~jscrapy.Request` will be generated successively from data
        contained in the start URLs.
 
    .. attribute:: custom_settings
@@ -100,7 +100,7 @@ scrapy.Spider
 
       This attribute is set by the :meth:`from_crawler` class method after
       initializating the class, and links to the
-      :class:`~scrapy.crawler.Crawler` object to which this spider instance is
+      :class:`~jscrapy.crawler.Crawler` object to which this spider instance is
       bound.
 
       Crawlers encapsulate a lot of components in the project for their single
@@ -110,7 +110,7 @@ scrapy.Spider
    .. attribute:: settings
 
       Configuration for running this spider. This is a
-      :class:`~scrapy.settings.Settings` instance, see the
+      :class:`~jscrapy.settings.Settings` instance, see the
       :ref:`topics-settings` topic for a detailed introduction on this subject.
 
    .. attribute:: logger
@@ -137,7 +137,7 @@ scrapy.Spider
        spider's code.
 
        :param crawler: crawler to which the spider will be bound
-       :type crawler: :class:`~scrapy.crawler.Crawler` instance
+       :type crawler: :class:`~jscrapy.crawler.Crawler` instance
 
        :param args: arguments passed to the :meth:`__init__` method
        :type args: list
@@ -159,11 +159,11 @@ scrapy.Spider
        the method to override. For example, if you need to start by logging in using
        a POST request, you could do::
 
-           class MySpider(scrapy.Spider):
+           class MySpider(jscrapy.Spider):
                name = 'myspider'
 
                def start_requests(self):
-                   return [scrapy.FormRequest("http://www.example.com/login",
+                   return [jscrapy.FormRequest("http://www.example.com/login",
                                               formdata={'user': 'john', 'pass': 'secret'},
                                               callback=self.logged_in)]
 
@@ -182,11 +182,11 @@ scrapy.Spider
        the same requirements as the :class:`Spider` class.
 
        This method, as well as any other Request callback, must return an
-       iterable of :class:`~scrapy.Request` and/or :ref:`item objects
+       iterable of :class:`~jscrapy.Request` and/or :ref:`item objects
        <topics-items>`.
 
        :param response: the response to parse
-       :type response: :class:`~scrapy.http.Response`
+       :type response: :class:`~jscrapy.http.Response`
 
    .. method:: log(message, [level, component])
 
@@ -201,10 +201,10 @@ scrapy.Spider
 
 Let's see an example::
 
-    import scrapy
+    import jscrapy
 
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         name = 'example.com'
         allowed_domains = ['example.com']
         start_urls = [
@@ -218,9 +218,9 @@ Let's see an example::
 
 Return multiple Requests and items from a single callback::
 
-    import scrapy
+    import jscrapy
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         name = 'example.com'
         allowed_domains = ['example.com']
         start_urls = [
@@ -234,29 +234,29 @@ Return multiple Requests and items from a single callback::
                 yield {"title": h3}
 
             for href in response.xpath('//a/@href').getall():
-                yield scrapy.Request(response.urljoin(href), self.parse)
+                yield jscrapy.Request(response.urljoin(href), self.parse)
 
 Instead of :attr:`~.start_urls` you can use :meth:`~.start_requests` directly;
-to give data more structure you can use :class:`~scrapy.Item` objects::
+to give data more structure you can use :class:`~jscrapy.Item` objects::
 
-    import scrapy
+    import jscrapy
     from myproject.items import MyItem
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         name = 'example.com'
         allowed_domains = ['example.com']
 
         def start_requests(self):
-            yield scrapy.Request('http://www.example.com/1.html', self.parse)
-            yield scrapy.Request('http://www.example.com/2.html', self.parse)
-            yield scrapy.Request('http://www.example.com/3.html', self.parse)
+            yield jscrapy.Request('http://www.example.com/1.html', self.parse)
+            yield jscrapy.Request('http://www.example.com/2.html', self.parse)
+            yield jscrapy.Request('http://www.example.com/3.html', self.parse)
 
         def parse(self, response):
             for h3 in response.xpath('//h3').getall():
                 yield MyItem(title=h3)
 
             for href in response.xpath('//a/@href').getall():
-                yield scrapy.Request(response.urljoin(href), self.parse)
+                yield jscrapy.Request(response.urljoin(href), self.parse)
 
 .. _spiderargs:
 
@@ -271,13 +271,13 @@ functionality of the spider.
 Spider arguments are passed through the :command:`crawl` command using the
 ``-a`` option. For example::
 
-    scrapy crawl myspider -a category=electronics
+    jscrapy crawl myspider -a category=electronics
 
 Spiders can access arguments in their `__init__` methods::
 
-    import scrapy
+    import jscrapy
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         name = 'myspider'
 
         def __init__(self, category=None, *args, **kwargs):
@@ -289,18 +289,18 @@ The default `__init__` method will take any spider arguments
 and copy them to the spider as attributes.
 The above example can also be written as follows::
 
-    import scrapy
+    import jscrapy
 
-    class MySpider(scrapy.Spider):
+    class MySpider(jscrapy.Spider):
         name = 'myspider'
 
         def start_requests(self):
-            yield scrapy.Request(f'http://www.example.com/categories/{self.category}')
+            yield jscrapy.Request(f'http://www.example.com/categories/{self.category}')
 
 If you are :ref:`running Scrapy from a script <run-from-script>`, you can 
 specify spider arguments when calling 
-:class:`CrawlerProcess.crawl <scrapy.crawler.CrawlerProcess.crawl>` or
-:class:`CrawlerRunner.crawl <scrapy.crawler.CrawlerRunner.crawl>`::
+:class:`CrawlerProcess.crawl <jscrapy.crawler.CrawlerProcess.crawl>` or
+:class:`CrawlerRunner.crawl <jscrapy.crawler.CrawlerRunner.crawl>`::
 
     process = CrawlerProcess()
     process.crawl(MySpider, category="electronics")
@@ -316,11 +316,11 @@ Otherwise, you would cause iteration over a ``start_urls`` string
 resulting in each character being seen as a separate url.
 
 A valid use case is to set the http auth credentials
-used by :class:`~scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware`
+used by :class:`~jscrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware`
 or the user agent
-used by :class:`~scrapy.downloadermiddlewares.useragent.UserAgentMiddleware`::
+used by :class:`~jscrapy.downloadermiddlewares.useragent.UserAgentMiddleware`::
 
-    scrapy crawl myspider -a http_user=myuser -a http_pass=mypassword -a user_agent=mybot
+    jscrapy crawl myspider -a http_user=myuser -a http_pass=mypassword -a user_agent=mybot
 
 Spider arguments can also be passed through the Scrapyd ``schedule.json`` API.
 See `Scrapyd documentation`_.
@@ -338,15 +338,15 @@ rules, crawling from `Sitemaps`_, or parsing an XML/CSV feed.
 For the examples used in the following spiders, we'll assume you have a project
 with a ``TestItem`` declared in a ``myproject.items`` module::
 
-    import scrapy
+    import jscrapy
 
-    class TestItem(scrapy.Item):
-        id = scrapy.Field()
-        name = scrapy.Field()
-        description = scrapy.Field()
+    class TestItem(jscrapy.Item):
+        id = jscrapy.Field()
+        name = jscrapy.Field()
+        description = jscrapy.Field()
 
 
-.. currentmodule:: scrapy.spiders
+.. currentmodule:: jscrapy.spiders
 
 CrawlSpider
 -----------
@@ -376,7 +376,7 @@ CrawlSpider
       This method is called for each response produced for the URLs in
       the spider's ``start_urls`` attribute. It allows to parse
       the initial responses and must return either an
-      :ref:`item object <topics-items>`, a :class:`~scrapy.Request`
+      :ref:`item object <topics-items>`, a :class:`~jscrapy.Request`
       object, or an iterable containing any of them.
 
 Crawling rules
@@ -386,18 +386,18 @@ Crawling rules
 
    ``link_extractor`` is a :ref:`Link Extractor <topics-link-extractors>` object which
    defines how links will be extracted from each crawled page. Each produced link will
-   be used to generate a :class:`~scrapy.Request` object, which will contain the
+   be used to generate a :class:`~jscrapy.Request` object, which will contain the
    link's text in its ``meta`` dictionary (under the ``link_text`` key).
    If omitted, a default link extractor created with no arguments will be used,
    resulting in all links being extracted.
 
    ``callback`` is a callable or a string (in which case a method from the spider
    object with that name will be used) to be called for each link extracted with
-   the specified link extractor. This callback receives a :class:`~scrapy.http.Response`
+   the specified link extractor. This callback receives a :class:`~jscrapy.http.Response`
    as its first argument and must return either a single instance or an iterable of
-   :ref:`item objects <topics-items>` and/or :class:`~scrapy.Request` objects
-   (or any subclass of them). As mentioned above, the received :class:`~scrapy.http.Response`
-   object will contain the text of the link that produced the :class:`~scrapy.Request`
+   :ref:`item objects <topics-items>` and/or :class:`~jscrapy.Request` objects
+   (or any subclass of them). As mentioned above, the received :class:`~jscrapy.http.Response`
+   object will contain the text of the link that produced the :class:`~jscrapy.Request`
    in its ``meta`` dictionary (under the ``link_text`` key)
 
    ``cb_kwargs`` is a dict containing the keyword arguments to be passed to the
@@ -414,8 +414,8 @@ Crawling rules
 
    ``process_request`` is a callable (or a string, in which case a method from
    the spider object with that name will be used) which will be called for every
-   :class:`~scrapy.Request` extracted by this rule. This callable should
-   take said request as first argument and the :class:`~scrapy.http.Response`
+   :class:`~jscrapy.Request` extracted by this rule. This callable should
+   take said request as first argument and the :class:`~jscrapy.http.Response`
    from which the request originated as second argument. It must return a
    ``Request`` object or ``None`` (to filter out the request).
 
@@ -437,9 +437,9 @@ CrawlSpider example
 
 Let's now take a look at an example CrawlSpider with rules::
 
-    import scrapy
-    from scrapy.spiders import CrawlSpider, Rule
-    from scrapy.linkextractors import LinkExtractor
+    import jscrapy
+    from jscrapy.spiders import CrawlSpider, Rule
+    from jscrapy.linkextractors import LinkExtractor
 
     class MySpider(CrawlSpider):
         name = 'example.com'
@@ -457,7 +457,7 @@ Let's now take a look at an example CrawlSpider with rules::
 
         def parse_item(self, response):
             self.logger.info('Hi, this is an item page! %s', response.url)
-            item = scrapy.Item()
+            item = jscrapy.Item()
             item['id'] = response.xpath('//td[@id="item_id"]/text()').re(r'ID: (\d+)')
             item['name'] = response.xpath('//td[@id="item_name"]/text()').get()
             item['description'] = response.xpath('//td[@id="item_description"]/text()').get()
@@ -473,7 +473,7 @@ Let's now take a look at an example CrawlSpider with rules::
 This spider would start crawling example.com's home page, collecting category
 links, and item links, parsing the latter with the ``parse_item`` method. For
 each item response, some data will be extracted from the HTML using XPath, and
-an :class:`~scrapy.Item` will be filled with it.
+an :class:`~jscrapy.Item` will be filled with it.
 
 XMLFeedSpider
 -------------
@@ -496,11 +496,11 @@ XMLFeedSpider
 
            - ``'iternodes'`` - a fast iterator based on regular expressions
 
-           - ``'html'`` - an iterator which uses :class:`~scrapy.Selector`.
+           - ``'html'`` - an iterator which uses :class:`~jscrapy.Selector`.
              Keep in mind this uses DOM parsing and must load all DOM in memory
              which could be a problem for big feeds
 
-           - ``'xml'`` - an iterator which uses :class:`~scrapy.Selector`.
+           - ``'xml'`` - an iterator which uses :class:`~jscrapy.Selector`.
              Keep in mind this uses DOM parsing and must load all DOM in memory
              which could be a problem for big feeds
 
@@ -518,7 +518,7 @@ XMLFeedSpider
         available in that document that will be processed with this spider. The
         ``prefix`` and ``uri`` will be used to automatically register
         namespaces using the
-        :meth:`~scrapy.Selector.register_namespace` method.
+        :meth:`~jscrapy.Selector.register_namespace` method.
 
         You can then specify nodes with namespaces in the :attr:`itertag`
         attribute.
@@ -545,10 +545,10 @@ XMLFeedSpider
 
         This method is called for the nodes matching the provided tag name
         (``itertag``).  Receives the response and an
-        :class:`~scrapy.Selector` for each node.  Overriding this
+        :class:`~jscrapy.Selector` for each node.  Overriding this
         method is mandatory. Otherwise, you spider won't work.  This method
         must return an :ref:`item object <topics-items>`, a
-        :class:`~scrapy.Request` object, or an iterable containing any of
+        :class:`~jscrapy.Request` object, or an iterable containing any of
         them.
 
     .. method:: process_results(response, results)
@@ -569,7 +569,7 @@ XMLFeedSpider example
 
 These spiders are pretty easy to use, let's have a look at one example::
 
-    from scrapy.spiders import XMLFeedSpider
+    from jscrapy.spiders import XMLFeedSpider
     from myproject.items import TestItem
 
     class MySpider(XMLFeedSpider):
@@ -590,7 +590,7 @@ These spiders are pretty easy to use, let's have a look at one example::
 
 Basically what we did up there was to create a spider that downloads a feed from
 the given ``start_urls``, and then iterates through each of its ``item`` tags,
-prints them out, and stores some random data in an :class:`~scrapy.Item`.
+prints them out, and stores some random data in an :class:`~jscrapy.Item`.
 
 CSVFeedSpider
 -------------
@@ -628,7 +628,7 @@ CSVFeedSpider example
 Let's see an example similar to the previous one, but using a
 :class:`CSVFeedSpider`::
 
-    from scrapy.spiders import CSVFeedSpider
+    from jscrapy.spiders import CSVFeedSpider
     from myproject.items import TestItem
 
     class MySpider(CSVFeedSpider):
@@ -730,7 +730,7 @@ SitemapSpider
         We can define a ``sitemap_filter`` function to filter ``entries`` by date::
 
             from datetime import datetime
-            from scrapy.spiders import SitemapSpider
+            from jscrapy.spiders import SitemapSpider
 
             class FilteredSitemapSpider(SitemapSpider):
                 name = 'filtered_sitemap_spider'
@@ -766,7 +766,7 @@ SitemapSpider examples
 Simplest example: process all urls discovered through sitemaps using the
 ``parse`` callback::
 
-    from scrapy.spiders import SitemapSpider
+    from jscrapy.spiders import SitemapSpider
 
     class MySpider(SitemapSpider):
         sitemap_urls = ['http://www.example.com/sitemap.xml']
@@ -777,7 +777,7 @@ Simplest example: process all urls discovered through sitemaps using the
 Process some urls with certain callback and other urls with a different
 callback::
 
-    from scrapy.spiders import SitemapSpider
+    from jscrapy.spiders import SitemapSpider
 
     class MySpider(SitemapSpider):
         sitemap_urls = ['http://www.example.com/sitemap.xml']
@@ -795,7 +795,7 @@ callback::
 Follow sitemaps defined in the `robots.txt`_ file and only follow sitemaps
 whose url contains ``/sitemap_shop``::
 
-    from scrapy.spiders import SitemapSpider
+    from jscrapy.spiders import SitemapSpider
 
     class MySpider(SitemapSpider):
         sitemap_urls = ['http://www.example.com/robots.txt']
@@ -809,7 +809,7 @@ whose url contains ``/sitemap_shop``::
 
 Combine SitemapSpider with other sources of urls::
 
-    from scrapy.spiders import SitemapSpider
+    from jscrapy.spiders import SitemapSpider
 
     class MySpider(SitemapSpider):
         sitemap_urls = ['http://www.example.com/robots.txt']
@@ -821,7 +821,7 @@ Combine SitemapSpider with other sources of urls::
 
         def start_requests(self):
             requests = list(super(MySpider, self).start_requests())
-            requests += [scrapy.Request(x, self.parse_other) for x in self.other_urls]
+            requests += [jscrapy.Request(x, self.parse_other) for x in self.other_urls]
             return requests
 
         def parse_shop(self, response):
@@ -834,4 +834,4 @@ Combine SitemapSpider with other sources of urls::
 .. _Sitemap index files: https://www.sitemaps.org/protocol.html#index
 .. _robots.txt: https://www.robotstxt.org/
 .. _TLD: https://en.wikipedia.org/wiki/Top-level_domain
-.. _Scrapyd documentation: https://scrapyd.readthedocs.io/en/latest/
+.. _Scrapyd documentation: https://jscrapyd.readthedocs.io/en/latest/

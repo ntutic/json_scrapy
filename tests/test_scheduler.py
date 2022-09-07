@@ -6,13 +6,13 @@ import collections
 from twisted.internet import defer
 from twisted.trial.unittest import TestCase
 
-from scrapy.crawler import Crawler
-from scrapy.core.downloader import Downloader
-from scrapy.core.scheduler import Scheduler
-from scrapy.http import Request
-from scrapy.spiders import Spider
-from scrapy.utils.httpobj import urlparse_cached
-from scrapy.utils.test import get_crawler
+from jscrapy.crawler import Crawler
+from jscrapy.core.downloader import Downloader
+from jscrapy.core.scheduler import Scheduler
+from jscrapy.http import Request
+from jscrapy.spiders import Spider
+from jscrapy.utils.httpobj import urlparse_cached
+from jscrapy.utils.test import get_crawler
 from tests.mockserver import MockServer
 
 
@@ -47,11 +47,11 @@ class MockCrawler(Crawler):
 
         settings = dict(
             SCHEDULER_DEBUG=False,
-            SCHEDULER_DISK_QUEUE='scrapy.squeues.PickleLifoDiskQueue',
-            SCHEDULER_MEMORY_QUEUE='scrapy.squeues.LifoMemoryQueue',
+            SCHEDULER_DISK_QUEUE='jscrapy.squeues.PickleLifoDiskQueue',
+            SCHEDULER_MEMORY_QUEUE='jscrapy.squeues.LifoMemoryQueue',
             SCHEDULER_PRIORITY_QUEUE=priority_queue_cls,
             JOBDIR=jobdir,
-            DUPEFILTER_CLASS='scrapy.dupefilters.BaseDupeFilter',
+            DUPEFILTER_CLASS='jscrapy.dupefilters.BaseDupeFilter',
             REQUEST_FINGERPRINTER_IMPLEMENTATION='VERSION',
         )
         super().__init__(Spider, settings)
@@ -177,11 +177,11 @@ class BaseSchedulerOnDiskTester(SchedulerHandler):
 
 
 class TestSchedulerInMemory(BaseSchedulerInMemoryTester, unittest.TestCase):
-    priority_queue_cls = 'scrapy.pqueues.ScrapyPriorityQueue'
+    priority_queue_cls = 'jscrapy.pqueues.ScrapyPriorityQueue'
 
 
 class TestSchedulerOnDisk(BaseSchedulerOnDiskTester, unittest.TestCase):
-    priority_queue_cls = 'scrapy.pqueues.ScrapyPriorityQueue'
+    priority_queue_cls = 'jscrapy.pqueues.ScrapyPriorityQueue'
 
 
 _URLS_WITH_SLOTS = [("http://foo.com/a", 'a'),
@@ -202,7 +202,7 @@ class TestMigration(unittest.TestCase):
 
     def _migration(self, tmp_dir):
         prev_scheduler_handler = SchedulerHandler()
-        prev_scheduler_handler.priority_queue_cls = 'scrapy.pqueues.ScrapyPriorityQueue'
+        prev_scheduler_handler.priority_queue_cls = 'jscrapy.pqueues.ScrapyPriorityQueue'
         prev_scheduler_handler.jobdir = tmp_dir
 
         prev_scheduler_handler.create_scheduler()
@@ -211,7 +211,7 @@ class TestMigration(unittest.TestCase):
         prev_scheduler_handler.close_scheduler()
 
         next_scheduler_handler = SchedulerHandler()
-        next_scheduler_handler.priority_queue_cls = 'scrapy.pqueues.DownloaderAwarePriorityQueue'
+        next_scheduler_handler.priority_queue_cls = 'jscrapy.pqueues.DownloaderAwarePriorityQueue'
         next_scheduler_handler.jobdir = tmp_dir
 
         next_scheduler_handler.create_scheduler()
@@ -247,7 +247,7 @@ def _is_scheduling_fair(enqueued_slots, dequeued_slots):
 
 
 class DownloaderAwareSchedulerTestMixin:
-    priority_queue_cls = 'scrapy.pqueues.DownloaderAwarePriorityQueue'
+    priority_queue_cls = 'jscrapy.pqueues.DownloaderAwarePriorityQueue'
     reopen = False
 
     def test_logic(self):
@@ -308,8 +308,8 @@ class TestIntegrationWithDownloaderAwareInMemory(TestCase):
         self.crawler = get_crawler(
             spidercls=StartUrlsSpider,
             settings_dict={
-                'SCHEDULER_PRIORITY_QUEUE': 'scrapy.pqueues.DownloaderAwarePriorityQueue',
-                'DUPEFILTER_CLASS': 'scrapy.dupefilters.BaseDupeFilter',
+                'SCHEDULER_PRIORITY_QUEUE': 'jscrapy.pqueues.DownloaderAwarePriorityQueue',
+                'DUPEFILTER_CLASS': 'jscrapy.dupefilters.BaseDupeFilter',
             },
         )
 
@@ -332,7 +332,7 @@ class TestIncompatibility(unittest.TestCase):
 
     def _incompatible(self):
         settings = dict(
-            SCHEDULER_PRIORITY_QUEUE='scrapy.pqueues.DownloaderAwarePriorityQueue',
+            SCHEDULER_PRIORITY_QUEUE='jscrapy.pqueues.DownloaderAwarePriorityQueue',
             CONCURRENT_REQUESTS_PER_IP=1,
         )
         crawler = get_crawler(Spider, settings)

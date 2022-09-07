@@ -3,7 +3,7 @@
 Frequently Asked Questions
 ==========================
 
-.. _faq-scrapy-bs-cmp:
+.. _faq-jscrapy-bs-cmp:
 
 How does Scrapy compare to BeautifulSoup or lxml?
 -------------------------------------------------
@@ -30,7 +30,7 @@ Can I use Scrapy with BeautifulSoup?
 ------------------------------------
 
 Yes, you can.
-As mentioned :ref:`above <faq-scrapy-bs-cmp>`, `BeautifulSoup`_ can be used
+As mentioned :ref:`above <faq-jscrapy-bs-cmp>`, `BeautifulSoup`_ can be used
 for parsing HTML responses in Scrapy callbacks.
 You just have to feed the response's body into a ``BeautifulSoup`` object
 and extract whatever data you need from it.
@@ -39,10 +39,10 @@ Here's an example spider using BeautifulSoup API, with ``lxml`` as the HTML pars
 
 
     from bs4 import BeautifulSoup
-    import scrapy
+    import jscrapy
 
 
-    class ExampleSpider(scrapy.Spider):
+    class ExampleSpider(jscrapy.Spider):
         name = "example"
         allowed_domains = ["example.com"]
         start_urls = (
@@ -87,7 +87,7 @@ Does Scrapy work with HTTP proxies?
 
 Yes. Support for HTTP proxies is provided (since Scrapy 0.8) through the HTTP
 Proxy downloader middleware. See
-:class:`~scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware`.
+:class:`~jscrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware`.
 
 How can I scrape an item with attributes in different pages?
 ------------------------------------------------------------
@@ -112,8 +112,8 @@ If you do want to crawl in true `BFO order`_, you can do it by
 setting the following settings::
 
     DEPTH_PRIORITY = 1
-    SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'
-    SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
+    SCHEDULER_DISK_QUEUE = 'jscrapy.squeues.PickleFifoDiskQueue'
+    SCHEDULER_MEMORY_QUEUE = 'jscrapy.squeues.FifoMemoryQueue'
 
 While pending requests are below the configured values of
 :setting:`CONCURRENT_REQUESTS`, :setting:`CONCURRENT_REQUESTS_PER_DOMAIN` or
@@ -140,15 +140,15 @@ How can I prevent memory errors due to many allowed domains?
 ------------------------------------------------------------
 
 If you have a spider with a long list of
-:attr:`~scrapy.Spider.allowed_domains` (e.g. 50,000+), consider
+:attr:`~jscrapy.Spider.allowed_domains` (e.g. 50,000+), consider
 replacing the default
-:class:`~scrapy.spidermiddlewares.offsite.OffsiteMiddleware` spider middleware
+:class:`~jscrapy.spidermiddlewares.offsite.OffsiteMiddleware` spider middleware
 with a :ref:`custom spider middleware <custom-spider-middleware>` that requires
 less memory. For example:
 
 -   If your domain names are similar enough, use your own regular expression
     instead joining the strings in
-    :attr:`~scrapy.Spider.allowed_domains` into a complex regular
+    :attr:`~jscrapy.Spider.allowed_domains` into a complex regular
     expression.
 
 -   If you can `meet the installation requirements`_, use pyre2_ instead of
@@ -158,11 +158,11 @@ less memory. For example:
 See also other suggestions at `StackOverflow`_.
 
 .. note:: Remember to disable
-   :class:`scrapy.spidermiddlewares.offsite.OffsiteMiddleware` when you enable
+   :class:`jscrapy.spidermiddlewares.offsite.OffsiteMiddleware` when you enable
    your custom implementation::
 
        SPIDER_MIDDLEWARES = {
-           'scrapy.spidermiddlewares.offsite.OffsiteMiddleware': None,
+           'jscrapy.spidermiddlewares.offsite.OffsiteMiddleware': None,
            'myproject.middlewares.CustomOffsiteMiddleware': 500,
        }
 
@@ -174,7 +174,7 @@ See also other suggestions at `StackOverflow`_.
 Can I use Basic HTTP Authentication in my spiders?
 --------------------------------------------------
 
-Yes, see :class:`~scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware`.
+Yes, see :class:`~jscrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware`.
 
 Why does Scrapy download pages in English instead of my native language?
 ------------------------------------------------------------------------
@@ -195,7 +195,7 @@ Can I run a spider without creating a project?
 Yes. You can use the :command:`runspider` command. For example, if you have a
 spider written in a ``my_spider.py`` file you can run it with::
 
-    scrapy runspider my_spider.py
+    jscrapy runspider my_spider.py
 
 See :command:`runspider` command for more info.
 
@@ -210,7 +210,7 @@ middleware (enabled by default) whose purpose is to filter out requests to
 domains outside the ones covered by the spider.
 
 For more info see:
-:class:`~scrapy.spidermiddlewares.offsite.OffsiteMiddleware`.
+:class:`~jscrapy.spidermiddlewares.offsite.OffsiteMiddleware`.
 
 What is the recommended way to deploy a Scrapy crawler in production?
 ---------------------------------------------------------------------
@@ -221,7 +221,7 @@ Can I use JSON for large exports?
 ---------------------------------
 
 It'll depend on how large your output is. See :ref:`this warning
-<json-with-large-data>` in :class:`~scrapy.exporters.JsonItemExporter`
+<json-with-large-data>` in :class:`~jscrapy.exporters.JsonItemExporter`
 documentation.
 
 Can I return (Twisted) deferreds from signal handlers?
@@ -262,15 +262,15 @@ Simplest way to dump all my scraped items into a JSON/CSV/XML file?
 
 To dump into a JSON file::
 
-    scrapy crawl myspider -O items.json
+    jscrapy crawl myspider -O items.json
 
 To dump into a CSV file::
 
-    scrapy crawl myspider -O items.csv
+    jscrapy crawl myspider -O items.csv
 
 To dump into a XML file::
 
-    scrapy crawl myspider -O items.xml
+    jscrapy crawl myspider -O items.xml
 
 For more information see :ref:`topics-feed-exports`
 
@@ -292,7 +292,7 @@ build the DOM of the entire feed in memory, and this can be quite slow and
 consume a lot of memory.
 
 In order to avoid parsing all the entire feed at once in memory, you can use
-the functions ``xmliter`` and ``csviter`` from ``scrapy.utils.iterators``
+the functions ``xmliter`` and ``csviter`` from ``jscrapy.utils.iterators``
 module. In fact, this is what the feed spiders (see :ref:`topics-spiders`) use
 under the cover.
 
@@ -312,8 +312,8 @@ Enable the :setting:`COOKIES_DEBUG` setting.
 How can I instruct a spider to stop itself?
 -------------------------------------------
 
-Raise the :exc:`~scrapy.exceptions.CloseSpider` exception from a callback. For
-more info see: :exc:`~scrapy.exceptions.CloseSpider`.
+Raise the :exc:`~jscrapy.exceptions.CloseSpider` exception from a callback. For
+more info see: :exc:`~jscrapy.exceptions.CloseSpider`.
 
 How can I prevent my Scrapy bot from getting banned?
 ----------------------------------------------------
@@ -350,7 +350,7 @@ How to split an item into multiple items in an item pipeline?
 :ref:`Item pipelines <topics-item-pipeline>` cannot yield multiple items per
 input item. :ref:`Create a spider middleware <custom-spider-middleware>`
 instead, and use its
-:meth:`~scrapy.spidermiddlewares.SpiderMiddleware.process_spider_output`
+:meth:`~jscrapy.spidermiddlewares.SpiderMiddleware.process_spider_output`
 method for this purpose. For example::
 
     from copy import deepcopy
@@ -369,7 +369,7 @@ method for this purpose. For example::
 Does Scrapy support IPv6 addresses?
 -----------------------------------
 
-Yes, by setting :setting:`DNS_RESOLVER` to ``scrapy.resolver.CachingHostnameResolver``.
+Yes, by setting :setting:`DNS_RESOLVER` to ``jscrapy.resolver.CachingHostnameResolver``.
 Note that by doing so, you lose the ability to set a specific timeout for DNS requests
 (the value of the :setting:`DNS_TIMEOUT` setting is ignored).
 
@@ -392,9 +392,9 @@ How can I cancel the download of a given response?
 In some situations, it might be useful to stop the download of a certain response.
 For instance, sometimes you can determine whether or not you need the full contents
 of a response by inspecting its headers or the first bytes of its body. In that case,
-you could save resources by attaching a handler to the :class:`~scrapy.signals.bytes_received`
-or :class:`~scrapy.signals.headers_received` signals and raising a
-:exc:`~scrapy.exceptions.StopDownload` exception. Please refer to the
+you could save resources by attaching a handler to the :class:`~jscrapy.signals.bytes_received`
+or :class:`~jscrapy.signals.headers_received` signals and raising a
+:exc:`~jscrapy.exceptions.StopDownload` exception. Please refer to the
 :ref:`topics-stop-response-download` topic for additional information and examples.
 
 
@@ -407,7 +407,7 @@ as ``csv.py`` or ``os.py``, or any `Python package`_ that you have installed.
 See :issue:`2680`.
 
 
-.. _has been reported: https://github.com/scrapy/scrapy/issues/2905
+.. _has been reported: https://github.com/jscrapy/jscrapy/issues/2905
 .. _Python standard library modules: https://docs.python.org/py-modindex.html
 .. _Python package: https://pypi.org/
 .. _user agents: https://en.wikipedia.org/wiki/User_agent

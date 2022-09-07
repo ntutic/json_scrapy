@@ -19,12 +19,12 @@ from twisted.python.filepath import FilePath
 from twisted.protocols.policies import WrappingFactory
 from twisted.internet.defer import inlineCallbacks
 
-from scrapy.core.downloader import webclient as client
-from scrapy.core.downloader.contextfactory import ScrapyClientContextFactory
-from scrapy.http import Request, Headers
-from scrapy.settings import Settings
-from scrapy.utils.misc import create_instance
-from scrapy.utils.python import to_bytes, to_unicode
+from jscrapy.core.downloader import webclient as client
+from jscrapy.core.downloader.contextfactory import ScrapyClientContextFactory
+from jscrapy.http import Request, Headers
+from jscrapy.settings import Settings
+from jscrapy.utils.misc import create_instance
+from jscrapy.utils.python import to_bytes, to_unicode
 from tests.mockserver import (
     BrokenDownloadResource,
     ErrorResource,
@@ -82,7 +82,7 @@ class ParseUrlTestCase(unittest.TestCase):
             ("https://127.0.0.1/?param=value", ('https', lip, lip, 443, '/?param=value')),
             ("https://127.0.0.1:12345/", ('https', lip + ':12345', lip, 12345, '/')),
 
-            ("http://scrapytest.org/foo ", ('http', 'scrapytest.org', 'scrapytest.org', 80, '/foo')),
+            ("http://jscrapytest.org/foo ", ('http', 'jscrapytest.org', 'jscrapytest.org', 80, '/foo')),
             ("http://egg:7890 ", ('http', 'egg:7890', 'egg', 7890, '/')),
         )
 
@@ -203,7 +203,7 @@ class ScrapyHTTPPageGetterTests(unittest.TestCase):
         return testvalue
 
     def test_non_standard_line_endings(self):
-        # regression test for: http://dev.scrapy.org/ticket/258
+        # regression test for: http://dev.jscrapy.org/ticket/258
         factory = client.ScrapyHTTPClientFactory(Request(
             url='http://foo/bar'))
         protocol = client.ScrapyHTTPPageGetter()

@@ -2,12 +2,12 @@ import warnings
 from itertools import product
 from unittest import TestCase
 
-from scrapy.downloadermiddlewares.stats import DownloaderStats
-from scrapy.exceptions import ScrapyDeprecationWarning
-from scrapy.http import Request, Response
-from scrapy.spiders import Spider
-from scrapy.utils.response import response_httprepr
-from scrapy.utils.test import get_crawler
+from jscrapy.downloadermiddlewares.stats import DownloaderStats
+from jscrapy.exceptions import ScrapyDeprecationWarning
+from jscrapy.http import Request, Response
+from jscrapy.spiders import Spider
+from jscrapy.utils.response import response_httprepr
+from jscrapy.utils.test import get_crawler
 
 
 class MyException(Exception):
@@ -18,13 +18,13 @@ class TestDownloaderStats(TestCase):
 
     def setUp(self):
         self.crawler = get_crawler(Spider)
-        self.spider = self.crawler._create_spider('scrapytest.org')
+        self.spider = self.crawler._create_spider('jscrapytest.org')
         self.mw = DownloaderStats(self.crawler.stats)
 
         self.crawler.stats.open_spider(self.spider)
 
-        self.req = Request('http://scrapytest.org')
-        self.res = Response('scrapytest.org', status=400)
+        self.req = Request('http://jscrapytest.org')
+        self.res = Response('jscrapytest.org', status=400)
 
     def assertStatsEqual(self, key, value):
         self.assertEqual(
@@ -43,10 +43,10 @@ class TestDownloaderStats(TestCase):
 
     def test_response_len(self):
         body = (b'', b'not_empty')  # empty/notempty body
-        headers = ({}, {'lang': 'en'}, {'lang': 'en', 'User-Agent': 'scrapy'})  # 0 headers, 1h and 2h
+        headers = ({}, {'lang': 'en'}, {'lang': 'en', 'User-Agent': 'jscrapy'})  # 0 headers, 1h and 2h
         test_responses = [  # form test responses with all combinations of body/headers
             Response(
-                url='scrapytest.org',
+                url='jscrapytest.org',
                 status=200,
                 body=r[0],
                 headers=r[1]

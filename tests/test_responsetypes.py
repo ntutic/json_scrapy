@@ -1,7 +1,7 @@
 import unittest
-from scrapy.responsetypes import responsetypes
+from jscrapy.responsetypes import responsetypes
 
-from scrapy.http import Response, TextResponse, XmlResponse, HtmlResponse, Headers
+from jscrapy.http import Response, TextResponse, XmlResponse, HtmlResponse, Headers
 
 
 class ResponseTypesTest(unittest.TestCase):
@@ -91,8 +91,8 @@ class ResponseTypesTest(unittest.TestCase):
             assert retcls is cls, f"{source} ==> {retcls} != {cls}"
 
     def test_custom_mime_types_loaded(self):
-        # check that mime.types files shipped with scrapy are loaded
-        self.assertEqual(responsetypes.mimetypes.guess_type('x.scrapytest')[0], 'x-scrapy/test')
+        # check that mime.types files shipped with jscrapy are loaded
+        self.assertEqual(responsetypes.mimetypes.guess_type('x.jscrapytest')[0], 'x-jscrapy/test')
 
 
 if __name__ == "__main__":

@@ -28,7 +28,7 @@ sys.path.insert(0, path.dirname(path.dirname(__file__)))
 extensions = [
     'hoverxref.extension',
     'notfound.extension',
-    'scrapydocs',
+    'jscrapydocs',
     'sphinx.ext.autodoc',
     'sphinx.ext.coverage',
     'sphinx.ext.intersphinx',
@@ -57,9 +57,9 @@ copyright = f'2008–{datetime.now().year}, Scrapy developers'
 #
 # The short X.Y version.
 try:
-    import scrapy
-    version = '.'.join(map(str, scrapy.version_info[:2]))
-    release = scrapy.__version__
+    import jscrapy
+    version = '.'.join(map(str, jscrapy.version_info[:2]))
+    release = jscrapy.__version__
 except ImportError:
     version = ''
     release = ''
@@ -125,7 +125,7 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # The style sheet to use for HTML and HTML Help pages. A file of that name
 # must exist either in Sphinx' static/ path, or in one of the custom paths
 # given in html_static_path.
-# html_style = 'scrapydoc.css'
+# html_style = 'jscrapydoc.css'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -227,7 +227,7 @@ latex_documents = [
 # A list of regular expressions that match URIs that should not be checked when
 # doing a linkcheck build.
 linkcheck_ignore = [
-    'http://localhost:\d+', 'http://hg.scrapy.org',
+    'http://localhost:\d+', 'http://hg.jscrapy.org',
     'http://directory.google.com/'
 ]
 
@@ -252,30 +252,30 @@ coverage_ignore_pyobjects = [
     # Methods of downloader middlewares are not documented, only the classes
     # themselves, since downloader middlewares are controlled through Scrapy
     # settings.
-    r'^scrapy\.downloadermiddlewares\.\w*?\.(\w*?Middleware|DownloaderStats)\.',
+    r'^jscrapy\.downloadermiddlewares\.\w*?\.(\w*?Middleware|DownloaderStats)\.',
 
     # Base classes of downloader middlewares are implementation details that
     # are not meant for users.
-    r'^scrapy\.downloadermiddlewares\.\w*?\.Base\w*?Middleware',
+    r'^jscrapy\.downloadermiddlewares\.\w*?\.Base\w*?Middleware',
 
     # Private exception used by the command-line interface implementation.
-    r'^scrapy\.exceptions\.UsageError',
+    r'^jscrapy\.exceptions\.UsageError',
 
     # Methods of BaseItemExporter subclasses are only documented in
     # BaseItemExporter.
-    r'^scrapy\.exporters\.(?!BaseItemExporter\b)\w*?\.',
+    r'^jscrapy\.exporters\.(?!BaseItemExporter\b)\w*?\.',
 
     # Extension behavior is only modified through settings. Methods of
     # extension classes, as well as helper functions, are implementation
     # details that are not documented.
-    r'^scrapy\.extensions\.[a-z]\w*?\.[A-Z]\w*?\.',  # methods
-    r'^scrapy\.extensions\.[a-z]\w*?\.[a-z]',  # helper functions
+    r'^jscrapy\.extensions\.[a-z]\w*?\.[A-Z]\w*?\.',  # methods
+    r'^jscrapy\.extensions\.[a-z]\w*?\.[a-z]',  # helper functions
 
     # Never documented before, and deprecated now.
-    r'^scrapy\.linkextractors\.FilteringLinkExtractor$',
+    r'^jscrapy\.linkextractors\.FilteringLinkExtractor$',
 
     # Implementation detail of LxmlLinkExtractor
-    r'^scrapy\.linkextractors\.lxmlhtml\.LxmlParserLinkExtractor',
+    r'^jscrapy\.linkextractors\.lxmlhtml\.LxmlParserLinkExtractor',
 ]
 
 

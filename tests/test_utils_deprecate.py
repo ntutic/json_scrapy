@@ -2,8 +2,8 @@ import inspect
 import unittest
 from unittest import mock
 import warnings
-from scrapy.exceptions import ScrapyDeprecationWarning
-from scrapy.utils.deprecate import create_deprecated_class, update_classpath
+from jscrapy.exceptions import ScrapyDeprecationWarning
+from jscrapy.utils.deprecate import create_deprecated_class, update_classpath
 
 
 class MyWarning(UserWarning):
@@ -255,27 +255,27 @@ class WarnWhenSubclassedTest(unittest.TestCase):
         self.assertIn("Error detecting parent module", str(w[0].message))
 
 
-@mock.patch('scrapy.utils.deprecate.DEPRECATION_RULES',
-            [('scrapy.contrib.pipeline.', 'scrapy.pipelines.'),
-             ('scrapy.contrib.', 'scrapy.extensions.')])
+@mock.patch('jscrapy.utils.deprecate.DEPRECATION_RULES',
+            [('jscrapy.contrib.pipeline.', 'jscrapy.pipelines.'),
+             ('jscrapy.contrib.', 'jscrapy.extensions.')])
 class UpdateClassPathTest(unittest.TestCase):
 
     def test_old_path_gets_fixed(self):
         with warnings.catch_warnings(record=True) as w:
-            output = update_classpath('scrapy.contrib.debug.Debug')
-        self.assertEqual(output, 'scrapy.extensions.debug.Debug')
+            output = update_classpath('jscrapy.contrib.debug.Debug')
+        self.assertEqual(output, 'jscrapy.extensions.debug.Debug')
         self.assertEqual(len(w), 1)
-        self.assertIn("scrapy.contrib.debug.Debug", str(w[0].message))
-        self.assertIn("scrapy.extensions.debug.Debug", str(w[0].message))
+        self.assertIn("jscrapy.contrib.debug.Debug", str(w[0].message))
+        self.assertIn("jscrapy.extensions.debug.Debug", str(w[0].message))
 
     def test_sorted_replacement(self):
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', ScrapyDeprecationWarning)
-            output = update_classpath('scrapy.contrib.pipeline.Pipeline')
-        self.assertEqual(output, 'scrapy.pipelines.Pipeline')
+            output = update_classpath('jscrapy.contrib.pipeline.Pipeline')
+        self.assertEqual(output, 'jscrapy.pipelines.Pipeline')
 
     def test_unmatched_path_stays_the_same(self):
         with warnings.catch_warnings(record=True) as w:
-            output = update_classpath('scrapy.unmatched.Path')
-        self.assertEqual(output, 'scrapy.unmatched.Path')
+            output = update_classpath('jscrapy.unmatched.Path')
+        self.assertEqual(output, 'jscrapy.unmatched.Path')
         self.assertEqual(len(w), 0)
